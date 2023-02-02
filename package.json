@@ -14,6 +14,12 @@
   "engines": {
     "node": ">=18"
   },
+  "files": [
+    ".editorconfig",
+    ".prettierrc.json",
+    "eslint.config.js",
+    "index.js"
+  ],
   "dependencies": {
     "@eslint/eslintrc": "^1.4.1",
     "@typescript-eslint/eslint-plugin": "^5.50.0",

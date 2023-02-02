@@ -1,0 +1,24 @@
+{
+  "name": "@averay/codeformat",
+  "version": "0.1.0",
+  "author": "Adam Averay (https://adamaveray.com.au/)",
+  "homepage": "https://github.com/adamaveray/codeformat",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamaveray/codeformat.git"
+  },
+  "licence": "MIT",
+  "description": "A very opinionated collection of configurations for a number of code formatting tools.",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@eslint/eslintrc": "^1.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint-config-prettier": "^8.6.0",
+    "prettier": "^2.8.3"
+  }
+}

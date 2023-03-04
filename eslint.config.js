@@ -9,9 +9,9 @@ const compat = new FlatCompat({ baseDirectory: path.dirname(fileURLToPath(import
 
 export default [
   'eslint:recommended',
-  ...compat.plugins('@typescript-eslint'),
   { files: ['**/*.{js,jsx,cjs,cjsx,mjs,mjsx}'] },
   {
+    ...compat.plugins('@typescript-eslint')[0],
     files: ['**/*.{ts,tsx}'],
     languageOptions: { parser: typescriptParser },
     rules: {

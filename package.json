@@ -21,11 +21,11 @@
     "index.js"
   ],
   "dependencies": {
-    "@eslint/eslintrc": "^1.4.1",
+    "@eslint/eslintrc": "^2.0.0",
     "@eslint/js": "^8.35.0",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
-    "@typescript-eslint/parser": "^5.50.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
     "eslint-config-prettier": "^8.6.0",
-    "prettier": "^2.8.3"
+    "prettier": "^2.8.4"
   }
 }

@@ -12,7 +12,7 @@ export default [
   { files: ['**/*.{js,jsx,cjs,cjsx,mjs,mjsx}'] },
   {
     ...compat.plugins('@typescript-eslint')[0],
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx,cts,ctsx,mts,mtsx}'],
     languageOptions: { parser: typescriptParser },
     rules: {
       ...typescript.configs.base.rules,

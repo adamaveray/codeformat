@@ -16,7 +16,7 @@ A very opinionated collection of configurations for a number of code formatting 
 
     ```js
     // eslint.config.js
-    import { makeEslintConfig } from '@adamaveray/codeformat';
+    import { makeEslintConfig } from '@averay/codeformat';
 
     export default [
       {

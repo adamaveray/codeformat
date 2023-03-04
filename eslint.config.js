@@ -9,7 +9,6 @@ const compat = new FlatCompat({ baseDirectory: path.dirname(fileURLToPath(import
 
 export default [
   'eslint:recommended',
-  prettierConfig,
   ...compat.plugins('@typescript-eslint'),
   { files: ['**/*.{js,jsx,cjs,cjsx,mjs,mjsx}'] },
   {
@@ -21,4 +20,5 @@ export default [
       ...typescript.configs.strict.rules,
     },
   },
+  prettierConfig,
 ];

@@ -20,6 +20,16 @@
     "eslint.config.js",
     "index.js"
   ],
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "prettier --check .",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
+  },
   "dependencies": {
     "@eslint/eslintrc": "^2.0.0",
     "@eslint/js": "^8.35.0",
@@ -27,5 +37,8 @@
     "@typescript-eslint/parser": "^5.54.0",
     "eslint-config-prettier": "^8.6.0",
     "prettier": "^2.8.4"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3"
   }
 }

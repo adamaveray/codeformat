@@ -19,8 +19,9 @@ export default [
     languageOptions: { parser: typescriptParser },
     rules: {
       ...js.configs.recommended.rules,
-      ...typescript.configs.base.rules,
       ...typescript.configs['eslint-recommended'].rules,
+      ...typescript.configs.recommended.rules,
+      ...typescript.configs['recommended-requiring-type-checking'].rules,
       ...typescript.configs.strict.rules,
     },
   },

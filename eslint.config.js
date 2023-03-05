@@ -23,6 +23,7 @@ export default [
       ...typescript.configs.recommended.rules,
       ...typescript.configs['recommended-requiring-type-checking'].rules,
       ...typescript.configs.strict.rules,
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   prettierConfig,

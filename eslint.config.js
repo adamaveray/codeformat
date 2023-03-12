@@ -1,12 +1,7 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
-import typescript from '@typescript-eslint/eslint-plugin';
+import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
-
-const compat = new FlatCompat({ baseDirectory: path.dirname(fileURLToPath(import.meta.url)) });
 
 export default [
   {
@@ -14,15 +9,19 @@ export default [
     rules: js.configs.recommended.rules,
   },
   {
-    ...compat.plugins('@typescript-eslint')[0],
     files: ['**/*.{ts,tsx,cts,ctsx,mts,mtsx}'],
-    languageOptions: { parser: typescriptParser },
+    languageOptions: {
+      parser: typescriptParser,
+    },
+    plugins: {
+      '@typescript-eslint': typescriptPlugin,
+    },
     rules: {
       ...js.configs.recommended.rules,
-      ...typescript.configs['eslint-recommended'].rules,
-      ...typescript.configs.recommended.rules,
-      ...typescript.configs['recommended-requiring-type-checking'].rules,
-      ...typescript.configs.strict.rules,
+      ...typescriptPlugin.configs['eslint-recommended'].rules,
+      ...typescriptPlugin.configs.recommended.rules,
+      ...typescriptPlugin.configs['recommended-requiring-type-checking'].rules,
+      ...typescriptPlugin.configs.strict.rules,
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },

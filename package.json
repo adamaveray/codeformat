@@ -18,7 +18,9 @@
     ".editorconfig",
     ".prettierrc.json",
     "eslint.config.js",
-    "index.js"
+    "index.js",
+    "lib",
+    "rulesets"
   ],
   "scripts": {
     "format": "npm run format:prettier && npm run format:eslint",

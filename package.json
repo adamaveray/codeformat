@@ -21,8 +21,12 @@
     "index.js"
   ],
   "scripts": {
-    "format": "prettier --write .",
-    "lint": "prettier --check .",
+    "format": "npm run format:prettier && npm run format:eslint",
+    "format:eslint": "eslint --fix .",
+    "format:prettier": "prettier --write .",
+    "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check .",
     "prepare": "husky install"
   },
   "dependencies": {

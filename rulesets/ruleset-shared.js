@@ -238,7 +238,7 @@ export default {
   'import/no-self-import': 'error',
   'import/no-unresolved': ['error', { caseSensitiveStrict: true }],
   'import/no-unused-modules': 'error',
-  'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
+  'import/no-useless-path-segments': 'error',
   'import/no-webpack-loader-syntax': 'error',
   'import/order': [
     'error',
@@ -250,7 +250,6 @@ export default {
     },
   ],
   'import/prefer-default-export': 'error',
-  'import/unambiguous': 'error',
 
   ...promisePlugin.configs.recommended.rules,
   'promise/no-multiple-resolved': 'error',
@@ -284,7 +283,9 @@ export default {
 
   ...unicornPlugin.configs.recommended.rules,
   'unicorn/filename-case': 'off',
+  'unicorn/no-null': 'off',
   'unicorn/no-unsafe-regex': 'error',
   'unicorn/prefer-event-target': 'error',
+  'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-post-message-target-origin': 'error',
 };

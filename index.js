@@ -1,3 +1,5 @@
+/* eslint sort-keys: "error" -- Organise rules */
+
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
@@ -24,6 +26,11 @@ export function makeEslintConfig(options = {}) {
     // JavaScript & TypeScript
     {
       files: [`**/*.{${[...extensions.js, ...extensions.ts].join(',')}}`],
+      languageOptions: {
+        parserOptions: {
+          ...importPlugin.configs.recommended.parserOptions,
+        },
+      },
       plugins: {
         'eslint-comments': eslintCommentsPlugin,
         import: importPlugin,
@@ -32,17 +39,12 @@ export function makeEslintConfig(options = {}) {
         sonarjs: sonarjsPlugin,
         unicorn: unicornPlugin,
       },
-      languageOptions: {
-        parserOptions: {
-          ...importPlugin.configs.recommended.parserOptions,
-        },
-      },
+      rules: convertWarnsToErrors(rulesetShared),
       settings: {
         'import/parsers': {
           espree: extensions.js.map((extension) => `.${extension}`),
         },
       },
-      rules: convertWarnsToErrors(rulesetShared),
     },
 
     // TypeScript
@@ -55,13 +57,13 @@ export function makeEslintConfig(options = {}) {
       plugins: {
         '@typescript-eslint': typescriptPlugin,
       },
+      rules: convertWarnsToErrors(rulesetTypescript),
       settings: {
         ...importPlugin.configs.typescript.settings,
         'import/parsers': {
           '@typescript-eslint/parser': extensions.ts.map((extension) => `.${extension}`),
         },
       },
-      rules: convertWarnsToErrors(rulesetTypescript),
     },
 
     prettierConfig,

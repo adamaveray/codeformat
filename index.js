@@ -6,7 +6,7 @@ export function makeEslintConfig(options) {
   return [
     ...eslintConfig,
     {
-      files: [`**/*.{${extensions.ts}}`],
+      files: [`**/*.{${extensions.ts.join(',')}}`],
       languageOptions: {
         parserOptions: { project: options.tsconfigPath },
       },

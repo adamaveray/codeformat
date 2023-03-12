@@ -3,13 +3,17 @@ import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
 
+export const extensions = {
+  js: 'js,jsx,cjs,cjsx,mjs,mjsx',
+  ts: 'ts,tsx,cts,ctsx,mts,mtsx',
+};
 export default [
   {
-    files: ['**/*.{js,jsx,cjs,cjsx,mjs,mjsx}'],
+    files: [`**/*.{${extensions.js}}`],
     rules: js.configs.recommended.rules,
   },
   {
-    files: ['**/*.{ts,tsx,cts,ctsx,mts,mtsx}'],
+    files: [`**/*.{${extensions.ts}}`],
     languageOptions: {
       parser: typescriptParser,
     },

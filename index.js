@@ -1,12 +1,12 @@
-import eslintConfig from './eslint.config.js';
+import eslintConfig, { extensions } from './eslint.config.js';
 
-export { default as eslintConfig } from './eslint.config.js';
+export { default as eslintConfig, extensions } from './eslint.config.js';
 
 export function makeEslintConfig(options) {
   return [
     ...eslintConfig,
     {
-      files: ['**/*.{ts,tsx,cts,ctsx,mts,mtsx}'],
+      files: [`**/*.{${extensions.ts}}`],
       languageOptions: {
         parserOptions: { project: options.tsconfigPath },
       },

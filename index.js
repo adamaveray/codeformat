@@ -22,6 +22,10 @@ export const extensions = {
   ts: ['ts', 'tsx', 'cts', 'cts', 'mts', 'mtsx'],
 };
 
+/**
+ * @param {{ tsconfigPath?: string }} options Project-specific customisations
+ * @returns {object[]} The complete ESLint config
+ */
 export function makeEslintConfig(options = {}) {
   return [
     // JavaScript & TypeScript
@@ -54,7 +58,7 @@ export function makeEslintConfig(options = {}) {
       files: [`**/*.{${extensions.ts.join(',')}}`],
       languageOptions: {
         parser: typescriptParser,
-        parserOptions: { project: options.tsconfigPath },
+        parserOptions: options.tsconfigPath == null ? {} : { project: options.tsconfigPath },
       },
       plugins: {
         '@typescript-eslint': typescriptPlugin,

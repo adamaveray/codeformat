@@ -29,7 +29,7 @@ export default {
     'global-require': 'error',
     'grouped-accessor-pairs': ['error', 'getBeforeSet'],
     'guard-for-in': 'error',
-    'id-denylist': ['error', 'e', 'err', 'evt', 'cb'],
+    'id-denylist': ['error', 'cb', 'e', 'enc', 'err', 'evt'],
     'lines-between-class-members': 'error',
     'logical-assignment-operators': ['error', 'always'],
     'max-classes-per-file': ['error', 1],

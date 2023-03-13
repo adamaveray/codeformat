@@ -165,7 +165,14 @@ export default {
     'no-unused-expressions': 'error',
     'no-unused-labels': 'error',
     'no-unused-private-class-members': 'error',
-    'no-unused-vars': 'error',
+    'no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_\\w*$',
+        caughtErrorsIgnorePattern: '^_\\w*$',
+        varsIgnorePattern: '^(_\\d*|React)$',
+      },
+    ],
     'no-use-before-define': 'error',
     'no-useless-backreference': 'error',
     'no-useless-call': 'error',

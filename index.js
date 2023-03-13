@@ -5,6 +5,7 @@ import typescriptParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
+import jsdocPlugin from 'eslint-plugin-jsdoc';
 import promisePlugin from 'eslint-plugin-promise';
 import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
@@ -34,6 +35,7 @@ export function makeEslintConfig(options = {}) {
       plugins: {
         'eslint-comments': eslintCommentsPlugin,
         import: importPlugin,
+        jsdoc: jsdocPlugin,
         promise: promisePlugin,
         regexp: regexpPlugin,
         sonarjs: sonarjsPlugin,

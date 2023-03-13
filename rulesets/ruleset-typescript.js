@@ -219,4 +219,8 @@ export default {
   '@typescript-eslint/triple-slash-reference': 'error',
   '@typescript-eslint/unbound-method': 'off', // Does not support @autobind nor recognise binding in constructors
   '@typescript-eslint/unified-signatures': 'error',
+
+  'jsdoc/no-types': 'error',
+  'jsdoc/require-param-type': 'off',
+  'jsdoc/require-returns-type': 'off',
 };

@@ -2,6 +2,7 @@
 
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
+import jsdocPlugin from 'eslint-plugin-jsdoc';
 import promisePlugin from 'eslint-plugin-promise';
 import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
@@ -257,6 +258,17 @@ export default {
     },
   ],
   'import/prefer-default-export': 'error',
+
+  ...jsdocPlugin.configs.recommended.rules,
+  'jsdoc/check-indentation': 'error',
+  'jsdoc/check-syntax': 'error',
+  'jsdoc/match-description': ['error', { matchDescription: '[A-Z]', tags: { param: true, returns: true } }],
+  'jsdoc/no-bad-blocks': 'error',
+  'jsdoc/no-defaults': 'error',
+  'jsdoc/require-asterisk-prefix': 'error',
+  'jsdoc/require-jsdoc': 'off',
+  'jsdoc/require-returns': 'off',
+  'jsdoc/sort-tags': 'error',
 
   ...promisePlugin.configs.recommended.rules,
   'promise/no-multiple-resolved': 'error',

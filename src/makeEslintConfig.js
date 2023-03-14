@@ -11,22 +11,17 @@ import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 
-import convertWarnsToErrors from './lib/convertWarnsToErrors.js';
-import rulesetEslintShared from './rulesets/eslint/ruleset-shared.js';
-import rulesetEslintTypescript from './rulesets/eslint/ruleset-typescript.js';
+import convertWarnsToErrors from '../lib/convertWarnsToErrors.js';
+import rulesetEslintShared from '../rulesets/eslint/ruleset-shared.js';
+import rulesetEslintTypescript from '../rulesets/eslint/ruleset-typescript.js';
 
-export { default as globals } from 'globals';
-
-export const extensions = {
-  js: ['js', 'jsx', 'cjs', 'cjs', 'mjs', 'mjsx'],
-  ts: ['ts', 'tsx', 'cts', 'cts', 'mts', 'mtsx'],
-};
+import extensions from './extensions.js';
 
 /**
  * @param {{ tsconfigPath?: string }} options Project-specific customisations
  * @returns {object[]} The complete ESLint config
  */
-export function makeEslintConfig(options = {}) {
+export default function makeEslintConfig(options = {}) {
   return [
     // JavaScript & TypeScript
     {

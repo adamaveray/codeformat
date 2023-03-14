@@ -12,16 +12,34 @@ A very opinionated collection of configurations for a number of code formatting 
    ln -s node_modules/@averay/codeformat/.editorconfig node_modules/@averay/codeformat/.prettierrc.json ./
    ```
 
-3. Generate the ESLint configuration after any custom ignore definitions:
+3. Import and call the relevant configuration builders for specific tools
 
-   ```js
-   // eslint.config.js
-   import { makeEslintConfig } from '@averay/codeformat';
+### ESLint
 
-   export default [
-     {
-       ignores: ['dist/**/*'],
-     },
-     ...makeEslintConfig({ tsconfigPath: './tsconfig.json' }),
-   ];
-   ```
+Create an `eslint.config.js` file and create the configuration:
+
+```js
+// eslint.config.js
+import { makeEslintConfig } from '@averay/codeformat';
+
+export default [
+  {
+    ignores: ['dist/**/*'],
+  },
+  ...makeEslintConfig({ tsconfigPath: './tsconfig.json' }),
+  // Custom overrides can be added here
+];
+```
+
+### Stylelint
+
+Create a `stylelint.config.cjs` file and create the configuration:
+
+```js
+// stylelint.config.cjs
+const { makeStylelintConfig } = require('@averay/codeformat');
+
+module.exports = makeStylelintConfig();
+```
+
+_(Stylelint does not currently support ESM so a `.cjs` file with CommonJS import & export syntax must be used)_

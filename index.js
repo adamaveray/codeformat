@@ -12,8 +12,8 @@ import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 
 import convertWarnsToErrors from './lib/convertWarnsToErrors.js';
-import rulesetShared from './rulesets/ruleset-shared.js';
-import rulesetTypescript from './rulesets/ruleset-typescript.js';
+import rulesetEslintShared from './rulesets/eslint/ruleset-shared.js';
+import rulesetEslintTypescript from './rulesets/eslint/ruleset-typescript.js';
 
 export { default as globals } from 'globals';
 
@@ -45,7 +45,7 @@ export function makeEslintConfig(options = {}) {
         sonarjs: sonarjsPlugin,
         unicorn: unicornPlugin,
       },
-      rules: convertWarnsToErrors(rulesetShared),
+      rules: convertWarnsToErrors(rulesetEslintShared),
       settings: {
         'import/parsers': {
           espree: extensions.js.map((extension) => `.${extension}`),
@@ -63,7 +63,7 @@ export function makeEslintConfig(options = {}) {
       plugins: {
         '@typescript-eslint': typescriptPlugin,
       },
-      rules: convertWarnsToErrors(rulesetTypescript),
+      rules: convertWarnsToErrors(rulesetEslintTypescript),
       settings: {
         ...importPlugin.configs.typescript.settings,
         'import/parsers': {

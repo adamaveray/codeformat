@@ -22,7 +22,8 @@
     ".editorconfig",
     ".prettierrc.json",
     "dist",
-    "eslint.config.js"
+    "eslint.config.js",
+    "stylelint.config.cjs"
   ],
   "scripts": {
     "build": "microbundle --target=node --format=modern,cjs",

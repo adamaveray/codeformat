@@ -1,3 +1,8 @@
-import { makeEslintConfig } from './index.js';
+import { makeEslintConfig } from './dist/codeformat.mjs';
 
-export default makeEslintConfig();
+export default [
+  {
+    ignores: ['dist/**/*.*'],
+  },
+  ...makeEslintConfig(),
+];

@@ -10,26 +10,31 @@
   "licence": "MIT",
   "description": "A very opinionated collection of configurations for a number of code formatting tools.",
   "type": "module",
-  "main": "index.js",
   "engines": {
     "node": ">=18"
+  },
+  "source": "./src/index.js",
+  "exports": {
+    "require": "./dist/codeformat.cjs",
+    "default": "./dist/codeformat.mjs"
   },
   "files": [
     ".editorconfig",
     ".prettierrc.json",
-    "eslint.config.js",
-    "index.js",
-    "lib",
-    "rulesets"
+    "dist",
+    "eslint.config.js"
   ],
   "scripts": {
+    "build": "microbundle --target=node --format=modern,cjs",
+    "dev": "microbundle watch --target=node --format=modern,cjs",
     "format": "npm run format:prettier && npm run format:eslint",
     "format:eslint": "eslint --fix .",
     "format:prettier": "prettier --write .",
     "lint": "npm run lint:prettier && npm run lint:eslint",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "@eslint/eslintrc": "^2.0.1",
@@ -56,6 +61,7 @@
     "stylelint-scss": "^4.4.0"
   },
   "devDependencies": {
-    "husky": "^8.0.3"
+    "husky": "^8.0.3",
+    "microbundle": "^0.15.1"
   }
 }

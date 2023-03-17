@@ -14,6 +14,9 @@
     "node": ">=18"
   },
   "source": "./src/index.js",
+  "bin": {
+    "codeformat": "./bin-codeformat.sh"
+  },
   "exports": {
     "require": "./dist/codeformat.cjs",
     "default": "./dist/codeformat.mjs"
@@ -21,6 +24,7 @@
   "files": [
     ".editorconfig",
     ".prettierrc.json",
+    "bin-codeformat.sh",
     "dist",
     "eslint.config.js",
     "stylelint.config.cjs"

@@ -12,15 +12,15 @@ fi
 CONFIG_PATH_TYPESCRIPT="$DIR/tsconfig.json"
 
 if [ "$ACTION" = 'check' ]; then
-  npx eslint "$DIR"
   npx prettier --check "$DIR"
+  npx eslint "$DIR"
   if [ -f "$CONFIG_PATH_TYPESCRIPT" ]; then
     npx tsc --noEmit --project "$DIR/tsconfig.json"
   fi
   npx stylelint --allow-empty-input "$DIR/**/*.{css,sass,scss}"
 elif [ "$ACTION" = 'fix' ]; then
-  npx eslint --fix "$DIR"
   npx prettier --write "$DIR"
+  npx eslint --fix "$DIR"
   npx stylelint --fix --allow-empty-input "$DIR/**/*.{css,sass,scss}"
 else
   # Invalid/unset arguments

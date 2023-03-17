@@ -28,12 +28,8 @@
   "scripts": {
     "build": "microbundle --target=node --format=modern,cjs",
     "dev": "microbundle watch --target=node --format=modern,cjs",
-    "format": "npm run format:prettier && npm run format:eslint",
-    "format:eslint": "eslint --fix .",
-    "format:prettier": "prettier --write .",
-    "lint": "npm run lint:prettier && npm run lint:eslint",
-    "lint:eslint": "eslint .",
-    "lint:prettier": "prettier --check .",
+    "format": "./bin-codeformat.sh fix",
+    "lint": "./bin-codeformat.sh check",
     "prepare": "husky install",
     "prepack": "npm run build"
   },

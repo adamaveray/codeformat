@@ -15,7 +15,7 @@ if [ "$ACTION" = 'check' ]; then
   npx eslint "$DIR"
   npx prettier --check "$DIR"
   if [ -f "$CONFIG_PATH_TYPESCRIPT" ]; then
-    npx tsc --noEmit "$DIR/tsconfig.json"
+    npx tsc --noEmit --project "$DIR/tsconfig.json"
   fi
   npx stylelint --allow-empty-input "$DIR/**/*.{css,sass,scss}"
 elif [ "$ACTION" = 'fix' ]; then

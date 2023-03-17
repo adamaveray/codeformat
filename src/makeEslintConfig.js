@@ -31,6 +31,9 @@ export default function makeEslintConfig(options = {}) {
           ...importPlugin.configs.recommended.parserOptions,
         },
       },
+      linterOptions: {
+        reportUnusedDisableDirectives: true,
+      },
       plugins: {
         'eslint-comments': eslintCommentsPlugin,
         import: importPlugin,

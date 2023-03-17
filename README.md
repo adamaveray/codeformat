@@ -14,6 +14,8 @@ A very opinionated collection of configurations for a number of code formatting 
 
 3. Import and call the relevant configuration builders for specific tools
 
+4. Lint the codebase with `npx codeformat check`, or apply automatic fixes with `npx codeformat fix`
+
 ### ESLint
 
 Create an `eslint.config.js` file and create the configuration:

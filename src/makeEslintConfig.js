@@ -28,7 +28,8 @@ export default function makeEslintConfig(options = {}) {
       files: [`**/*.{${[...extensions.js, ...extensions.ts].join(',')}}`],
       languageOptions: {
         parserOptions: {
-          ...importPlugin.configs.recommended.parserOptions,
+          ecmaVersion: 'latest',
+          sourceType: 'module',
         },
       },
       linterOptions: {

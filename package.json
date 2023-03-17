@@ -17,6 +17,7 @@
   "bin": {
     "codeformat": "./bin-codeformat.sh"
   },
+  "main": "./dist/codeformat.cjs",
   "exports": {
     "require": "./dist/codeformat.cjs",
     "default": "./dist/codeformat.mjs"

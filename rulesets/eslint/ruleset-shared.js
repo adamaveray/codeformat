@@ -254,7 +254,6 @@ export default {
       alphabetize: { caseInsensitive: true, order: 'asc' },
       groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
       'newlines-between': 'always',
-      warnOnUnassignedImports: true,
     },
   ],
   'import/prefer-default-export': 'error',
@@ -305,6 +304,7 @@ export default {
   'unicorn/no-null': 'off',
   'unicorn/no-unsafe-regex': 'error',
   'unicorn/prefer-event-target': 'error',
+  'unicorn/prefer-query-selector': 'off',
   'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-post-message-target-origin': 'error',
 };

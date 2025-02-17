@@ -57,7 +57,7 @@ export default {
   '@typescript-eslint/explicit-member-accessibility': ['error', { overrides: { constructors: 'no-public' } }],
   '@typescript-eslint/explicit-module-boundary-types': ['error', { allowArgumentsExplicitlyTypedAsAny: true }],
   '@typescript-eslint/member-ordering': 'off',
-  '@typescript-eslint/method-signature-style': 'error',
+  '@typescript-eslint/method-signature-style': 'off',
   '@typescript-eslint/naming-convention': [
     'error',
     /* eslint-disable sort-keys -- Logically ordered */
@@ -124,6 +124,7 @@ export default {
   '@typescript-eslint/no-confusing-void-expression': 'error',
   '@typescript-eslint/no-dupe-class-members': 'error',
   '@typescript-eslint/no-duplicate-imports': 'error',
+  '@typescript-eslint/no-dynamic-delete': 'off',
   '@typescript-eslint/no-empty-function': 'error',
   '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
   '@typescript-eslint/no-explicit-any': 'off',
@@ -218,7 +219,7 @@ export default {
   '@typescript-eslint/switch-exhaustiveness-check': 'error',
   '@typescript-eslint/triple-slash-reference': 'error',
   '@typescript-eslint/unbound-method': 'off', // Does not support @autobind nor recognise binding in constructors
-  '@typescript-eslint/unified-signatures': 'error',
+  '@typescript-eslint/unified-signatures': 'off',
 
   'jsdoc/no-types': 'error',
   'jsdoc/require-param-type': 'off',

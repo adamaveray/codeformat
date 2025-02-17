@@ -1,17 +1,19 @@
 /* eslint sort-keys: "error" -- Organise rules */
 
 import postcssScss from 'postcss-scss';
+import { type Config } from 'stylelint';
 import orderPlugin from 'stylelint-order';
 import scssPlugin from 'stylelint-scss';
 
-import rulesetStylelintCss from '../rulesets/stylelint/ruleset-css.js';
-import rulesetStylelintScss from '../rulesets/stylelint/ruleset-scss.js';
+import rulesetStylelintCss from '../rulesets/stylelint/ruleset-css.ts';
+import rulesetStylelintScss from '../rulesets/stylelint/ruleset-scss.ts';
 
-import extensions from './extensions.js';
+import extensions from './extensions.ts';
 
 /**
- * @returns {object} The complete Stylelint config
+ * @returns The complete Stylelint config.
  */
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/explicit-module-boundary-types -- Preserve specific object shape.
 export default function makeStylelintConfig() {
   return {
     defaultSeverity: 'error',
@@ -31,5 +33,5 @@ export default function makeStylelintConfig() {
         rules: rulesetStylelintScss,
       },
     ],
-  };
+  } satisfies Config;
 }

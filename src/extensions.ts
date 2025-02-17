@@ -4,4 +4,4 @@ export default {
 
   css: ['css'],
   scss: ['scss'],
-};
+} satisfies Record<string, string[]>;

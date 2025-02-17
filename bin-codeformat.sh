@@ -2,6 +2,10 @@
 
 set -e
 
+bunx() {
+  bun --bun x "$@"
+}
+
 # Parse arguments
 ACTION="$1"
 DIR="$2"
@@ -12,16 +16,16 @@ fi
 CONFIG_PATH_TYPESCRIPT="$DIR/tsconfig.json"
 
 if [ "$ACTION" = 'check' ]; then
-  npx prettier --check "$DIR"
-  npx eslint "$DIR"
+  bunx prettier --check "$DIR"
+  bunx eslint "$DIR"
   if [ -f "$CONFIG_PATH_TYPESCRIPT" ]; then
-    npx tsc --noEmit --project "$DIR/tsconfig.json"
+    bunx tsc --noEmit --project "$DIR/tsconfig.json"
   fi
-  npx stylelint --allow-empty-input "$DIR/**/*.{css,sass,scss}"
+  bunx stylelint --allow-empty-input "$DIR/**/*.{css,sass,scss}"
 elif [ "$ACTION" = 'fix' ]; then
-  npx prettier --write "$DIR"
-  npx eslint --fix "$DIR"
-  npx stylelint --fix --allow-empty-input "$DIR/**/*.{css,sass,scss}"
+  bunx prettier --write "$DIR"
+  bunx eslint --fix "$DIR"
+  bunx stylelint --fix --allow-empty-input "$DIR/**/*.{css,sass,scss}"
 else
   # Invalid/unset arguments
   echo "Usage:

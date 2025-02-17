@@ -11,61 +11,56 @@
   "description": "A very opinionated collection of configurations for a number of code formatting tools.",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "bun": ">=1.2"
   },
-  "source": "./src/index.js",
+  "source": "./src/index.ts",
   "bin": {
     "codeformat": "./bin-codeformat.sh"
   },
-  "main": "./dist/codeformat.cjs",
-  "exports": {
-    "require": "./dist/codeformat.cjs",
-    "default": "./dist/codeformat.mjs"
-  },
+  "main": "./src/index.ts",
   "files": [
     ".editorconfig",
     ".prettierrc.json",
     "bin-codeformat.sh",
-    "dist",
     "eslint.config.js",
     "stylelint.config.cjs"
   ],
   "scripts": {
-    "build": "microbundle --target=node --format=modern,cjs",
-    "dev": "microbundle watch --target=node --format=modern,cjs",
+    "test": "bun test",
     "format": "./bin-codeformat.sh fix",
     "lint": "./bin-codeformat.sh check",
-    "prepare": "husky install",
-    "prepack": "npm run build"
+    "prepare": "bun --bun x husky"
   },
   "dependencies": {
     "@averay/css-properties-sort-order": "^1.0.0",
-    "@eslint/eslintrc": "^2.1.4",
-    "@eslint/js": "^8.57.1",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "eslint-config-prettier": "^8.10.0",
+    "@eslint/eslintrc": "3.2.0",
+    "@eslint/js": "9.20.0",
+    "@typescript-eslint/eslint-plugin": "8.24.0",
+    "@typescript-eslint/parser": "8.24.0",
+    "eslint-config-prettier": "10.0.1",
     "eslint-import-resolver-typescript": "^3.8.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsdoc": "^40.3.0",
-    "eslint-plugin-promise": "^6.6.0",
-    "eslint-plugin-regexp": "^1.15.0",
-    "eslint-plugin-sonarjs": "^0.18.0",
-    "eslint-plugin-unicorn": "^46.0.1",
-    "globals": "^13.24.0",
+    "eslint-plugin-jsdoc": "50.6.3",
+    "eslint-plugin-promise": "7.2.1",
+    "eslint-plugin-regexp": "2.7.0",
+    "eslint-plugin-sonarjs": "3.0.2",
+    "eslint-plugin-unicorn": "56.0.1",
+    "globals": "15.15.0",
     "postcss-scss": "^4.0.9",
-    "prettier": "^2.8.8",
-    "stylelint": "^15.11.0",
-    "stylelint-config-recommended": "^10.0.1",
-    "stylelint-config-recommended-scss": "^9.0.1",
-    "stylelint-config-standard": "^30.0.1",
-    "stylelint-config-standard-scss": "^7.0.1",
+    "prettier": "3.5.1",
+    "stylelint": "16.14.1",
+    "stylelint-config-recommended": "15.0.0",
+    "stylelint-config-recommended-scss": "14.1.0",
+    "stylelint-config-standard": "37.0.0",
+    "stylelint-config-standard-scss": "14.0.0",
     "stylelint-order": "^6.0.4",
-    "stylelint-scss": "^4.7.0"
+    "stylelint-scss": "6.11.0",
+    "typescript-eslint": "^8.24.0"
   },
   "devDependencies": {
-    "husky": "^8.0.3",
-    "microbundle": "^0.15.1"
+    "@types/bun": "latest",
+    "husky": "9.1.7",
+    "typescript": "^5.7.3"
   }
 }

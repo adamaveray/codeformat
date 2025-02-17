@@ -2,6 +2,7 @@
 
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
+import { type TSESLint } from '@typescript-eslint/utils';
 import prettierConfig from 'eslint-config-prettier';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
@@ -11,24 +12,36 @@ import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 
-import convertWarnsToErrors from '../lib/convertWarnsToErrors.js';
-import rulesetEslintShared from '../rulesets/eslint/ruleset-shared.js';
-import rulesetEslintTypescript from '../rulesets/eslint/ruleset-typescript.js';
+import convertWarnsToErrors from '../lib/convertWarnsToErrors.ts';
+import rulesetEslintShared from '../rulesets/eslint/ruleset-shared.ts';
+import rulesetEslintTypescript, {
+  moduleDeclarations as rulesetEslintTypescriptModuleDeclarations,
+} from '../rulesets/eslint/ruleset-typescript.ts';
 
-import extensions from './extensions.js';
+import extensions from './extensions.ts';
+
+interface Options {
+  /** The ECMA version to use. */
+  ecmaVersion?: TSESLint.FlatConfig.EcmaVersion;
+  /** The relative path to the project's `tsconfig.json` file. */
+  tsconfigPath?: string;
+}
 
 /**
- * @param {{ tsconfigPath: string|undefined }} options Project-specific customisations
- * @returns {object[]} The complete ESLint config
+ * @param options Project-specific customisations.
+ * @returns The complete ESLint config.
  */
-export default function makeEslintConfig(options = {}) {
+export default function makeEslintConfig({
+  ecmaVersion = 'latest',
+  tsconfigPath,
+}: Options = {}): TSESLint.FlatConfig.Config[] {
   return [
     // JavaScript & TypeScript
     {
       files: [`**/*.{${[...extensions.js, ...extensions.ts].join(',')}}`],
       languageOptions: {
         parserOptions: {
-          ecmaVersion: 'latest',
+          ecmaVersion,
           sourceType: 'module',
         },
       },
@@ -57,7 +70,7 @@ export default function makeEslintConfig(options = {}) {
       files: [`**/*.{${extensions.ts.join(',')}}`],
       languageOptions: {
         parser: typescriptParser,
-        parserOptions: options.tsconfigPath == null ? {} : { project: options.tsconfigPath },
+        parserOptions: tsconfigPath == null ? {} : { project: tsconfigPath },
       },
       plugins: {
         '@typescript-eslint': typescriptPlugin,
@@ -69,9 +82,13 @@ export default function makeEslintConfig(options = {}) {
           '@typescript-eslint/parser': extensions.ts.map((extension) => `.${extension}`),
         },
         'import/resolver': {
-          'eslint-import-resolver-typescript': options.tsconfigPath == null ? {} : { project: options.tsconfigPath },
+          'eslint-import-resolver-typescript': tsconfigPath == null ? {} : { project: tsconfigPath },
         },
       },
+    },
+    {
+      files: ['**/*.d.ts'],
+      rules: rulesetEslintTypescriptModuleDeclarations,
     },
 
     prettierConfig,

@@ -4,24 +4,11 @@
 import recommended from 'stylelint-config-recommended-scss';
 import standard from 'stylelint-config-standard-scss';
 
-const CUSTOM_KEYWORD_PATTERN = /^_?[a-z][\da-z]*((-|--|__)[\da-z]+)*$/u; // eslint-disable-line unicorn/no-unsafe-regex -- Complex syntax
+const CUSTOM_KEYWORD_PATTERN = /^_?[a-z][\da-z]*((-|--|__)[\da-z]+)*$/u;
 
 export default {
   ...recommended.rules,
   ...standard.rules,
-
-  'order/order': [
-    /* eslint-disable sort-keys -- Improves legibility */
-    { type: 'at-rule', name: 'function' },
-    { type: 'at-rule', name: 'mixin' },
-    'dollar-variables',
-    { type: 'at-rule', name: 'extend' },
-    { type: 'at-rule', name: 'include' },
-    { type: 'at-rule', name: 'import' },
-    'custom-properties',
-    'declarations',
-    /* eslint-enable sort-keys -- Improves legibility */
-  ],
 
   // Disable Prettier-conflicting legacy rules.
   ...{

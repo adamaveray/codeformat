@@ -1,8 +1,8 @@
-import { makeEslintConfig } from './dist/codeformat.mjs';
+import makeEslintConfig from './src/makeEslintConfig.ts';
 
 export default [
   {
     ignores: ['dist/**/*.*'],
   },
-  ...makeEslintConfig(),
+  ...makeEslintConfig({ tsconfigPath: './tsconfig.json' }),
 ];

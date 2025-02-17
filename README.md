@@ -4,7 +4,7 @@ A very opinionated collection of configurations for a number of code formatting 
 
 ## Default Usage
 
-1. Install the package with `npm i -D @averay/codeformat`
+1. Install the package with `bun i -D @averay/codeformat`
 
 2. Symlink the static configuration files to the project root:
 
@@ -14,7 +14,7 @@ A very opinionated collection of configurations for a number of code formatting 
 
 3. Import and call the relevant configuration builders for specific tools
 
-4. Lint the codebase with `npx codeformat check`, or apply automatic fixes with `npx codeformat fix`
+4. Lint the codebase with `bun x codeformat check`, or apply automatic fixes with `bun x codeformat fix`
 
 ### ESLint
 

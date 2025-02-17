@@ -1,6 +1,8 @@
 /* eslint sort-keys: 'error' -- Organise rules. */
 /* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
+/* eslint import/no-named-as-default-member: "off" -- All plugins follow the same naming conventions. */
 
+import { type TSESLint } from '@typescript-eslint/utils';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
@@ -169,9 +171,9 @@ export default {
     'no-unused-vars': [
       'error',
       {
-        argsIgnorePattern: '^_\\w*$',
-        caughtErrorsIgnorePattern: '^_\\w*$',
-        varsIgnorePattern: '^(_\\d*|React)$',
+        argsIgnorePattern: /^_\w*$/u.source,
+        caughtErrorsIgnorePattern: /^_\w*$/u.source,
+        varsIgnorePattern: /^(_\d*|React)$/u.source,
       },
     ],
     'no-use-before-define': 'error',
@@ -260,14 +262,24 @@ export default {
 
   ...jsdocPlugin.configs.recommended.rules,
   'jsdoc/check-indentation': 'error',
+  'jsdoc/check-param-names': ['error', { checkDestructured: false }],
   'jsdoc/check-syntax': 'error',
   'jsdoc/match-description': ['error', { matchDescription: '[A-Z]', tags: { param: true, returns: true } }],
   'jsdoc/no-bad-blocks': 'error',
   'jsdoc/no-defaults': 'error',
   'jsdoc/require-asterisk-prefix': 'error',
   'jsdoc/require-jsdoc': 'off',
+  'jsdoc/require-param': [
+    'error',
+    {
+      checkConstructors: false,
+      checkDestructured: false,
+      ignoreWhenAllParamsMissing: true,
+    },
+  ],
   'jsdoc/require-returns': 'off',
   'jsdoc/sort-tags': 'error',
+  'jsdoc/tag-lines': ['error', 'any', { startLines: 1 }],
 
   ...promisePlugin.configs.recommended.rules,
   'promise/no-multiple-resolved': 'error',
@@ -307,4 +319,4 @@ export default {
   'unicorn/prefer-query-selector': 'off',
   'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-post-message-target-origin': 'error',
-};
+} satisfies TSESLint.FlatConfig.Rules;

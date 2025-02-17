@@ -1,17 +1,18 @@
-/* eslint sort-keys: "error" -- Organise rules */
 /* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
+/* eslint sort-keys: "error" -- Organise rules */
 
 import js from '@eslint/js';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
+import { type TSESLint } from '@typescript-eslint/utils';
 import importPlugin from 'eslint-plugin-import';
 
 export default {
   ...js.configs.recommended.rules,
   ...importPlugin.configs.typescript.rules,
-  ...typescriptPlugin.configs['eslint-recommended'].rules,
-  ...typescriptPlugin.configs.recommended.rules,
-  ...typescriptPlugin.configs['recommended-requiring-type-checking'].rules,
-  ...typescriptPlugin.configs.strict.rules,
+  ...typescriptPlugin.configs['eslint-recommended']?.rules,
+  ...typescriptPlugin.configs['recommended']?.rules,
+  ...typescriptPlugin.configs['recommended-requiring-type-checking']?.rules,
+  ...typescriptPlugin.configs['strict']?.rules,
 
   ...{
     'default-param-last': 'off',
@@ -41,7 +42,6 @@ export default {
   '@typescript-eslint/array-type': 'error',
   '@typescript-eslint/await-thenable': 'error',
   '@typescript-eslint/ban-ts-comment': 'error',
-  '@typescript-eslint/ban-types': 'error',
   '@typescript-eslint/class-literal-property-style': 'off', // Breaks subclassed getters
   '@typescript-eslint/consistent-indexed-object-style': 'error',
   '@typescript-eslint/consistent-type-assertions': [
@@ -73,7 +73,7 @@ export default {
     {
       selector: 'variable',
       modifiers: ['const'],
-      filter: { regex: '^_(static|\\d+)?$', match: true },
+      filter: { regex: /^_(static|\d+)?$/u.source, match: true },
       format: ['camelCase'],
       leadingUnderscore: 'allow',
     },
@@ -114,7 +114,7 @@ export default {
     {
       selector: 'typeParameter',
       format: ['PascalCase'],
-      custom: { regex: '^([A-Z]|T[A-Z][a-zA-Z]+|key)$', match: true },
+      custom: { regex: /^([A-Z]|T[A-Z][a-zA-Z]+|key)$/u.source, match: true },
     },
     /* eslint-enable sort-keys -- Logically ordered */
   ],
@@ -123,7 +123,6 @@ export default {
   '@typescript-eslint/no-confusing-non-null-assertion': 'error',
   '@typescript-eslint/no-confusing-void-expression': 'error',
   '@typescript-eslint/no-dupe-class-members': 'error',
-  '@typescript-eslint/no-duplicate-imports': 'error',
   '@typescript-eslint/no-dynamic-delete': 'off',
   '@typescript-eslint/no-empty-function': 'error',
   '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
@@ -161,7 +160,6 @@ export default {
   '@typescript-eslint/no-restricted-imports': 'error',
   '@typescript-eslint/no-shadow': ['error', { hoist: 'all' }],
   '@typescript-eslint/no-this-alias': 'error',
-  '@typescript-eslint/no-throw-literal': 'error',
   '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
   '@typescript-eslint/no-unnecessary-condition': ['error', { allowConstantLoopConditions: true }],
   '@typescript-eslint/no-unnecessary-qualifier': 'error',
@@ -172,9 +170,9 @@ export default {
   '@typescript-eslint/no-unused-vars': [
     'error',
     {
-      argsIgnorePattern: '^_\\w*$',
-      caughtErrorsIgnorePattern: '^_\\w*$',
-      varsIgnorePattern: '^(_\\d*|React)$',
+      argsIgnorePattern: /^_\w*$/u.source,
+      caughtErrorsIgnorePattern: /^_\w*$/u.source,
+      varsIgnorePattern: /^(_\d*|React)$/u.source,
     },
   ],
   '@typescript-eslint/no-use-before-define': 'error',
@@ -182,14 +180,7 @@ export default {
   '@typescript-eslint/no-useless-empty-export': 'error',
   '@typescript-eslint/no-var-requires': 'error',
   '@typescript-eslint/non-nullable-type-assertion-style': 'error',
-  '@typescript-eslint/padding-line-between-statements': [
-    'error',
-    /* eslint-disable sort-keys -- Logically ordered */
-    { blankLine: 'always', prev: 'directive', next: '*' },
-    { blankLine: 'always', prev: 'function', next: 'function' },
-    { blankLine: 'never', prev: 'interface', next: 'class' },
-    /* eslint-enable sort-keys -- Logically ordered */
-  ],
+  '@typescript-eslint/only-throw-error': 'error',
   '@typescript-eslint/prefer-as-const': 'error',
   '@typescript-eslint/prefer-enum-initializers': 'error',
   '@typescript-eslint/prefer-for-of': 'error',
@@ -224,4 +215,8 @@ export default {
   'jsdoc/no-types': 'error',
   'jsdoc/require-param-type': 'off',
   'jsdoc/require-returns-type': 'off',
-};
+} satisfies TSESLint.FlatConfig.Rules;
+
+export const moduleDeclarations = {
+  'no-duplicate-imports': 'off', // Allow imports within multiple module declarations.
+} satisfies TSESLint.FlatConfig.Rules;

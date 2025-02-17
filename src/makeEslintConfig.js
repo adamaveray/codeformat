@@ -18,7 +18,7 @@ import rulesetEslintTypescript from '../rulesets/eslint/ruleset-typescript.js';
 import extensions from './extensions.js';
 
 /**
- * @param {{ tsconfigPath?: string }} options Project-specific customisations
+ * @param {{ tsconfigPath: string|undefined }} options Project-specific customisations
  * @returns {object[]} The complete ESLint config
  */
 export default function makeEslintConfig(options = {}) {

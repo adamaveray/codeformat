@@ -1,4 +1,5 @@
 /* eslint sort-keys: "error" -- Organise rules */
+/* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
 
 import js from '@eslint/js';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
@@ -12,7 +13,6 @@ export default {
   ...typescriptPlugin.configs['recommended-requiring-type-checking'].rules,
   ...typescriptPlugin.configs.strict.rules,
 
-  // eslint-disable-next-line unicorn/no-useless-spread -- Keeps the unprefixed core rules together
   ...{
     'default-param-last': 'off',
     'dot-notation': 'off',

@@ -1,4 +1,5 @@
-/* eslint sort-keys: "error" -- Organise rules */
+/* eslint sort-keys: 'error' -- Organise rules. */
+/* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
 
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
@@ -9,7 +10,6 @@ import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 
 export default {
-  // eslint-disable-next-line unicorn/no-useless-spread -- Keeps the unprefixed core rules together
   ...{
     'accessor-pairs': ['error', { setWithoutGet: true }],
     'array-callback-return': 'error',

@@ -1,4 +1,5 @@
-/* eslint sort-keys: "error" -- Organise rules */
+/* eslint sort-keys: "error" -- Organise rules. */
+/* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
 
 import recommended from 'stylelint-config-recommended-scss';
 import standard from 'stylelint-config-standard-scss';
@@ -24,7 +25,7 @@ export default {
     /* eslint-enable sort-keys -- Improves legibility */
   ],
 
-  // eslint-disable-next-line unicorn/no-useless-spread -- Disabling Prettier-conflicting legacy rules
+  // Disable Prettier-conflicting legacy rules.
   ...{
     'scss/at-else-closing-brace-newline-after': null,
     'scss/at-else-closing-brace-space-after': null,

@@ -22,7 +22,7 @@ export default function makeStylelintConfig() {
     reportNeedlessDisables: true,
     rules: rulesetStylelintCss,
 
-    // eslint-disable-next-line sort-keys -- Logically positioned
+    // eslint-disable-next-line sort-keys -- Logically positioned.
     overrides: [
       {
         customSyntax: postcssScss,

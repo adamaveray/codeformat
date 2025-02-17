@@ -68,6 +68,9 @@ export default function makeEslintConfig(options = {}) {
         'import/parsers': {
           '@typescript-eslint/parser': extensions.ts.map((extension) => `.${extension}`),
         },
+        'import/resolver': {
+          'eslint-import-resolver-typescript': options.tsconfigPath == null ? {} : { project: options.tsconfigPath },
+        },
       },
     },
 

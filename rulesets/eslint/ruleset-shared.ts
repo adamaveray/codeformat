@@ -2,6 +2,7 @@
 /* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
 /* eslint import/no-named-as-default-member: "off" -- All plugins follow the same naming conventions. */
 
+import stylisticPlugin from '@stylistic/eslint-plugin';
 import { type TSESLint } from '@typescript-eslint/utils';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
@@ -310,6 +311,29 @@ export default {
   'sonarjs/no-small-switch': 'off',
   'sonarjs/prefer-immediate-return': 'off',
   'sonarjs/prefer-single-boolean-return': 'off',
+
+  ...stylisticPlugin.configs['recommended-flat'].rules,
+  '@stylistic/arrow-parens': 'off',
+  '@stylistic/brace-style': 'off',
+  '@stylistic/indent': 'off',
+  '@stylistic/indent-binary-ops': 'off',
+  '@stylistic/jsx-indent-props': 'off',
+  '@stylistic/jsx-one-expression-per-line': 'off',
+  '@stylistic/jsx-wrap-multilines': 'off',
+  '@stylistic/member-delimiter-style': 'off',
+  '@stylistic/multiline-ternary': 'off',
+  '@stylistic/no-multiple-empty-line': 'off',
+  '@stylistic/operator-linebreak': 'off',
+  '@stylistic/padding-line-between-statements': [
+    'error',
+    /* eslint-disable sort-keys -- Logically ordered */
+    { blankLine: 'always', prev: 'directive', next: '*' },
+    { blankLine: 'always', prev: 'function', next: 'function' },
+    /* eslint-enable sort-keys -- Logically ordered */
+  ],
+  '@stylistic/quote-props': 'off',
+  '@stylistic/quotes': 'off',
+  '@stylistic/semi': 'off',
 
   ...unicornPlugin.configs.recommended.rules,
   'unicorn/filename-case': 'off',

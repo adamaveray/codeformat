@@ -15,11 +15,15 @@ export default {
   ...typescriptPlugin.configs['strict']?.rules,
 
   ...{
+    'array-callback-return': 'off',
+    'consistent-return': 'off',
+    'default-case': 'off',
     'default-param-last': 'off',
     'dot-notation': 'off',
     'lines-between-class-members': 'off',
     'no-array-constructor': 'off',
     'no-dupe-class-members': 'off',
+    'no-duplicate-imports': 'off',
     'no-empty-function': 'off',
     'no-implied-eval': 'off',
     'no-invalid-this': 'off',

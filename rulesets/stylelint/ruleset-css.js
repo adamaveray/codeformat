@@ -1,9 +1,8 @@
 /* eslint sort-keys: "error" -- Organise rules */
 
+import propertiesOrder from '@averay/css-properties-sort-order';
 import recommended from 'stylelint-config-recommended';
 import standard from 'stylelint-config-standard';
-
-import propertiesOrderingGroups from '../../data/cssPropertySortOrderSmacss.js';
 
 export default {
   ...recommended.rules,
@@ -19,5 +18,5 @@ export default {
   },
 
   'order/order': ['custom-properties', 'declarations'],
-  'order/properties-order': [Object.values(propertiesOrderingGroups).flat(), { unspecified: 'bottomAlphabetical' }],
+  'order/properties-order': [propertiesOrder, { unspecified: 'bottomAlphabetical' }],
 };

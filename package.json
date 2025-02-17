@@ -39,6 +39,7 @@
     "prepack": "npm run build"
   },
   "dependencies": {
+    "@averay/css-properties-sort-order": "^1.0.0",
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.1",
     "@typescript-eslint/eslint-plugin": "^5.62.0",

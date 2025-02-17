@@ -4,8 +4,6 @@
 import recommended from 'stylelint-config-recommended-scss';
 import standard from 'stylelint-config-standard-scss';
 
-const serialiseRegex = (pattern) => String(pattern).replace(/^\/(.*)\/[a-z]*$/u, '$1');
-
 const CUSTOM_KEYWORD_PATTERN = /^_?[a-z][\da-z]*((-|--|__)[\da-z]+)*$/u; // eslint-disable-line unicorn/no-unsafe-regex -- Complex syntax
 
 export default {
@@ -42,7 +40,7 @@ export default {
     'scss/operator-no-newline-before': null,
     'scss/operator-no-unspaced': null,
   },
-  'scss/at-function-pattern': serialiseRegex(CUSTOM_KEYWORD_PATTERN),
-  'scss/at-mixin-pattern': serialiseRegex(CUSTOM_KEYWORD_PATTERN),
-  'scss/dollar-variable-pattern': serialiseRegex(CUSTOM_KEYWORD_PATTERN),
+  'scss/at-function-pattern': CUSTOM_KEYWORD_PATTERN.source,
+  'scss/at-mixin-pattern': CUSTOM_KEYWORD_PATTERN.source,
+  'scss/dollar-variable-pattern': CUSTOM_KEYWORD_PATTERN.source,
 };

@@ -23,7 +23,8 @@
     ".prettierrc.json",
     "bin-codeformat.sh",
     "eslint.config.js",
-    "stylelint.config.cjs"
+    "stylelint.config.cjs",
+    "types.d.ts"
   ],
   "scripts": {
     "test": "bun test",

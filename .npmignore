@@ -1,0 +1,7 @@
+.husky
+.idea
+.prettierignore
+bun.lock
+node_modules
+
+**.test.ts

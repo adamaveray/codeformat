@@ -5,7 +5,7 @@
   "homepage": "https://github.com/adamaveray/codeformat",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adamaveray/codeformat.git"
+    "url": "git+https://github.com/adamaveray/codeformat.git"
   },
   "licence": "MIT",
   "description": "A very opinionated collection of configurations for a number of code formatting tools.",
@@ -15,7 +15,7 @@
   },
   "source": "./src/index.ts",
   "bin": {
-    "codeformat": "./bin-codeformat.sh"
+    "codeformat": "bin-codeformat.sh"
   },
   "main": "./src/index.ts",
   "files": [

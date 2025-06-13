@@ -211,7 +211,14 @@ export default {
     'error',
     { allowNullableObject: false, allowNullableString: false, allowNumber: false, allowString: false },
   ],
-  '@typescript-eslint/switch-exhaustiveness-check': 'error',
+  '@typescript-eslint/switch-exhaustiveness-check': [
+    'error',
+    {
+      allowDefaultCaseForExhaustiveSwitch: false,
+      considerDefaultExhaustiveForUnions: true,
+      requireDefaultForNonUnion: true,
+    },
+  ],
   '@typescript-eslint/triple-slash-reference': 'error',
   '@typescript-eslint/unbound-method': 'off', // Does not support @autobind nor recognise binding in constructors
   '@typescript-eslint/unified-signatures': 'off',

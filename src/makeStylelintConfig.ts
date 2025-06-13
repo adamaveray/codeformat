@@ -1,7 +1,7 @@
 /* eslint sort-keys: "error" -- Organise rules */
 
 import postcssScss from 'postcss-scss';
-import { type Config } from 'stylelint';
+import { type Config, type CustomSyntax } from 'stylelint';
 import orderPlugin from 'stylelint-order';
 import scssPlugin from 'stylelint-scss';
 
@@ -27,7 +27,7 @@ export default function makeStylelintConfig() {
     // eslint-disable-next-line sort-keys -- Logically positioned.
     overrides: [
       {
-        customSyntax: postcssScss,
+        customSyntax: postcssScss as unknown as CustomSyntax,
         files: extensions.scss.map((ext) => `**/*.${ext}`), // Does not support glob braces
         plugins: [scssPlugin],
         rules: rulesetStylelintScss,

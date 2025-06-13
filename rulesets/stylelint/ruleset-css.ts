@@ -1,6 +1,3 @@
-/* eslint sort-keys: "error" -- Organise rules. */
-/* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
-
 import propertiesOrder from '@averay/css-properties-sort-order';
 import recommended from 'stylelint-config-recommended';
 import standard from 'stylelint-config-standard';

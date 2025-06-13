@@ -13,6 +13,15 @@ export default [
     },
   },
 
+  // Rulesets
+  {
+    files: ['rulesets/**/*.ts'],
+    rules: {
+      'sort-keys': 'error', // Organise rules.
+      'unicorn/no-useless-spread': 'off', // Keep the unprefixed core rules together.
+    },
+  },
+
   // CLI
   {
     files: ['bin-*.ts'],

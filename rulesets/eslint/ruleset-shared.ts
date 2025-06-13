@@ -1,5 +1,3 @@
-/* eslint sort-keys: 'error' -- Organise rules. */
-/* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
 /* eslint import/no-named-as-default-member: "off" -- All plugins follow the same naming conventions. */
 
 import stylisticPlugin from '@stylistic/eslint-plugin';

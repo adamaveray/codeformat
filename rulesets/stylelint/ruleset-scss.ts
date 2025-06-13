@@ -1,6 +1,3 @@
-/* eslint sort-keys: "error" -- Organise rules. */
-/* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
-
 import recommended from 'stylelint-config-recommended-scss';
 import standard from 'stylelint-config-standard-scss';
 

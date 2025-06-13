@@ -1,6 +1,3 @@
-/* eslint unicorn/no-useless-spread: "off" -- Keep the unprefixed core rules together. */
-/* eslint sort-keys: "error" -- Organise rules */
-
 import js from '@eslint/js';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import { type TSESLint } from '@typescript-eslint/utils';

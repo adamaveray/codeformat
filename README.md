@@ -35,13 +35,11 @@ export default [
 
 ### Stylelint
 
-Create a `stylelint.config.cjs` file and create the configuration:
+Create a `stylelint.config.js` file and create the configuration:
 
 ```js
-// stylelint.config.cjs
-const { makeStylelintConfig } = require('@averay/codeformat');
+// stylelint.config.js
+import { makeStylelintConfig } from '@averay/codeformat';
 
-module.exports = makeStylelintConfig();
+export default makeStylelintConfig();
 ```
-
-_(Stylelint does not currently support ESM so a `.cjs` file with CommonJS import & export syntax must be used)_

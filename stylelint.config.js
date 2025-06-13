@@ -1,7 +1,7 @@
 /* eslint import/no-commonjs: "off" -- Unsupported by Stylelint */
 
-const { makeStylelintConfig } = require('./src/index.ts');
+import { makeStylelintConfig } from './src/index.ts';
 
-module.exports = {
+export default {
   ...makeStylelintConfig(),
 };

@@ -151,7 +151,7 @@ export default {
     {
       detectObjects: true,
       enforceConst: true,
-      ignore: [-1, 0, 1],
+      ignore: [-1, 0, 1, 2, 100, '0n'],
       ignoreArrayIndexes: true,
       ignoreClassFieldInitialValues: true,
       ignoreDefaultValues: true,

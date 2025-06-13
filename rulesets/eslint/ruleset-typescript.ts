@@ -32,6 +32,7 @@ export default {
     'no-magic-numbers': 'off',
     'no-redeclare': 'off',
     'no-restricted-imports': 'off',
+    'no-restricted-syntax': ['error', 'WithStatement'],
     'no-return-await': 'off',
     'no-shadow': 'off',
     'no-throw-literal': 'off',

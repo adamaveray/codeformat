@@ -70,6 +70,10 @@ export default {
       format: ['camelCase'],
     },
     {
+      selector: 'import',
+      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
+    },
+    {
       selector: 'variable',
       modifiers: ['const'],
       format: ['camelCase', 'PascalCase', 'UPPER_CASE'],

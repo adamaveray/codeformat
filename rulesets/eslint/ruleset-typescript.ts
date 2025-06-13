@@ -67,7 +67,7 @@ export default {
     /* eslint-disable sort-keys -- Logically ordered */
     {
       selector: 'default',
-      format: ['camelCase'],
+      format: ['strictCamelCase'],
     },
     {
       selector: 'import',
@@ -76,52 +76,52 @@ export default {
     {
       selector: 'variable',
       modifiers: ['const'],
-      format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
     },
     {
       selector: 'variable',
       modifiers: ['const'],
       filter: { regex: /^_(static|\d+)?$/u.source, match: true },
-      format: ['camelCase'],
+      format: ['strictCamelCase'],
       leadingUnderscore: 'allow',
     },
     {
       selector: 'parameter',
-      format: ['camelCase'],
+      format: ['strictCamelCase'],
       leadingUnderscore: 'allow',
     },
     {
       selector: 'property',
-      format: ['camelCase', 'UPPER_CASE'],
+      format: ['strictCamelCase', 'UPPER_CASE'],
     },
     {
       selector: 'classProperty',
       modifiers: ['static'],
-      format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
     },
     {
       selector: 'enumMember',
-      format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
     },
     {
       selector: 'function',
-      format: ['camelCase', 'PascalCase'],
+      format: ['strictCamelCase', 'StrictPascalCase'],
     },
     {
       selector: 'typeLike',
-      format: ['PascalCase'],
+      format: ['StrictPascalCase'],
     },
     {
       selector: ['objectLiteralProperty'],
-      format: [],
+      format: null,
     },
     {
       selector: ['classProperty', 'objectLiteralMethod'],
-      format: ['camelCase', 'UPPER_CASE'],
+      format: ['strictCamelCase', 'UPPER_CASE'],
     },
     {
       selector: 'typeParameter',
-      format: ['PascalCase'],
+      format: ['StrictPascalCase'],
       custom: { regex: /^([A-Z]|T[A-Z][a-zA-Z]+|key)$/u.source, match: true },
     },
     /* eslint-enable sort-keys -- Logically ordered */

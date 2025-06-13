@@ -21,6 +21,7 @@ export default {
     'consistent-return': 'error',
     'consistent-this': ['error', '_this'],
     'constructor-super': 'error',
+    curly: ['error', 'all'],
     'default-case': 'error',
     'default-case-last': 'error',
     'default-param-last': 'error',

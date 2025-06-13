@@ -259,7 +259,7 @@ export default {
       'newlines-between': 'always',
     },
   ],
-  'import/prefer-default-export': 'error',
+  'import/prefer-default-export': 'off', // Causes friction when creating a utilities file with a single export in advance of adding additional exports.
 
   ...jsdocPlugin.configs.recommended.rules,
   'jsdoc/check-indentation': 'error',
@@ -283,6 +283,7 @@ export default {
   'jsdoc/tag-lines': ['error', 'any', { startLines: 1 }],
 
   ...promisePlugin.configs.recommended.rules,
+  'promise/always-return': ['error', { ignoreAssignmentVariable: ['globalThis', 'window'], ignoreLastCallback: true }],
   'promise/no-multiple-resolved': 'error',
 
   ...regexpPlugin.configs.recommended.rules,
@@ -305,11 +306,14 @@ export default {
 
   ...sonarjsPlugin.configs.recommended.rules,
   'sonarjs/cognitive-complexity': 'off',
+  'sonarjs/function-return-type': 'off', // Overly restrictive.
   'sonarjs/max-switch-cases': 'off',
   'sonarjs/no-inverted-boolean-check': 'error',
   'sonarjs/no-nested-template-literals': 'off',
+  'sonarjs/no-selector-parameter': 'off', // Overly restrictive.
   'sonarjs/no-small-switch': 'off',
   'sonarjs/prefer-immediate-return': 'off',
+  'sonarjs/prefer-regexp-exec': 'off',
   'sonarjs/prefer-single-boolean-return': 'off',
 
   ...stylisticPlugin.configs['recommended-flat'].rules,
@@ -336,9 +340,11 @@ export default {
   '@stylistic/semi': 'off',
 
   ...unicornPlugin.configs.recommended.rules,
+  'unicorn/consistent-function-scoping': ['error', { checkArrowFunctions: false }],
   'unicorn/filename-case': 'off',
   'unicorn/no-null': 'off',
   'unicorn/no-unsafe-regex': 'error',
+  'unicorn/no-useless-undefined': 'off', // Conflicts with `consistent-return`.
   'unicorn/prefer-event-target': 'error',
   'unicorn/prefer-query-selector': 'off',
   'unicorn/prevent-abbreviations': 'off',

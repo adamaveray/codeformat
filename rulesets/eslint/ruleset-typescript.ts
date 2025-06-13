@@ -233,6 +233,8 @@ export default {
   'jsdoc/no-types': 'error',
   'jsdoc/require-param-type': 'off',
   'jsdoc/require-returns-type': 'off',
+
+  'sonarjs/super-invocation': 'off', // Causes issues and is enforced by TypeScript already.
 } satisfies TSESLint.FlatConfig.Rules;
 
 export const moduleDeclarations = {

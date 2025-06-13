@@ -117,6 +117,13 @@ const tools: Record<string, Tool> = {
       debug: ['--log-level', 'debug'],
     },
   },
+  tsc: {
+    actions: ifConfig(configPaths.typeScript, (configPath) => ({
+      check: ['--noEmit', '--project', configPath],
+      fix: ['--project', configPath],
+    })),
+    args: {},
+  },
   eslint: {
     actions: ifConfig(configPaths.eslint, (configPath) => ({
       check: ['--config', configPath, projectDir],
@@ -125,13 +132,6 @@ const tools: Record<string, Tool> = {
     args: {
       debug: ['--debug'],
     },
-  },
-  tsc: {
-    actions: ifConfig(configPaths.typeScript, (configPath) => ({
-      check: ['--noEmit', '--project', configPath],
-      fix: ['--project', configPath],
-    })),
-    args: {},
   },
   stylelint: {
     actions: ifConfig(configPaths.stylelint, (configPath) => ({

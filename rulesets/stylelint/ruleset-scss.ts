@@ -1,7 +1,7 @@
 import recommended from 'stylelint-config-recommended-scss';
 import standard from 'stylelint-config-standard-scss';
 
-const CUSTOM_KEYWORD_PATTERN = /^_?[a-z][\da-z]*((-|--|__)[\da-z]+)*$/u;
+import patterns from '../../lib/cssPatterns.ts';
 
 export default {
   ...recommended.rules,
@@ -25,7 +25,8 @@ export default {
     'scss/operator-no-unspaced': null,
   },
 
-  'scss/at-function-pattern': CUSTOM_KEYWORD_PATTERN.source,
-  'scss/at-mixin-pattern': CUSTOM_KEYWORD_PATTERN.source,
-  'scss/dollar-variable-pattern': CUSTOM_KEYWORD_PATTERN.source,
+  'scss/at-function-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+  'scss/at-mixin-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+  'scss/dollar-variable-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+  'scss/percent-placeholder-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
 };

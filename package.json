@@ -22,7 +22,8 @@
     "test": "bun test",
     "format": "./bin-codeformat.ts fix",
     "lint": "./bin-codeformat.ts check",
-    "prepare": "bun --bun x husky"
+    "prepare": "bun --bun x husky",
+    "release": "bun run lint && bun --bun x bumpp && bun publish"
   },
   "dependencies": {
     "@averay/css-properties-sort-order": "^1.0.3",
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "bumpp": "^10.1.1",
     "husky": "^9.1.7",
     "typescript": "^5.8.3"
   }

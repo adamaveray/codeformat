@@ -228,6 +228,8 @@ export default {
   '@typescript-eslint/unbound-method': 'off', // Does not support @autobind nor recognise binding in constructors
   '@typescript-eslint/unified-signatures': 'off',
 
+  'import/no-duplicates': 'off', // Breaks if importing both default and named exports as types (https://github.com/import-js/eslint-plugin-import/issues/2007).
+
   'jsdoc/no-types': 'error',
   'jsdoc/require-param-type': 'off',
   'jsdoc/require-returns-type': 'off',

@@ -239,7 +239,7 @@ export default {
   ],
   'import/no-commonjs': 'error',
   'import/no-cycle': ['error', { ignoreExternal: true }],
-  'import/no-duplicates': ['error', { 'prefer-inline': true }],
+  'import/no-duplicates': 'error',
   'import/no-dynamic-require': 'error',
   'import/no-empty-named-blocks': 'error',
   'import/no-extraneous-dependencies': 'error',

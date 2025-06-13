@@ -15,13 +15,13 @@
   },
   "source": "./src/index.ts",
   "bin": {
-    "codeformat": "bin-codeformat.sh"
+    "codeformat": "bin-codeformat.ts"
   },
   "main": "./src/index.ts",
   "scripts": {
     "test": "bun test",
-    "format": "./bin-codeformat.sh fix",
-    "lint": "./bin-codeformat.sh check",
+    "format": "./bin-codeformat.ts fix",
+    "lint": "./bin-codeformat.ts check",
     "prepare": "bun --bun x husky"
   },
   "dependencies": {

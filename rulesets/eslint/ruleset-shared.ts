@@ -342,7 +342,6 @@ export default {
   'unicorn/consistent-function-scoping': ['error', { checkArrowFunctions: false }],
   'unicorn/filename-case': 'off',
   'unicorn/no-null': 'off',
-  'unicorn/no-unsafe-regex': 'error',
   'unicorn/no-useless-undefined': 'off', // Conflicts with `consistent-return`.
   'unicorn/prefer-event-target': 'error',
   'unicorn/prefer-query-selector': 'off',

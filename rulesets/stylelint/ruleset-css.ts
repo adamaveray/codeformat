@@ -6,11 +6,16 @@ export default {
   ...recommended.rules,
   ...standard.rules,
 
+  // Core rules
+  ...{
+    'color-named': 'never',
+    'function-url-no-scheme-relative': true,
+  },
+
+  // Disable Prettier conflicts
   ...{
     'at-rule-empty-line-before': null,
-    'color-named': 'never',
     'comment-empty-line-before': null,
-    'function-url-no-scheme-relative': true,
     'rule-empty-line-before': null,
   },
 

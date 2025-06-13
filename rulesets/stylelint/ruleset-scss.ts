@@ -7,7 +7,7 @@ export default {
   ...recommended.rules,
   ...standard.rules,
 
-  // Disable Prettier-conflicting legacy rules.
+  // Disable Prettier conflicts
   ...{
     'scss/at-else-closing-brace-newline-after': null,
     'scss/at-else-closing-brace-space-after': null,
@@ -24,6 +24,7 @@ export default {
     'scss/operator-no-newline-before': null,
     'scss/operator-no-unspaced': null,
   },
+
   'scss/at-function-pattern': CUSTOM_KEYWORD_PATTERN.source,
   'scss/at-mixin-pattern': CUSTOM_KEYWORD_PATTERN.source,
   'scss/dollar-variable-pattern': CUSTOM_KEYWORD_PATTERN.source,

@@ -4,5 +4,7 @@
   "proseWrap": "never",
   "semi": true,
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "phpVersion": "8.2",
+  "plugins": ["@prettier/plugin-php", "@prettier/plugin-xml"]
 }

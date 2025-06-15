@@ -1,0 +1,93 @@
+<?php
+declare(strict_types=1);
+
+$base = [
+  '@PhpCsFixer' => true,
+  '@Symfony' => true,
+];
+
+$prettier = [
+  'array_indentation' => false,
+  'array_syntax' => false,
+  'blank_line_before_statement' => false,
+  'braces_position' => false,
+  'cast_spaces' => false,
+  'class_definition' => false,
+  'compact_nullable_type_declaration' => false,
+  'concat_space' => false,
+  'constant_case' => false,
+  'control_structure_braces' => false,
+  'control_structure_continuation_position' => false,
+  'declare_parentheses' => false,
+  'function_declaration' => ['closure_fn_spacing' => 'none'],
+  'heredoc_indentation' => ['indentation' => 'same_as_start'],
+  'indentation_type' => false,
+  'line_ending' => false,
+  'lowercase_cast' => false,
+  'lowercase_keywords' => false,
+  'lowercase_static_reference' => false,
+  'magic_constant_casing' => false,
+  'method_chaining_indentation' => false,
+  'multiline_whitespace_before_semicolons' => false,
+  'native_type_declaration_casing' => false,
+  'new_with_parentheses' => false,
+  'no_blank_lines_after_class_opening' => false,
+  'no_extra_blank_lines' => false,
+  'no_multiline_whitespace_around_double_arrow' => false,
+  'no_multiple_statements_per_line' => false,
+  'no_spaces_around_offset' => false,
+  'no_trailing_comma_in_singleline' => false,
+  'no_trailing_whitespace' => false,
+  'no_unneeded_control_parentheses' => [
+    'statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from'],
+  ],
+  'no_whitespace_before_comma_in_array' => false,
+  'no_whitespace_in_blank_line' => false,
+  'operator_linebreak' => false,
+  'single_blank_line_at_eof' => false,
+  'single_line_empty_body' => false,
+  'single_line_throw' => false,
+  'single_space_around_construct' => false,
+  'spaces_inside_parentheses' => false,
+  'statement_indentation' => false,
+  'trim_array_spaces' => false,
+  'types_spaces' => false,
+  'type_declaration_spaces' => false,
+  'whitespace_after_comma_in_array' => false,
+];
+
+$custom = [
+  'blank_line_after_opening_tag' => false,
+  'combine_consecutive_issets' => false,
+  'combine_consecutive_unsets' => false,
+  'fully_qualified_strict_types' => ['leading_backslash_in_global_namespace' => true],
+  'increment_style' => ['style' => 'post'],
+  'native_function_invocation' => ['include' => ['@internal']],
+  'no_superfluous_phpdoc_tags' => ['allow_mixed' => true],
+  'no_useless_else' => false,
+  'phpdoc_align' => false,
+  'phpdoc_annotation_without_dot' => false,
+  'phpdoc_tag_casing' => true,
+  'phpdoc_to_comment' => ['ignored_tags' => ['lang', 'noinspection', 'psalm-suppress', 'psalm-type', 'var']],
+  'return_assignment' => false,
+  'string_implicit_backslashes' => ['single_quoted' => 'escape', 'double_quoted' => 'escape', 'heredoc' => 'escape'],
+  'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],
+
+  'ordered_class_elements' => [
+    'order' => [
+      'use_trait',
+      'case',
+      'constant_public',
+      'constant_protected',
+      'constant_private',
+      'property_static',
+      'property',
+      'construct',
+      'destruct',
+      // 'method',
+      // 'method_static',
+    ],
+  ],
+];
+
+return $base + $prettier + $custom;

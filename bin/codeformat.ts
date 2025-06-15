@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { eslint, prettier, stylelint, tsc } from './tools/index.ts';
+import { eslint, phpCsFixer, prettier, stylelint, tsc } from './tools/index.ts';
 import Cli from './utils/Cli.ts';
 import ToolRunner from './utils/ToolRunner.ts';
 
@@ -16,6 +16,7 @@ const runner = new ToolRunner(cli, {
 
   // Other languages
   stylelint,
+  phpCsFixer,
 });
 
 try {

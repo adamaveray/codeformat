@@ -43,3 +43,19 @@ import { makeStylelintConfig } from '@averay/codeformat';
 
 export default makeStylelintConfig();
 ```
+
+### PHP-CS-Fixer
+
+Create a `.php-cs-fixer.php` file and create the configuration:
+
+```php
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/node_modules/@averay/codeformat/src/php/PhpCsFixerConfig.php';
+
+$finder = (new PhpCsFixer\Finder())->in([__DIR__]);
+
+return PhpCsFixerConfig::default($finder);
+```

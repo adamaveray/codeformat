@@ -24,9 +24,11 @@ export default [
 
   // CLI
   {
-    files: ['bin-*.ts'],
+    files: ['bin/**/*.ts'],
     rules: {
+      'no-process-env': 'off',
       'no-process-exit': 'off',
+      'unicorn/no-process-exit': 'off',
     },
   },
 ];

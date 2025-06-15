@@ -1,0 +1,6 @@
+{
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.75",
+    "roave/security-advisories": "dev-latest"
+  }
+}

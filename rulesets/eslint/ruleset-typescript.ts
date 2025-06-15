@@ -119,7 +119,7 @@ export default {
     },
     {
       selector: 'typeParameter',
-      format: ['StrictPascalCase'],
+      format: null,
       custom: { regex: /^([A-Z]|T[A-Z][a-zA-Z]+|key)$/u.source, match: true },
     },
     /* eslint-enable sort-keys -- Logically ordered */

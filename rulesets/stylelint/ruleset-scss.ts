@@ -1,7 +1,7 @@
 import recommended from 'stylelint-config-recommended-scss';
 import standard from 'stylelint-config-standard-scss';
 
-import patterns from '../../lib/cssPatterns.ts';
+import patterns, { patternOrScssInterpolation } from '../../lib/cssPatterns.ts';
 
 export default {
   ...recommended.rules,
@@ -31,6 +31,15 @@ export default {
     'scss/at-mixin-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
     'scss/dollar-variable-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
     'scss/percent-placeholder-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+  },
+
+  // Support interpolation for @ keywords
+  ...{
+    'container-name-pattern': patternOrScssInterpolation(patterns.bem),
+    'custom-media-pattern': patternOrScssInterpolation(patterns.bem),
+    'custom-property-pattern': patternOrScssInterpolation(patterns.bem),
+    'keyframes-name-pattern': patternOrScssInterpolation(patterns.bem),
+    'layer-name-pattern': patternOrScssInterpolation(patterns.bem),
   },
 
   // Customise rulesets

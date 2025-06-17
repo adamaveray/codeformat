@@ -14,7 +14,7 @@
     "bun": ">=1.2"
   },
   "bin": {
-    "codeformat": "dist/bin/codeformat.ts"
+    "codeformat": "dist/bin/codeformat.js"
   },
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

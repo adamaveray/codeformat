@@ -32,4 +32,7 @@ export default {
     'scss/dollar-variable-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
     'scss/percent-placeholder-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
   },
+
+  // Customise rulesets
+  'scss/at-if-no-null': null,
 };

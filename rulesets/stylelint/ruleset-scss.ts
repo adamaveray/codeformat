@@ -25,8 +25,11 @@ export default {
     'scss/operator-no-unspaced': null,
   },
 
-  'scss/at-function-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
-  'scss/at-mixin-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
-  'scss/dollar-variable-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
-  'scss/percent-placeholder-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+  // Naming patterns
+  ...{
+    'scss/at-function-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+    'scss/at-mixin-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+    'scss/dollar-variable-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+    'scss/percent-placeholder-pattern': patterns.bemWithOptionalSingleUnderscorePrefix,
+  },
 };

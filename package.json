@@ -13,17 +13,21 @@
   "engines": {
     "bun": ">=1.2"
   },
-  "source": "./src/index.ts",
   "bin": {
-    "codeformat": "bin/codeformat.ts"
+    "codeformat": "dist/bin/codeformat.ts"
   },
-  "main": "./src/index.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
+    "build": "rm -rf dist && bun run build:tsc && chmod +x dist/bin/*.js",
+    "build:tsc": "bun --bun x tsc --project tsconfig.build.json --outDir dist",
     "test": "bun test",
-    "format": "bin/codeformat.ts fix",
-    "lint": "bin/codeformat.ts check",
+    "format": "dist/bin/codeformat.js fix",
+    "lint": "dist/bin/codeformat.js check",
     "prepare": "bun --bun x husky",
-    "release": "bun run lint && bun --bun x bumpp && bun publish"
+    "prepack": "bun run build",
+    "release": "bun run lint && bun --bun x bumpp && bun publish",
+    "watch": "bun run build:tsc --watch"
   },
   "dependencies": {
     "@averay/css-properties-sort-order": "^1.0.3",

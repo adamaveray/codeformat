@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "noEmit": false,
+    "rewriteRelativeImportExtensions": true,
+    "sourceMap": true
+  },
+  "include": ["bin/**/*.ts", "lib/**/*.ts", "rulesets/**/*.ts", "src/**/*.ts"],
+  "exclude": ["**/*.test.ts"]
+}

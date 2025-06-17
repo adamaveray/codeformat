@@ -95,3 +95,9 @@ declare module 'stylelint-scss' {
 
   export default {} as Plugin;
 }
+
+declare module 'stylelint-use-logical' {
+  import { type Plugin } from 'stylelint';
+
+  export default {} as Plugin;
+}

@@ -4,6 +4,7 @@ import postcssScss from 'postcss-scss';
 import { type Config, type CustomSyntax } from 'stylelint';
 import orderPlugin from 'stylelint-order';
 import scssPlugin from 'stylelint-scss';
+import useLogicalPlugin from 'stylelint-use-logical';
 
 import rulesetStylelintCss from '../rulesets/stylelint/ruleset-css.ts';
 import rulesetStylelintScss from '../rulesets/stylelint/ruleset-scss.ts';
@@ -20,7 +21,7 @@ export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRule
   return {
     defaultSeverity: 'error',
     ignoreFiles: ['**/*.min.*'],
-    plugins: [orderPlugin],
+    plugins: [orderPlugin, useLogicalPlugin],
     reportDescriptionlessDisables: true,
     reportInvalidScopeDisables: true,
     reportNeedlessDisables: true,

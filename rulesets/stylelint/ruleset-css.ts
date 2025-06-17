@@ -33,6 +33,7 @@ export default {
   },
 
   // Extensions
+  'csstools/use-logical': 'always',
   'order/order': ['custom-properties', 'declarations'],
   'order/properties-order': [propertiesOrder, { unspecified: 'bottomAlphabetical' }],
 };

@@ -251,8 +251,10 @@ export default {
       named: true,
       'newlines-between': 'always',
       pathGroups: [
-        { group: 'external', pattern: /^pkg:/u.source },
-        { group: 'internal', pattern: /^#/u.source },
+        /* eslint-disable sort-keys -- Logically ordered */
+        { pattern: /^pkg:/u.source, group: 'external' },
+        { pattern: /^#/u.source, group: 'internal' },
+        /* eslint-enable sort-keys -- Logically ordered */
       ],
     },
   ],

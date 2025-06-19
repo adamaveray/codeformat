@@ -250,6 +250,10 @@ export default {
       groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
       named: true,
       'newlines-between': 'always',
+      pathGroups: [
+        { group: 'external', pattern: /^pkg:/u.source },
+        { group: 'internal', pattern: /^#/u.source },
+      ],
     },
   ],
   'import/prefer-default-export': 'off', // Causes friction when creating a utilities file with a single export in advance of adding additional exports.

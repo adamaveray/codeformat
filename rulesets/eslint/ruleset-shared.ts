@@ -333,6 +333,7 @@ export default {
   '@stylistic/quote-props': 'off',
   '@stylistic/quotes': 'off',
   '@stylistic/semi': 'off',
+  '@stylistic/spaced-comment': ['error', 'always', { markers: ['/'] }],
 
   ...unicornPlugin.configs.recommended.rules,
   'unicorn/consistent-function-scoping': ['error', { checkArrowFunctions: false }],

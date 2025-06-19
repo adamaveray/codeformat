@@ -1,5 +1,5 @@
 import runners from '../utils/runners.ts';
-import { type Tool } from '../utils/types.ts';
+import type { Tool } from '../utils/types.ts';
 
 export default {
   exec: runners.bun,

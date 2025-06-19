@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
-import { type TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import importPlugin from 'eslint-plugin-import';
 
 export default {

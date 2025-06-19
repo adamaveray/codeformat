@@ -1,7 +1,7 @@
 /* eslint sort-keys: "error" -- Organise rules */
 
 import postcssScss from 'postcss-scss';
-import { type Config, type CustomSyntax } from 'stylelint';
+import type { Config, CustomSyntax } from 'stylelint';
 import orderPlugin from 'stylelint-order';
 import scssPlugin from 'stylelint-scss';
 import useLogicalPlugin from 'stylelint-use-logical';

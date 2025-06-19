@@ -1,7 +1,7 @@
 /* eslint import/no-named-as-default-member: "off" -- All plugins follow the same naming conventions. */
 
 import stylisticPlugin from '@stylistic/eslint-plugin';
-import { type TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
@@ -220,7 +220,7 @@ export default {
   'eslint-comments/require-description': 'error',
 
   ...importPlugin.configs.recommended.rules,
-  'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
+  'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
   'import/first': ['error', 'absolute-first'],
   'import/newline-after-import': 'error',
   'import/no-absolute-path': 'error',

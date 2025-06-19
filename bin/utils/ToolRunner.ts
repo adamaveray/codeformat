@@ -1,6 +1,6 @@
 import type Cli from './Cli.ts';
 import { findFirstFile } from './filesystem.ts';
-import { type Tool, type ToolAction } from './types.ts';
+import type { Tool, ToolAction } from './types.ts';
 
 export default class ToolRunner<TToolName extends string> {
   constructor(
@@ -51,7 +51,7 @@ export default class ToolRunner<TToolName extends string> {
       return;
     }
 
-    let args = [...actionArgs];
+    const args = [...actionArgs];
     if (this.cli.options.debug) {
       args.push(...(additionalArgs.debug ?? []));
     }

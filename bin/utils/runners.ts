@@ -1,4 +1,4 @@
-import { type ToolExec } from './types.ts';
+import type { ToolExec } from './types.ts';
 
 export default {
   async bun(cli, { command, args, env = {} }) {

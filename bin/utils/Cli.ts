@@ -3,7 +3,7 @@ import { parseArgs } from 'node:util';
 import { spawn } from 'bun';
 
 import Output from './Output.ts';
-import { type ToolAction } from './types.ts';
+import type { ToolAction } from './types.ts';
 
 interface Options {
   verbose: boolean;

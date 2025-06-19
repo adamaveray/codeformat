@@ -38,7 +38,7 @@ export default class ToolRunner<TToolName extends string> {
 
   private async runTool(
     toolName: TToolName,
-    { command, exec, actions, args: additionalArgs, env, configFiles }: Tool,
+    { command, exec, actions, args: additionalArgs = {}, env, configFiles }: Tool,
     action: ToolAction,
   ): Promise<void> {
     const configPath = this.loadConfigPath(toolName, configFiles);
@@ -53,7 +53,11 @@ export default class ToolRunner<TToolName extends string> {
 
     let args = [...actionArgs];
     if (this.cli.options.debug) {
-      args = [...args, ...(additionalArgs?.debug ?? [])];
+      args.push(...(additionalArgs.debug ?? []));
+    }
+    if (this.cli.options.cache) {
+      const toolCacheDir = `${this.cli.options.cacheDir}/${toolName}`;
+      args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
     }
     await exec(this.cli, { command, args, env });
   }

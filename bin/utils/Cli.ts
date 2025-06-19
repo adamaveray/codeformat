@@ -5,10 +5,12 @@ import { spawn } from 'bun';
 import Output from './Output.ts';
 import { type ToolAction } from './types.ts';
 
-interface Flags {
+interface Options {
   verbose: boolean;
   debug: boolean;
   help: boolean;
+  cache: boolean;
+  cacheDir: string;
 }
 
 export default class Cli {
@@ -17,7 +19,7 @@ export default class Cli {
   constructor(
     scriptName: string,
     public readonly directory: string,
-    public readonly options: Flags,
+    public readonly options: Options,
   ) {
     this.output = new Output(scriptName, options);
   }
@@ -45,6 +47,8 @@ export default class Cli {
         dir: { type: 'string', short: 'd', default: process.cwd() },
         tool: { type: 'string', short: 't', default: undefined },
 
+        'no-cache': { type: 'boolean', default: false },
+        'cache-dir': { type: 'string', default: '.cache' },
         verbose: { type: 'boolean', default: false },
         debug: { type: 'boolean', default: false },
         help: { type: 'boolean', default: false },
@@ -53,10 +57,10 @@ export default class Cli {
       allowPositionals: true,
     });
 
-    const { dir, tool, ...flags } = options;
+    const { dir, tool, 'cache-dir': cacheDir, 'no-cache': noCache, ...additionalOptions } = options;
     const [, scriptName, selectedAction, ...undefinedArgs] = positionals as [string, string, ...string[]];
 
-    const cli = new Cli(scriptName, dir, flags);
+    const cli = new Cli(scriptName, dir, { cacheDir, cache: !noCache, ...additionalOptions });
     if (options.help || selectedAction == null) {
       cli.output.usage();
     }

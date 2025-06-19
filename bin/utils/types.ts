@@ -16,6 +16,7 @@ export interface Tool {
   actions: (configPath: string) => Partial<Record<ToolAction, string[]>>;
   args?: Partial<{
     debug: string[];
+    cache: (cacheDir: string) => string[];
   }>;
   env?: Command['env'];
   configFiles: string[];

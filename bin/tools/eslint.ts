@@ -11,6 +11,7 @@ export default {
   }),
   args: {
     debug: ['-vvv'],
+    cache: (cacheDir) => ['--cache', '--cache-location', cacheDir],
   },
   configFiles: withExts('eslint.config', ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts']),
 } satisfies Tool;

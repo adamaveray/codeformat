@@ -67,7 +67,7 @@ export default {
     'no-empty': 'error',
     'no-empty-character-class': 'error',
     'no-empty-function': 'error',
-    'no-empty-pattern': 'error',
+    'no-empty-pattern': ['error', { allowObjectPatternsAsParameters: true }],
     'no-empty-static-block': 'error',
     'no-eval': 'error',
     'no-ex-assign': 'error',

@@ -33,11 +33,11 @@ export default {
     'grouped-accessor-pairs': ['error', 'getBeforeSet'],
     'guard-for-in': 'error',
     'id-denylist': ['error', 'cb', 'e', 'enc', 'err', 'evt'],
-    'lines-between-class-members': 'error',
+    'lines-between-class-members': 'off', // Moved to Stylistic
     'logical-assignment-operators': ['error', 'always'],
     'max-classes-per-file': ['error', 1],
-    'max-statements-per-line': 'error',
-    'multiline-comment-style': 'error',
+    'max-statements-per-line': 'off', // Moved to Stylistic
+    'multiline-comment-style': 'off', // Moved to Stylistic
     'new-cap': ['error', { properties: true }],
     'no-alert': 'error',
     'no-array-constructor': 'error',
@@ -113,7 +113,6 @@ export default {
     'no-new-native-nonconstructor': 'error',
     'no-new-object': 'error',
     'no-new-require': 'error',
-    'no-new-symbol': 'error',
     'no-new-wrappers': 'error',
     'no-nonoctal-decimal-escape': 'error',
     'no-obj-calls': 'error',
@@ -192,13 +191,7 @@ export default {
     'object-shorthand': ['error', 'always', { avoidExplicitReturnArrows: true, avoidQuotes: true }],
     'one-var': ['error', 'never'],
     'operator-assignment': 'error',
-    'padding-line-between-statements': [
-      'error',
-      /* eslint-disable sort-keys -- Logically ordered */
-      { blankLine: 'always', prev: 'directive', next: '*' },
-      { blankLine: 'always', prev: 'function', next: 'function' },
-      /* eslint-enable sort-keys -- Restore */
-    ],
+    'padding-line-between-statements': 'off', // Moved to Stylistic
     'prefer-arrow-callback': 'error',
     'prefer-const': 'error',
     'prefer-destructuring': 'error',
@@ -214,7 +207,7 @@ export default {
     'require-atomic-updates': 'error',
     'require-unicode-regexp': 'error',
     'require-yield': 'error',
-    'spaced-comment': 'error',
+    'spaced-comment': 'off', // Moved to Stylistic
     'symbol-description': 'error',
     'use-isnan': 'error',
     'valid-typeof': 'error',
@@ -323,7 +316,10 @@ export default {
   '@stylistic/jsx-indent-props': 'off',
   '@stylistic/jsx-one-expression-per-line': 'off',
   '@stylistic/jsx-wrap-multilines': 'off',
+  '@stylistic/lines-between-class-members': 'error',
+  '@stylistic/max-statements-per-line': 'error',
   '@stylistic/member-delimiter-style': 'off',
+  '@stylistic/multiline-comment-style': 'error',
   '@stylistic/multiline-ternary': 'off',
   '@stylistic/no-multiple-empty-line': 'off',
   '@stylistic/operator-linebreak': 'off',

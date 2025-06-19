@@ -313,7 +313,7 @@ export default {
   'sonarjs/prefer-regexp-exec': 'off',
   'sonarjs/prefer-single-boolean-return': 'off',
 
-  ...stylisticPlugin.configs['recommended-flat'].rules,
+  ...stylisticPlugin.configs.recommended.rules,
   '@stylistic/arrow-parens': 'off',
   '@stylistic/brace-style': 'off',
   '@stylistic/indent': 'off',

@@ -2,7 +2,7 @@ declare module '@stylistic/eslint-plugin' {
   import { type TSESLint } from '@typescript-eslint/utils';
 
   export default {} as TSESLint.FlatConfig.Plugin & {
-    configs: Record<'recommended-flat', TSESLint.FlatConfig.Config>;
+    configs: Record<'recommended', TSESLint.FlatConfig.Config>;
   };
 }
 

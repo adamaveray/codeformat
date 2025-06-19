@@ -248,6 +248,7 @@ export default {
     {
       alphabetize: { caseInsensitive: true, order: 'asc' },
       groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      named: true,
       'newlines-between': 'always',
     },
   ],

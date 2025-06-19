@@ -323,7 +323,7 @@ export default {
   '@stylistic/jsx-indent-props': 'off',
   '@stylistic/jsx-one-expression-per-line': 'off',
   '@stylistic/jsx-wrap-multilines': 'off',
-  '@stylistic/lines-between-class-members': 'error',
+  '@stylistic/lines-between-class-members': 'off',
   '@stylistic/max-statements-per-line': 'error',
   '@stylistic/member-delimiter-style': 'off',
   '@stylistic/multiline-comment-style': 'error',

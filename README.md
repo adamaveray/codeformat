@@ -18,7 +18,7 @@ A very opinionated collection of configurations for a number of code formatting 
 
 ### ESLint
 
-Create an `eslint.config.js` file and create the configuration:
+Create an `eslint.config.js` file with the following configuration:
 
 ```js
 // eslint.config.js
@@ -35,7 +35,7 @@ export default [
 
 ### Stylelint
 
-Create a `stylelint.config.js` file and create the configuration:
+Create a `stylelint.config.js` file with the following configuration:
 
 ```js
 // stylelint.config.js
@@ -46,7 +46,7 @@ export default makeStylelintConfig();
 
 ### PHP-CS-Fixer
 
-Create a `.php-cs-fixer.php` file and create the configuration:
+Create a `.php-cs-fixer.php` file with the following configuration:
 
 ```php
 <?php

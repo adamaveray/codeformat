@@ -1,11 +1,11 @@
 import js from '@eslint/js';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import type { TSESLint } from '@typescript-eslint/utils';
-import importPlugin from 'eslint-plugin-import';
+import { importX as importXPlugin } from 'eslint-plugin-import-x';
 
 export default {
   ...js.configs.recommended.rules,
-  ...importPlugin.configs.typescript.rules,
+  ...importXPlugin.configs.typescript.rules,
   ...typescriptPlugin.configs['eslint-recommended']?.rules,
   ...typescriptPlugin.configs['recommended']?.rules,
   ...typescriptPlugin.configs['recommended-requiring-type-checking']?.rules,
@@ -225,7 +225,7 @@ export default {
   '@typescript-eslint/unbound-method': 'off', // Does not support @autobind nor recognise binding in constructors
   '@typescript-eslint/unified-signatures': 'off',
 
-  'import/no-unresolved': 'off', // Validated by TypeScript itself and causes issues with some type-generating frameworks
+  'import-x/no-unresolved': 'off', // Validated by TypeScript itself and causes issues with some type-generating frameworks
 
   'jsdoc/no-types': 'error',
   'jsdoc/require-param-type': 'off',

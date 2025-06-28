@@ -9,7 +9,6 @@ export default {
     // Included to be used by consumers
     /^@prettier\/plugin-/u,
     // To be dealt with
-    'eslint-import-resolver-typescript',
     'typescript-eslint',
   ],
   ignoreExportsUsedInFile: true,

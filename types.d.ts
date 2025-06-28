@@ -20,14 +20,6 @@ declare module 'eslint-plugin-eslint-comments' {
   };
 }
 
-declare module 'eslint-plugin-import' {
-  import type { TSESLint } from '@typescript-eslint/utils';
-
-  export default {} as TSESLint.FlatConfig.Plugin & {
-    configs: Record<'recommended' | 'react' | 'react-native' | 'electron' | 'typescript', TSESLint.FlatConfig.Config>;
-  };
-}
-
 declare module 'eslint-plugin-jsdoc' {
   import type { TSESLint } from '@typescript-eslint/utils';
 

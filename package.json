@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@averay/css-properties-sort-order": "^1.0.3",
-    "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.30.0",
     "@prettier/plugin-php": "^0.22.4",
     "@prettier/plugin-xml": "^3.4.1",

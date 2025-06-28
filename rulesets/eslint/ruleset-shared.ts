@@ -351,4 +351,5 @@ export default {
   'unicorn/prefer-query-selector': 'off',
   'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-post-message-target-origin': 'error',
+  'unicorn/text-encoding-identifier-case': 'off', // Too many false positives
 } satisfies TSESLint.FlatConfig.Rules;

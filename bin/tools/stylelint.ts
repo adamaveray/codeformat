@@ -1,4 +1,4 @@
-import { withExts } from '../utils/filesystem.ts';
+import { commonExts, withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
 import type { Tool } from '../utils/types.ts';
 
@@ -12,5 +12,5 @@ export default {
   args: {
     debug: ['--formatter', 'verbose'],
   },
-  configFiles: withExts('stylelint.config', ['cjs', 'mjs', 'js']),
+  configFiles: withExts('stylelint.config', [...commonExts.js]),
 } satisfies Tool;

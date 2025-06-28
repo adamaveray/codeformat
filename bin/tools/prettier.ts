@@ -1,4 +1,4 @@
-import { withExts } from '../utils/filesystem.ts';
+import { commonExts, withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
 import type { Tool } from '../utils/types.ts';
 
@@ -14,7 +14,7 @@ export default {
   },
   configFiles: [
     '.prettierrc',
-    ...withExts('prettier.config', ['js', 'ts', 'mjs', 'mts', 'cjs', 'cts']),
-    ...withExts('.prettierrc', ['json', 'yml', 'yaml', 'json5', 'js', 'ts', 'mjs', 'mts', 'cjs', 'cts', 'toml']),
+    ...withExts('prettier.config', [...commonExts.js, ...commonExts.ts]),
+    ...withExts('.prettierrc', ['json', 'json5', 'toml', ...commonExts.yaml, ...commonExts.js, ...commonExts.ts]),
   ],
 } satisfies Tool;

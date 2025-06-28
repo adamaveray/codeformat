@@ -1,4 +1,4 @@
-import { withExts } from '../utils/filesystem.ts';
+import { commonExts, withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
 import type { Tool } from '../utils/types.ts';
 
@@ -13,5 +13,5 @@ export default {
     debug: ['-vvv'],
     cache: (cacheDir) => ['--cache', '--cache-location', cacheDir],
   },
-  configFiles: withExts('eslint.config', ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts']),
+  configFiles: withExts('eslint.config', [...commonExts.js, ...commonExts.ts]),
 } satisfies Tool;

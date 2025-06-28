@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { eslint, phpCsFixer, prettier, stylelint, tsc } from './tools/index.ts';
+import { eslint, knip, phpCsFixer, prettier, stylelint, tsc } from './tools/index.ts';
 import Cli from './utils/Cli.ts';
 import ToolRunner from './utils/ToolRunner.ts';
 
@@ -9,6 +9,7 @@ const { cli, selectedAction, selectedTool } = Cli.createFromArgs(Bun.argv);
 const runner = new ToolRunner(cli, {
   // Common
   prettier,
+  knip,
 
   // JavaScript/TypeScript
   tsc,

@@ -44,6 +44,17 @@ import { makeStylelintConfig } from '@averay/codeformat';
 export default makeStylelintConfig();
 ```
 
+### Knip
+
+Create a `knip.config.js` with
+
+```js
+// knip.config.js
+import { makeStylelintConfig } from '@averay/codeformat';
+
+export default makeStylelintConfig();
+```
+
 ### PHP-CS-Fixer
 
 Create a `.php-cs-fixer.php` file with the following configuration:

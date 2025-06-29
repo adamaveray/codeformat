@@ -2,7 +2,14 @@ import type { KnipConfig } from 'knip';
 
 export default {
   ignoreBinaries: ['publish', /^dist\/bin\//u],
-  ignoreDependencies: ['bumpp', 'husky'],
+  ignoreDependencies: [
+    // Build tools
+    'bumpp', 'husky',
+    // To be dealt with
+    'eslint-import-resolver-typescript',
+    'typescript-eslint',
+  ],
+  ignoreExportsUsedInFile: true,
   entry: ['src/index.ts', 'bin/codeformat.ts'],
   project: ['src/**/*.ts', 'bin/**/*.ts', 'lib/**/*.ts', 'rulesets/**/*.ts'],
   ignore: ['dist/**'],

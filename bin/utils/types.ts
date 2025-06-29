@@ -1,5 +1,6 @@
 import type Cli from './Cli.ts';
 
+// Must be exported as `tsc` fails with "Default export of the module has or is using private name" error if not
 export interface Command {
   command: string;
   args: string[];

@@ -5,6 +5,8 @@ export default {
   ignoreDependencies: [
     // Build tools
     'bumpp', 'husky',
+    // Included to be used by consumers
+    /^@prettier\/plugin-/u,
     // To be dealt with
     'eslint-import-resolver-typescript',
     'typescript-eslint',

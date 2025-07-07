@@ -4,7 +4,8 @@ export default {
   ignoreBinaries: ['publish', /^dist\/bin\//u],
   ignoreDependencies: [
     // Build tools
-    'bumpp', 'husky',
+    'bumpp',
+    'husky',
     // Included to be used by consumers
     /^@prettier\/plugin-/u,
     // To be dealt with

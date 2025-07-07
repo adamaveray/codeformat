@@ -228,7 +228,7 @@ export default {
 
   ...importPlugin.configs.recommended.rules,
   'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
-  'import/first': ['error', 'absolute-first'],
+  'import/first': ['error'],
   'import/newline-after-import': 'error',
   'import/no-absolute-path': 'error',
   'import/no-amd': 'error',

@@ -15,7 +15,14 @@ export default {
     'accessor-pairs': ['error', { setWithoutGet: true }],
     'array-callback-return': 'error',
     'block-scoped-var': 'error',
-    'capitalized-comments': ['error', 'always', { ignoreConsecutiveComments: true }],
+    'capitalized-comments': [
+      'error',
+      'always',
+      {
+        ignoreConsecutiveComments: true,
+        ignorePattern: /language=/u.source, // IntelliJ language injection statements
+      },
+    ],
     'consistent-return': 'error',
     'consistent-this': ['error', '_this'],
     'constructor-super': 'error',

@@ -12,6 +12,5 @@ export default {
   args: {
     debug: ['--verbose'],
   },
-  env: { PHP_CS_FIXER_IGNORE_ENV: '1' },
   configFiles: withExts('.php-cs-fixer', ['dist.php', 'php']),
 } satisfies Tool;

@@ -69,7 +69,7 @@ export default {
     },
     {
       selector: 'import',
-      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
+      format: null,
     },
     {
       selector: 'variable',

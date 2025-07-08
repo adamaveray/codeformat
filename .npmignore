@@ -1,7 +1,9 @@
+.cache
 .husky
 .idea
 .prettierignore
 bun.lock
 node_modules
+vendor
 
 **.test.ts

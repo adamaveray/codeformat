@@ -5,8 +5,9 @@ import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 import type { TSESLint } from '@typescript-eslint/utils';
 import prettierConfig from 'eslint-config-prettier';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
-import importPlugin from 'eslint-plugin-import';
+import { importX as importXPlugin } from 'eslint-plugin-import-x';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import promisePlugin from 'eslint-plugin-promise';
 import regexpPlugin from 'eslint-plugin-regexp';
@@ -52,7 +53,7 @@ export default function makeEslintConfig({
       plugins: {
         '@stylistic': stylisticPlugin,
         'eslint-comments': eslintCommentsPlugin,
-        import: importPlugin,
+        'import-x': importXPlugin,
         jsdoc: jsdocPlugin,
         promise: promisePlugin,
         regexp: regexpPlugin,
@@ -61,7 +62,7 @@ export default function makeEslintConfig({
       },
       rules: convertWarnsToErrors(rulesetEslintShared),
       settings: {
-        'import/parsers': {
+        'import-x/parsers': {
           espree: extensions.js.map((extension) => `.${extension}`),
         },
       },
@@ -79,13 +80,11 @@ export default function makeEslintConfig({
       },
       rules: convertWarnsToErrors(rulesetEslintTypescript),
       settings: {
-        ...importPlugin.configs.typescript.settings,
-        'import/parsers': {
+        ...importXPlugin.configs.typescript.settings,
+        'import-x/parsers': {
           '@typescript-eslint/parser': extensions.ts.map((extension) => `.${extension}`),
         },
-        'import/resolver': {
-          'eslint-import-resolver-typescript': tsconfigPath == null ? {} : { project: tsconfigPath },
-        },
+        'import-x/resolver-next': createTypeScriptImportResolver(tsconfigPath == null ? {} : { project: tsconfigPath }),
       },
     },
     {

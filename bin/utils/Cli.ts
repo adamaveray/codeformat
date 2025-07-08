@@ -1,6 +1,5 @@
-import { parseArgs } from 'node:util';
-
 import { spawn } from 'bun';
+import { parseArgs } from 'node:util';
 
 import Output from './Output.ts';
 import type { ToolAction } from './types.ts';

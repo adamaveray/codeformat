@@ -1,9 +1,9 @@
-/* eslint import/no-named-as-default-member: "off" -- All plugins follow the same naming conventions. */
+/* eslint import-x/no-named-as-default-member: "off" -- All plugins follow the same naming conventions. */
 
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import type { TSESLint } from '@typescript-eslint/utils';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import promisePlugin from 'eslint-plugin-promise';
 import regexpPlugin from 'eslint-plugin-regexp';
@@ -227,33 +227,33 @@ export default {
   'eslint-comments/require-description': 'error',
 
   ...importPlugin.configs.recommended.rules,
-  'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
-  'import/first': ['error'],
-  'import/newline-after-import': 'error',
-  'import/no-absolute-path': 'error',
-  'import/no-amd': 'error',
-  'import/no-anonymous-default-export': [
+  'import-x/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+  'import-x/first': ['error'],
+  'import-x/newline-after-import': 'error',
+  'import-x/no-absolute-path': 'error',
+  'import-x/no-amd': 'error',
+  'import-x/no-anonymous-default-export': [
     'error',
     { allowArray: true, allowCallExpression: true, allowLiteral: true, allowNew: true, allowObject: true },
   ],
-  'import/no-commonjs': 'error',
-  'import/no-cycle': ['error', { ignoreExternal: true }],
-  'import/no-duplicates': 'error',
-  'import/no-dynamic-require': 'error',
-  'import/no-empty-named-blocks': 'error',
-  'import/no-extraneous-dependencies': 'error',
-  'import/no-mutable-exports': 'error',
-  'import/no-named-as-default-member': 'error',
-  'import/no-named-default': 'error',
-  'import/no-self-import': 'error',
-  'import/no-unresolved': ['error', { caseSensitiveStrict: true }],
-  'import/no-unused-modules': 'error',
-  'import/no-useless-path-segments': 'error',
-  'import/no-webpack-loader-syntax': 'error',
-  'import/order': [
+  'import-x/no-commonjs': 'error',
+  'import-x/no-cycle': ['error', { ignoreExternal: true }],
+  'import-x/no-duplicates': 'error',
+  'import-x/no-dynamic-require': 'error',
+  'import-x/no-empty-named-blocks': 'error',
+  'import-x/no-extraneous-dependencies': 'error',
+  'import-x/no-mutable-exports': 'error',
+  'import-x/no-named-as-default-member': 'error',
+  'import-x/no-named-default': 'error',
+  'import-x/no-self-import': 'error',
+  'import-x/no-unresolved': ['error', { caseSensitiveStrict: true }],
+  'import-x/no-unused-modules': 'error',
+  'import-x/no-useless-path-segments': 'error',
+  'import-x/no-webpack-loader-syntax': 'error',
+  'import-x/order': [
     'error',
     {
-      alphabetize: { caseInsensitive: true, order: 'asc' },
+      alphabetize: { caseInsensitive: true, order: 'asc', orderImportKind: 'asc' },
       groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
       named: true,
       'newlines-between': 'always',
@@ -265,7 +265,7 @@ export default {
       ],
     },
   ],
-  'import/prefer-default-export': 'off', // Causes friction when creating a utilities file with a single export in advance of adding additional exports.
+  'import-x/prefer-default-export': 'off', // Causes friction when creating a utilities file with a single export in advance of adding additional exports.
 
   ...jsdocPlugin.configs.recommended.rules,
   'jsdoc/check-indentation': 'error',

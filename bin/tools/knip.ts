@@ -6,8 +6,8 @@ export default {
   exec: runners.bun,
   command: 'knip',
   actions: (configPath) => ({
-    check: ['--config', configPath],
-    fix: ['--fix', '--config', configPath],
+    check: ['--strict', '--config', configPath],
+    fix: ['--fix', '--strict', '--config', configPath],
   }),
   args: {
     debug: ['--debug'],

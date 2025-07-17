@@ -64,7 +64,7 @@ Create a `.php-cs-fixer.php` file with the following configuration:
 declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/node_modules/@averay/codeformat/src/php/PhpCsFixerConfig.php';
+require_once __DIR__ . '/node_modules/@averay/codeformat/dist/src/php/PhpCsFixerConfig.php';
 
 $finder = (new PhpCsFixer\Finder())->in([__DIR__]);
 

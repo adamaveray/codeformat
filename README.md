@@ -23,9 +23,7 @@ Create a `prettier.config.mjs` file with the following configuration:
 ```js
 import makePrettierConfig from '@averay/codeformat';
 
-export default makePrettierConfig({
-  // Custom config can be added here
-});
+export default makePrettierConfig(/* Customisations can be made here */);
 ```
 
 ### ESLint

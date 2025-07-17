@@ -1,3 +1,3 @@
 import makePrettierConfig from './src/makePrettierConfig.ts';
 
-export default makePrettierConfig();
+export default makePrettierConfig({ php: true });

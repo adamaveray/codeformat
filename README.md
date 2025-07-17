@@ -16,6 +16,18 @@ A very opinionated collection of configurations for a number of code formatting 
 
 4. Lint the codebase with `bun x codeformat check`, or apply automatic fixes with `bun x codeformat fix`
 
+### Prettier
+
+Create a `prettier.config.mjs` file with the following configuration:
+
+```js
+import makePrettierConfig from '@averay/codeformat';
+
+export default makePrettierConfig({
+  // Custom config can be added here
+});
+```
+
 ### ESLint
 
 Create an `eslint.config.js` file with the following configuration:

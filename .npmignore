@@ -1,9 +1,26 @@
-.cache
-.husky
-.idea
-.prettierignore
-bun.lock
-node_modules
-vendor
-
+**.cache
 **.test.ts
+
+/.husky
+/.idea
+/.php-cs-fixer.php
+/.prettierignore
+/.stylelintignore
+/bun.lock
+/CODE_OF_CONDUCT.md
+/composer.json
+/composer.lock
+/eslint.config.js
+/knip.config.ts
+/stylelint.config.js
+/tsconfig.build.json
+
+# Packages
+/node_modules
+/vendor
+
+# Built sources
+/bin
+/lib
+/rulesets
+/src

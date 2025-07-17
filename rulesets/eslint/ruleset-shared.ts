@@ -1,5 +1,3 @@
-/* eslint import-x/no-named-as-default-member: "off" -- All plugins follow the same naming conventions. */
-
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import type { TSESLint } from '@typescript-eslint/utils';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
@@ -243,7 +241,7 @@ export default {
   'import-x/no-empty-named-blocks': 'error',
   'import-x/no-extraneous-dependencies': 'error',
   'import-x/no-mutable-exports': 'error',
-  'import-x/no-named-as-default-member': 'error',
+  'import-x/no-named-as-default-member': 'off', // Overbearing
   'import-x/no-named-default': 'error',
   'import-x/no-self-import': 'error',
   'import-x/no-unresolved': ['error', { caseSensitiveStrict: true }],

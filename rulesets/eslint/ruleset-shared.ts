@@ -352,6 +352,7 @@ export default {
   'unicorn/filename-case': 'off',
   'unicorn/no-null': 'off',
   'unicorn/no-useless-undefined': 'off', // Conflicts with `consistent-return`.
+  'unicorn/numeric-separators-style': ['error', { number: { groupLength: 3, minimumDigits: 0 } }],
   'unicorn/prefer-event-target': 'error',
   'unicorn/prefer-query-selector': 'off',
   'unicorn/prevent-abbreviations': 'off',

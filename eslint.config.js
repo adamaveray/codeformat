@@ -18,6 +18,7 @@ export default [
     files: ['rulesets/**/*.ts'],
     rules: {
       'sort-keys': 'error', // Organise rules.
+      '@typescript-eslint/no-magic-numbers': 'off', // All numbers are defining configuration options.
       'unicorn/no-useless-spread': 'off', // Keep the unprefixed core rules together.
     },
   },

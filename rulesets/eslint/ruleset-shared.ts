@@ -40,7 +40,6 @@ export default {
     'id-denylist': ['error', 'cb', 'e', 'enc', 'err', 'evt'],
     'lines-between-class-members': 'off', // Moved to Stylistic
     'logical-assignment-operators': ['error', 'always'],
-    'max-classes-per-file': ['error', 1],
     'max-statements-per-line': 'off', // Moved to Stylistic
     'multiline-comment-style': 'off', // Moved to Stylistic
     'new-cap': ['error', { properties: true }],
@@ -319,6 +318,8 @@ export default {
   'sonarjs/prefer-immediate-return': 'off',
   'sonarjs/prefer-regexp-exec': 'off',
   'sonarjs/prefer-single-boolean-return': 'off',
+  'sonarjs/pseudo-random': 'off', // Gets in the way of basic random usage by assuming everything ever must be cryptographically secure.
+  'sonarjs/todo-tag': 'off', // Not everything can be completed immediately.
 
   ...stylisticPlugin.configs.recommended.rules,
   '@stylistic/arrow-parens': 'off',
@@ -353,6 +354,7 @@ export default {
   'unicorn/no-null': 'off',
   'unicorn/no-useless-undefined': 'off', // Conflicts with `consistent-return`.
   'unicorn/numeric-separators-style': ['error', { number: { groupLength: 3, minimumDigits: 0 } }],
+  'unicorn/prefer-dom-node-text-content': 'off', // `innerText` and `textContent` behave differently so cannot reliably enforce one over the other.
   'unicorn/prefer-event-target': 'error',
   'unicorn/prefer-query-selector': 'off',
   'unicorn/prevent-abbreviations': 'off',

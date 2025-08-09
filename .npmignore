@@ -1,6 +1,8 @@
 **.cache
 **.test.ts
 
+/.editorconfig
+/.github
 /.husky
 /.idea
 /.php-cs-fixer.php

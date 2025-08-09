@@ -7,6 +7,11 @@ export default {
   ...recommended.rules,
   ...standard.rules,
 
+  // Disable incompatible rules
+  ...{
+    'nesting-selector-no-missing-scoping-root': null, // Incompatible with root nesting selectors in mixins.
+  },
+
   // Disable Prettier conflicts
   ...{
     'scss/at-else-closing-brace-newline-after': null,

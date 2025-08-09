@@ -37,7 +37,7 @@ export default {
     'global-require': 'error',
     'grouped-accessor-pairs': ['error', 'getBeforeSet'],
     'guard-for-in': 'error',
-    'id-denylist': ['error', 'cb', 'e', 'enc', 'err', 'evt'],
+    'id-denylist': ['error', 'cb', 'ctx', 'e', 'el', 'enc', 'err', 'evt'],
     'lines-between-class-members': 'off', // Moved to Stylistic
     'logical-assignment-operators': ['error', 'always'],
     'max-statements-per-line': 'off', // Moved to Stylistic

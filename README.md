@@ -18,7 +18,7 @@ A very opinionated collection of configurations for a number of code formatting 
 
 ### Prettier
 
-Create a `prettier.config.mjs` file with the following configuration:
+Create a `prettier.config.ts` file with the following configuration:
 
 ```js
 import { makePrettierConfig } from '@averay/codeformat';

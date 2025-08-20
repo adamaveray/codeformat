@@ -143,17 +143,7 @@ export default {
   '@typescript-eslint/no-invalid-void-type': 'error',
   '@typescript-eslint/no-loop-func': 'error',
   '@typescript-eslint/no-loss-of-precision': 'error',
-  '@typescript-eslint/no-magic-numbers': [
-    'error',
-    {
-      detectObjects: true,
-      enforceConst: true,
-      ignore: [-1, 0, 1, 2, 100, '0n'],
-      ignoreArrayIndexes: true,
-      ignoreClassFieldInitialValues: true,
-      ignoreDefaultValues: true,
-    },
-  ],
+  '@typescript-eslint/no-magic-numbers': 'off', // Too many scenarios it is reasonable yet flagged.
   '@typescript-eslint/no-meaningless-void-operator': 'error',
   '@typescript-eslint/no-misused-new': 'error',
   '@typescript-eslint/no-misused-promises': 'error',

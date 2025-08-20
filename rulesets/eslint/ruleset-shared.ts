@@ -42,7 +42,7 @@ export default {
     'logical-assignment-operators': ['error', 'always'],
     'max-statements-per-line': 'off', // Moved to Stylistic
     'multiline-comment-style': 'off', // Moved to Stylistic
-    'new-cap': ['error', { properties: true }],
+    'new-cap': 'off', // Cannot differentiate between library-provided and user-defined functions.
     'no-alert': 'error',
     'no-array-constructor': 'error',
     'no-async-promise-executor': 'error',
@@ -96,17 +96,7 @@ export default {
     'no-lone-blocks': 'error',
     'no-loop-func': 'error',
     'no-loss-of-precision': 'error',
-    'no-magic-numbers': [
-      'error',
-      {
-        detectObjects: true,
-        enforceConst: true,
-        ignore: [-1, 0, 1],
-        ignoreArrayIndexes: true,
-        ignoreClassFieldInitialValues: true,
-        ignoreDefaultValues: true,
-      },
-    ],
+    'no-magic-numbers': 'off', // Too many scenarios it is reasonable yet flagged.
     'no-misleading-character-class': 'error',
     'no-mixed-requires': 'error',
     'no-multi-assign': 'error',

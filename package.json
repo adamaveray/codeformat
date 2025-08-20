@@ -36,9 +36,9 @@
     "@prettier/plugin-php": "^0.24.0",
     "@prettier/plugin-xml": "^3.4.2",
     "@stylistic/eslint-plugin": "^5.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.39.0",
-    "@typescript-eslint/parser": "^8.39.0",
-    "@typescript-eslint/utils": "^8.39.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "@typescript-eslint/utils": "^8.40.0",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -61,11 +61,11 @@
     "stylelint-order": "^7.0.0",
     "stylelint-scss": "^6.12.1",
     "stylelint-use-logical": "^2.1.2",
-    "typescript-eslint": "^8.39.0"
+    "typescript-eslint": "^8.40.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "bumpp": "^10.2.2",
+    "bumpp": "^10.2.3",
     "husky": "^9.1.7",
     "typescript": "^5.9.2"
   }

@@ -1,5 +1,6 @@
 /* eslint sort-keys: "error" -- Organise rules */
 
+import markdownPlugin from '@eslint/markdown';
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
@@ -38,6 +39,9 @@ export default function makeEslintConfig({
   tsconfigPath,
 }: Options = {}): TSESLint.FlatConfig.Config[] {
   return [
+    // Markdown
+    ...markdownPlugin.configs.recommended,
+
     // JavaScript & TypeScript
     {
       files: [`**/*.{${[...extensions.js, ...extensions.ts].join(',')}}`],

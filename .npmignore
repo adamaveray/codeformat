@@ -1,7 +1,6 @@
 **.cache
 **.test.ts
 
-/.editorconfig
 /.github
 /.husky
 /.idea

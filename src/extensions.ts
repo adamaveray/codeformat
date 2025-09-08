@@ -1,6 +1,6 @@
 export default {
-  js: ['js', 'jsx', 'cjs', 'cjs', 'mjs', 'mjsx'],
-  ts: ['ts', 'tsx', 'cts', 'cts', 'mts', 'mtsx'],
+  js: ['js', 'jsx', 'cjs', 'cjsx', 'mjs', 'mjsx'],
+  ts: ['ts', 'tsx', 'cts', 'ctsx', 'mts', 'mtsx'],
 
   css: ['css'],
   scss: ['scss'],

@@ -10,12 +10,16 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import { importX as importXPlugin } from 'eslint-plugin-import-x';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import promisePlugin from 'eslint-plugin-promise';
+import reactPlugin from 'eslint-plugin-react';
+import * as reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 
 import convertWarnsToErrors from '../lib/convertWarnsToErrors.ts';
+import rulesetEslintJsx from '../rulesets/eslint/ruleset-jsx.ts';
 import rulesetEslintShared from '../rulesets/eslint/ruleset-shared.ts';
 import rulesetEslintTypescript, {
   moduleDeclarations as rulesetEslintTypescriptModuleDeclarations,
@@ -69,6 +73,26 @@ export default function makeEslintConfig({
         'import-x/parsers': {
           espree: extensions.js.map((extension) => `.${extension}`),
         },
+      },
+    },
+    {
+      files: [`**/*.{${[...extensions.jsx, ...extensions.tsx].join(',')}}`],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
+        },
+        ...jsxA11yPlugin.flatConfigs.strict.languageOptions,
+        ...reactPlugin.configs.flat['recommended']?.languageOptions,
+        ...reactPlugin.configs.flat['jsx-runtime']?.languageOptions,
+      },
+      plugins: {
+        'jsx-a11y': jsxA11yPlugin,
+        react: reactPlugin,
+        'react-hooks': reactHooksPlugin,
+      },
+      rules: convertWarnsToErrors(rulesetEslintJsx),
+      settings: {
+        react: { version: 'detect' },
       },
     },
 

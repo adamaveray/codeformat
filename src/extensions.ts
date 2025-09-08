@@ -6,4 +6,6 @@ export default {
 
   css: ['css'],
   scss: ['scss'],
+
+  md: ['md', 'mdown', 'markdown'],
 } satisfies Record<string, string[]>;

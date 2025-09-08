@@ -140,7 +140,7 @@ export default {
   '@typescript-eslint/no-implied-eval': 'error',
   '@typescript-eslint/no-inferrable-types': ['error', { ignoreParameters: true }],
   '@typescript-eslint/no-invalid-this': 'error',
-  '@typescript-eslint/no-invalid-void-type': 'error',
+  '@typescript-eslint/no-invalid-void-type': ['error', { allowAsThisParameter: true }],
   '@typescript-eslint/no-loop-func': 'error',
   '@typescript-eslint/no-loss-of-precision': 'error',
   '@typescript-eslint/no-magic-numbers': 'off', // Too many scenarios it is reasonable yet flagged.

@@ -221,6 +221,7 @@ export default {
   'jsdoc/require-param-type': 'off',
   'jsdoc/require-returns-type': 'off',
 
+  'sonarjs/no-redundant-optional': 'off', // Incompatible with TypeScript exact optional property types option.
   'sonarjs/super-invocation': 'off', // Causes issues and is enforced by TypeScript already.
 } satisfies TSESLint.FlatConfig.Rules;
 

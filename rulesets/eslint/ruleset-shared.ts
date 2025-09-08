@@ -306,6 +306,7 @@ export default {
   'sonarjs/no-selector-parameter': 'off', // Overly restrictive.
   'sonarjs/no-small-switch': 'off',
   'sonarjs/prefer-immediate-return': 'off',
+  'sonarjs/prefer-read-only-props': 'off', // Too visually noisy.
   'sonarjs/prefer-regexp-exec': 'off',
   'sonarjs/prefer-single-boolean-return': 'off',
   'sonarjs/pseudo-random': 'off', // Gets in the way of basic random usage by assuming everything ever must be cryptographically secure.
@@ -322,7 +323,7 @@ export default {
   '@stylistic/lines-between-class-members': 'off',
   '@stylistic/max-statements-per-line': 'error',
   '@stylistic/member-delimiter-style': 'off',
-  '@stylistic/multiline-comment-style': 'error',
+  '@stylistic/multiline-comment-style': 'off', // Too frustrating when temporarily commenting out code blocks.
   '@stylistic/multiline-ternary': 'off',
   '@stylistic/no-multiple-empty-line': 'off',
   '@stylistic/operator-linebreak': 'off',

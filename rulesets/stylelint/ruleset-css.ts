@@ -36,4 +36,16 @@ export default {
   'csstools/use-logical': 'always',
   'order/order': ['custom-properties', 'declarations'],
   'order/properties-order': [propertiesOrder, { unspecified: 'bottomAlphabetical' }],
+  'plugin/use-defensive-css': [
+    true,
+    {
+      'accidental-hover': true,
+      'background-repeat': true,
+      'custom-property-fallbacks': false, // Makes using custom properties too burdensome.
+      'flex-wrapping': false, // Not wrapping is the default for a reason.
+      'scroll-chaining': true,
+      'scrollbar-gutter': false, // Ruins the aesthetic to accommodate edge cases.
+      'vendor-prefix-grouping': true,
+    },
+  ],
 };

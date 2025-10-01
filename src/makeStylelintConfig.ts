@@ -3,6 +3,7 @@
 import postcssScss from 'postcss-scss';
 import type { Config, CustomSyntax } from 'stylelint';
 import orderPlugin from 'stylelint-order';
+import defensiveCssPlugins from 'stylelint-plugin-defensive-css';
 import scssPlugin from 'stylelint-scss';
 import useLogicalPlugin from 'stylelint-use-logical';
 
@@ -21,7 +22,7 @@ export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRule
   return {
     defaultSeverity: 'error',
     ignoreFiles: ['**/*.min.*'],
-    plugins: [orderPlugin, useLogicalPlugin],
+    plugins: [...defensiveCssPlugins, orderPlugin, useLogicalPlugin],
     reportDescriptionlessDisables: true,
     reportInvalidScopeDisables: true,
     reportNeedlessDisables: true,

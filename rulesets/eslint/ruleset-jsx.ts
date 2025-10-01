@@ -9,6 +9,7 @@ export default {
   ...reactPlugin.configs.flat['jsx-runtime']?.rules,
   ...reactHooksPlugin.configs['recommended-latest'].rules,
 
+  'jsx-a11y/aria-role': ['error', { allowInvalidRoles: ['text'] }],
   'jsx-a11y/control-has-associated-label': 'error',
   'jsx-a11y/lang': 'error',
   'jsx-a11y/no-aria-hidden-on-focusable': 'error',

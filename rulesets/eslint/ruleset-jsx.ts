@@ -28,7 +28,10 @@ export default {
   'react/jsx-boolean-value': ['error', 'always'],
   'react/jsx-curly-brace-presence': ['error', { children: 'never', propElementValues: 'always', props: 'never' }],
   'react/jsx-fragments': ['error', 'syntax'],
-  'react/jsx-handler-names': ['error', { checkLocalVariables: true }],
+  'react/jsx-handler-names': [
+    'error',
+    { checkLocalVariables: true, eventHandlerPrefix: /(handle|set|unset|clear)/u.source },
+  ],
   'react/jsx-key': ['error', { checkFragmentShorthand: true, checkKeyMustBeforeSpread: true, warnOnDuplicates: true }],
   'react/jsx-no-bind': ['error', { allowArrowFunctions: true }],
   'react/jsx-no-constructed-context-values': 'error',

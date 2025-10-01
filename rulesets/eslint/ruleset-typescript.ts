@@ -196,6 +196,7 @@ export default {
   '@typescript-eslint/prefer-ts-expect-error': 'error',
   '@typescript-eslint/promise-function-async': 'error',
   '@typescript-eslint/require-array-sort-compare': 'error',
+  '@typescript-eslint/require-await': 'off', // Causes errors when implementing interfaces that require a promise.
   '@typescript-eslint/restrict-plus-operands': 'error',
   '@typescript-eslint/restrict-template-expressions': 'error',
   '@typescript-eslint/return-await': 'error',

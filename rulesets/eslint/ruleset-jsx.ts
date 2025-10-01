@@ -61,6 +61,5 @@ export default {
   'react/no-will-update-set-state': 'error',
   'react/prefer-es6-class': 'error',
   'react/prefer-stateless-function': 'error',
-  'react/require-default-props': 'error',
   'react/self-closing-comp': 'error',
 } satisfies TSESLint.FlatConfig.Rules;

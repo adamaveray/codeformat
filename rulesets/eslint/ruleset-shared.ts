@@ -188,7 +188,7 @@ export default {
     'padding-line-between-statements': 'off', // Moved to Stylistic
     'prefer-arrow-callback': 'error',
     'prefer-const': 'error',
-    'prefer-destructuring': 'error',
+    'prefer-destructuring': 'off', // Sometimes it's just too much.
     'prefer-exponentiation-operator': 'error',
     'prefer-numeric-literals': 'error',
     'prefer-object-spread': 'error',

@@ -13,7 +13,6 @@ import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import promisePlugin from 'eslint-plugin-promise';
 import reactPlugin from 'eslint-plugin-react';
-import * as reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactYouMightNotNeedAnEffectPlugin from 'eslint-plugin-react-you-might-not-need-an-effect';
 import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
@@ -27,6 +26,8 @@ import rulesetEslintTypescript, {
 } from '../rulesets/eslint/ruleset-typescript.ts';
 
 import extensions from './extensions.ts';
+
+const reactHooksPlugin = await import('eslint-plugin-react-hooks').then((module) => module.default);
 
 interface Options {
   /** The ECMA version to use. */

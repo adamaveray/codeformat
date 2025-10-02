@@ -52,6 +52,14 @@ declare module 'eslint-plugin-unicorn' {
   };
 }
 
+declare module 'eslint-plugin-react-hooks' {
+  import type { TSESLint } from '@typescript-eslint/utils';
+
+  export = {} as TSESLint.FlatConfig.Plugin & {
+    configs: Record<'recommended', TSESLint.FlatConfig.Config>;
+  };
+}
+
 declare module 'stylelint-config-recommended' {
   import type { Config } from 'stylelint';
 

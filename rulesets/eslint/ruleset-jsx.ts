@@ -33,7 +33,7 @@ export default {
   'react/jsx-fragments': ['error', 'syntax'],
   'react/jsx-handler-names': [
     'error',
-    { checkLocalVariables: true, eventHandlerPrefix: /(handle|set|unset|clear)/u.source },
+    { checkLocalVariables: true, eventHandlerPrefix: /(handle|set|unset|clear|with)/u.source },
   ],
   'react/jsx-key': ['error', { checkFragmentShorthand: true, checkKeyMustBeforeSpread: true, warnOnDuplicates: true }],
   'react/jsx-no-bind': ['error', { allowArrowFunctions: true }],

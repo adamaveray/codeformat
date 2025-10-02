@@ -2,12 +2,14 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import * as reactHooksPlugin from 'eslint-plugin-react-hooks';
+import reactYouMightNotNeedAnEffectPlugin from 'eslint-plugin-react-you-might-not-need-an-effect';
 
 export default {
   ...jsxA11yPlugin.configs.strict.rules,
   ...reactPlugin.configs.flat['recommended']?.rules,
   ...reactPlugin.configs.flat['jsx-runtime']?.rules,
   ...reactHooksPlugin.configs['recommended-latest'].rules,
+  ...reactYouMightNotNeedAnEffectPlugin.configs.recommended.rules,
 
   'jsx-a11y/aria-role': ['error', { allowInvalidRoles: ['text'] }],
   'jsx-a11y/control-has-associated-label': 'error',

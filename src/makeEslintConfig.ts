@@ -14,6 +14,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import promisePlugin from 'eslint-plugin-promise';
 import reactPlugin from 'eslint-plugin-react';
 import * as reactHooksPlugin from 'eslint-plugin-react-hooks';
+import reactYouMightNotNeedAnEffectPlugin from 'eslint-plugin-react-you-might-not-need-an-effect';
 import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
@@ -89,6 +90,7 @@ export default function makeEslintConfig({
         'jsx-a11y': jsxA11yPlugin,
         react: reactPlugin,
         'react-hooks': reactHooksPlugin,
+        'react-you-might-not-need-an-effect': reactYouMightNotNeedAnEffectPlugin,
       },
       rules: convertWarnsToErrors(rulesetEslintJsx),
       settings: {

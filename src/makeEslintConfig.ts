@@ -45,6 +45,8 @@ export default function makeEslintConfig({
   tsconfigPath,
 }: Options = {}): TSESLint.FlatConfig.Config[] {
   return [
+    prettierConfig,
+
     // Markdown
     ...markdownPlugin.configs.recommended,
 
@@ -122,7 +124,5 @@ export default function makeEslintConfig({
       files: ['**/*.d.ts'],
       rules: rulesetEslintTypescriptModuleDeclarations,
     },
-
-    prettierConfig,
   ];
 }

@@ -49,4 +49,4 @@ export default {
 
   // Customise rulesets
   'scss/at-if-no-null': null,
-};
+} as const;

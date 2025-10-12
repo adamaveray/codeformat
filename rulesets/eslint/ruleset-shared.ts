@@ -317,6 +317,7 @@ export default {
   '@stylistic/brace-style': 'off',
   '@stylistic/indent': 'off',
   '@stylistic/indent-binary-ops': 'off',
+  '@stylistic/jsx-curly-newline': 'off',
   '@stylistic/jsx-indent-props': 'off',
   '@stylistic/jsx-one-expression-per-line': 'off',
   '@stylistic/jsx-wrap-multilines': 'off',
@@ -351,4 +352,4 @@ export default {
   'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-post-message-target-origin': 'error',
   'unicorn/text-encoding-identifier-case': 'off', // Too many false positives
-} satisfies TSESLint.FlatConfig.Rules;
+} as const satisfies TSESLint.FlatConfig.Rules;

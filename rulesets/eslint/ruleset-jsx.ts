@@ -69,4 +69,4 @@ export default {
   'react/prefer-es6-class': 'error',
   'react/prefer-stateless-function': 'error',
   'react/self-closing-comp': 'error',
-} satisfies TSESLint.FlatConfig.Rules;
+} as const satisfies TSESLint.FlatConfig.Rules;

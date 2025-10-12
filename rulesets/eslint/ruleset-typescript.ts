@@ -224,8 +224,8 @@ export default {
 
   'sonarjs/no-redundant-optional': 'off', // Incompatible with TypeScript exact optional property types option.
   'sonarjs/super-invocation': 'off', // Causes issues and is enforced by TypeScript already.
-} satisfies TSESLint.FlatConfig.Rules;
+} as const satisfies TSESLint.FlatConfig.Rules;
 
 export const moduleDeclarations = {
   'no-duplicate-imports': 'off', // Allow imports within multiple module declarations.
-} satisfies TSESLint.FlatConfig.Rules;
+} as const satisfies TSESLint.FlatConfig.Rules;

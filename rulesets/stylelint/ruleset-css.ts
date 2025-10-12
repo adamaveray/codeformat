@@ -48,4 +48,4 @@ export default {
       'vendor-prefix-grouping': true,
     },
   ],
-};
+} as const;

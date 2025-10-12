@@ -20,6 +20,7 @@ import unicornPlugin from 'eslint-plugin-unicorn';
 
 import convertWarnsToErrors from '../lib/convertWarnsToErrors.ts';
 import rulesetEslintJsx from '../rulesets/eslint/ruleset-jsx.ts';
+import rulesetEslintMarkdown from '../rulesets/eslint/ruleset-markdown.ts';
 import rulesetEslintShared from '../rulesets/eslint/ruleset-shared.ts';
 import rulesetEslintTypescript, {
   moduleDeclarations as rulesetEslintTypescriptModuleDeclarations,
@@ -48,7 +49,12 @@ export default function makeEslintConfig({
     prettierConfig,
 
     // Markdown
-    ...markdownPlugin.configs.recommended,
+    {
+      files: [`**/*.{${extensions.md.join(',')}}`],
+      language: 'markdown/commonmark',
+      plugins: { markdown: markdownPlugin },
+      rules: convertWarnsToErrors(rulesetEslintMarkdown),
+    },
 
     // JavaScript & TypeScript
     {

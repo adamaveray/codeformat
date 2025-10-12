@@ -122,7 +122,7 @@ export default function makeEslintConfig({
     },
     {
       files: ['**/*.d.ts'],
-      rules: rulesetEslintTypescriptModuleDeclarations,
+      rules: convertWarnsToErrors(rulesetEslintTypescriptModuleDeclarations),
     },
   ];
 }

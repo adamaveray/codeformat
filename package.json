@@ -21,7 +21,7 @@
   "scripts": {
     "build": "rm -rf dist && bun run build:tsc && bun run build:php && chmod +x dist/bin/*.js",
     "build:tsc": "bun --bun x tsc --project tsconfig.build.json --outDir dist",
-    "build:php": "cp -R src/php dist/src/",
+    "build:php": "cp -R src/php dist/src/ && cp -R rulesets/php dist/rulesets/",
     "test": "bun test",
     "format": "dist/bin/codeformat.js fix",
     "lint": "dist/bin/codeformat.js check",

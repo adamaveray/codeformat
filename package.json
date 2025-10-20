@@ -11,7 +11,7 @@
   "description": "A very opinionated collection of configurations for a number of code formatting tools.",
   "type": "module",
   "engines": {
-    "bun": ">=1.2"
+    "bun": ">=1.3"
   },
   "bin": {
     "codeformat": "dist/bin/codeformat.js"

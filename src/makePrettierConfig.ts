@@ -1,4 +1,5 @@
 /* eslint sort-keys: "error" -- Organise rules */
+/* eslint unicorn/no-useless-spread: "off" -- Keep the basic settings together. */
 
 import type { Config } from 'prettier';
 
@@ -14,7 +15,7 @@ interface Plugins {
  */
 export default function makePrettierConfig(
   { php = false, xml = false }: Plugins = {},
-  { plugins = [], ...config }: Config = {},
+  { plugins = [], overrides = [], ...config }: Config = {},
 ): Config {
   if (php) {
     plugins.push('@prettier/plugin-php');
@@ -23,12 +24,21 @@ export default function makePrettierConfig(
     plugins.push('@prettier/plugin-xml');
   }
   return {
-    arrowParens: 'always',
-    plugins,
-    proseWrap: 'never',
-    semi: true,
-    singleQuote: true,
-    trailingComma: 'all',
+    ...{
+      arrowParens: 'always',
+      plugins,
+      proseWrap: 'never',
+      semi: true,
+      singleQuote: true,
+      trailingComma: 'all',
+    },
+    overrides: [
+      {
+        files: ['**/*.yml', '**/*.yaml'],
+        options: { proseWrap: 'preserve' }, // Prevents Prettier bug (https://github.com/prettier/prettier/issues/10776)
+      },
+      ...overrides,
+    ],
     ...config,
   };
 }

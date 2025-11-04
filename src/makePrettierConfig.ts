@@ -4,6 +4,7 @@
 import type { Config } from 'prettier';
 
 interface Plugins {
+  ini?: boolean;
   php?: boolean;
   xml?: boolean;
 }
@@ -14,9 +15,12 @@ interface Plugins {
  * @returns The complete Prettier config.
  */
 export default function makePrettierConfig(
-  { php = false, xml = false }: Plugins = {},
+  { ini = false, php = false, xml = false }: Plugins = {},
   { plugins = [], overrides = [], ...config }: Config = {},
 ): Config {
+  if (ini) {
+    plugins.push('prettier-plugin-ini');
+  }
   if (php) {
     plugins.push('@prettier/plugin-php');
   }

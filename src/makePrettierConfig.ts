@@ -1,7 +1,10 @@
 /* eslint sort-keys: "error" -- Organise rules */
 /* eslint unicorn/no-useless-spread: "off" -- Keep the basic settings together. */
 
+import * as pluginPhp from '@prettier/plugin-php';
+import pluginXml from '@prettier/plugin-xml';
 import type { Config } from 'prettier';
+import pluginIni from 'prettier-plugin-ini';
 
 interface Plugins {
   ini?: boolean;
@@ -19,13 +22,13 @@ export default function makePrettierConfig(
   { plugins = [], overrides = [], ...config }: Config = {},
 ): Config {
   if (ini) {
-    plugins.push('prettier-plugin-ini');
+    plugins.push(pluginIni);
   }
   if (php) {
-    plugins.push('@prettier/plugin-php');
+    plugins.push(pluginPhp);
   }
   if (xml) {
-    plugins.push('@prettier/plugin-xml');
+    plugins.push(pluginXml);
   }
   return {
     ...{

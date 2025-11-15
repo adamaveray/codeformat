@@ -6,9 +6,6 @@ export default {
     // Build tools
     'bumpp',
     'husky',
-    // Included to be used by consumers
-    /^@prettier\/plugin-/u,
-    /^prettier-plugin-/u,
     // To be dealt with
     'typescript-eslint',
   ],

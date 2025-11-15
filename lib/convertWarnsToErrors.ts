@@ -1,14 +1,14 @@
-type Converted<T> = {
-  [key in keyof T]: T[key] extends 'warn' | 1
-    ? 'error'
-    : T[key] extends ['warn' | 1, ...infer Rest]
-      ? ['error', ...Rest]
-      : T[key];
-};
+type WarnValue = 'warn' | 1;
+type ConvertedValue<T> = T extends WarnValue
+  ? 'error'
+  : T extends readonly [WarnValue, ...infer TRest]
+    ? ['error', ...TRest]
+    : T;
+type Converted<T> = { [key in keyof T]: ConvertedValue<T[key]> };
 
 type Iterated<T extends Record<any, any>> = Iterable<[keyof T, T[keyof T]], unknown, unknown>;
 
-const isWarning = (value: unknown): value is 'warn' | 1 => value === 'warn' || value === 1;
+const isWarning = (value: unknown): value is WarnValue => value === 'warn' || value === 1;
 
 /**
  * Replaces any `warn` values in the provided object with `error` (including those within arrays with configs), preserving all other values.

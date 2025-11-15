@@ -9,7 +9,7 @@ describe('convertWarnsToErrors', () => {
   });
 
   test.each(['warn', 1])('converts nested warnings', (value) => {
-    const result = convertWarnsToErrors({ rule1: [value, { foo: 'bar' }] });
+    const result = convertWarnsToErrors({ rule1: [value, { foo: 'bar' }] as const });
     expect(result).toEqual({ rule1: ['error', { foo: 'bar' }] });
   });
 

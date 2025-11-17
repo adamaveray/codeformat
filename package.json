@@ -18,6 +18,10 @@
   },
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "files": [
+    "/dist",
+    "/README.md"
+  ],
   "scripts": {
     "build": "rm -rf dist && bun run build:tsc && bun run build:php && chmod +x dist/bin/*.js",
     "build:tsc": "bun --bun x tsc --project tsconfig.build.json --outDir dist",

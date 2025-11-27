@@ -17,11 +17,21 @@ class PhpCsFixerConfig extends BaseConfig
     $config = new self();
 
     $config->setParallelConfig(ParallelConfigFactory::detect())->setRiskyAllowed(true)->setRules(static::loadRules());
+    $config->setUnsupportedPhpVersionAllowed(self::phpVersionCompare('>=', '8.5.0'));
 
     if ($finder !== null) {
       $config->setFinder($finder);
     }
 
     return $config;
+  }
+
+  private static function phpVersionCompare(string $operator, string $version): bool
+  {
+    return \version_compare(
+      \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION . '.' . \PHP_RELEASE_VERSION,
+      $version,
+      $operator,
+    );
   }
 }

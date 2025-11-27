@@ -9,7 +9,7 @@ A very opinionated collection of configurations for a number of code formatting 
 2. Symlink the static configuration files to the project root:
 
    ```sh
-   ln -s node_modules/@averay/codeformat/.editorconfig node_modules/@averay/codeformat/.prettierrc.json ./
+   ln -s node_modules/@averay/codeformat/.editorconfig ./
    ```
 
 3. Import and call the relevant configuration builders for specific tools

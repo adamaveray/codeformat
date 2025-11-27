@@ -19,8 +19,10 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
+    "/.editorconfig",
     "/dist",
-    "/README.md"
+    "/README.md",
+    "/tsconfig.base.json"
   ],
   "scripts": {
     "build": "rm -rf dist && bun run build:tsc && bun run build:php && chmod +x dist/bin/*.js",

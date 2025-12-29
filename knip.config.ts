@@ -1,7 +1,7 @@
 import type { KnipConfig } from 'knip';
 
 export default {
-  ignoreBinaries: ['publish', /^dist\/bin\//u],
+  ignoreBinaries: [/^dist\/bin\//u],
   ignoreDependencies: [
     // Build tools
     'bumpp',

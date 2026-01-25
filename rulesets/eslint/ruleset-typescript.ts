@@ -55,7 +55,10 @@ export default {
   '@typescript-eslint/consistent-type-imports': 'error',
   '@typescript-eslint/default-param-last': 'error',
   '@typescript-eslint/dot-notation': 'error',
-  '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
+  '@typescript-eslint/explicit-function-return-type': [
+    'error',
+    { allowExpressions: true, allowFunctionsWithoutTypeParameters: true, allowIIFEs: true },
+  ],
   '@typescript-eslint/explicit-member-accessibility': ['error', { overrides: { constructors: 'no-public' } }],
   '@typescript-eslint/explicit-module-boundary-types': ['error', { allowArgumentsExplicitlyTypedAsAny: true }],
   '@typescript-eslint/member-ordering': 'off',

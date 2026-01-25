@@ -135,6 +135,7 @@ export default {
   '@typescript-eslint/no-dynamic-delete': 'off',
   '@typescript-eslint/no-empty-function': 'error',
   '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
+  '@typescript-eslint/no-empty-object-type': ['error', { allowObjectTypes: 'always' }],
   '@typescript-eslint/no-explicit-any': 'off',
   '@typescript-eslint/no-extra-non-null-assertion': 'error',
   '@typescript-eslint/no-extraneous-class': 'error',

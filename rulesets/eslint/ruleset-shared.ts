@@ -46,7 +46,7 @@ export default {
     'no-alert': 'error',
     'no-array-constructor': 'error',
     'no-async-promise-executor': 'error',
-    'no-await-in-loop': 'error',
+    'no-await-in-loop': 'off', // It is very common to need to process a loop sequentially.
     'no-bitwise': 'error',
     'no-buffer-constructor': 'error',
     'no-caller': 'error',
@@ -198,7 +198,7 @@ export default {
     'prefer-spread': 'error',
     'prefer-template': 'error',
     radix: 'error',
-    'require-atomic-updates': 'error',
+    'require-atomic-updates': 'off', // Too many false positives.
     'require-unicode-regexp': 'error',
     'require-yield': 'error',
     'spaced-comment': 'off', // Moved to Stylistic

@@ -20,7 +20,6 @@ export default class ToolRunner<TToolName extends string> {
 
     // Run all tools
     for (const [thisToolName, thisTool] of Object.entries(this.tools) as [TToolName, Tool][]) {
-      // eslint-disable-next-line no-await-in-loop -- Must be run in series
       await this.runTool(thisToolName, thisTool, action);
     }
   }

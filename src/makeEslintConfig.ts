@@ -18,6 +18,7 @@ import regexpPlugin from 'eslint-plugin-regexp';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 
+import { findFirstFile } from '../bin/utils/filesystem.ts';
 import convertWarnsToErrors from '../lib/convertWarnsToErrors.ts';
 import rulesetEslintJsx from '../rulesets/eslint/ruleset-jsx.ts';
 import rulesetEslintMarkdown from '../rulesets/eslint/ruleset-markdown.ts';
@@ -33,8 +34,12 @@ const reactHooksPlugin = await import('eslint-plugin-react-hooks').then((module)
 interface Options {
   /** The ECMA version to use. */
   ecmaVersion?: TSESLint.FlatConfig.EcmaVersion;
+  /** The absolute path to the project's root. */
+  rootPath?: string;
   /** The relative path to the project's `tsconfig.json` file. */
   tsconfigPath?: string;
+  /** Whether the project uses the Bun runtime. */
+  isBun?: boolean;
 }
 
 /**
@@ -43,8 +48,11 @@ interface Options {
  */
 export default function makeEslintConfig({
   ecmaVersion = 'latest',
+  rootPath = process.cwd(),
   tsconfigPath,
+  isBun,
 }: Options = {}): TSESLint.FlatConfig.Config[] {
+  isBun ??= findFirstFile(rootPath, ['bun.lock', 'bunfig.toml']) != null;
   return [
     prettierConfig,
 
@@ -80,6 +88,10 @@ export default function makeEslintConfig({
       },
       rules: convertWarnsToErrors(rulesetEslintShared),
       settings: {
+        'import-x/core-modules': [
+          // Treat Bun as core module even when running under Node.
+          ...(isBun ? ['bun'] : []),
+        ],
         'import-x/parsers': {
           espree: extensions.js.map((extension) => `.${extension}`),
         },

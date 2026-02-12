@@ -301,6 +301,7 @@ export default {
   'sonarjs/cognitive-complexity': 'off',
   'sonarjs/function-return-type': 'off', // Overly restrictive.
   'sonarjs/max-switch-cases': 'off',
+  'sonarjs/no-async-constructor': 'off', // Prevents even referencing promises in constructors.
   'sonarjs/no-inverted-boolean-check': 'error',
   'sonarjs/no-nested-template-literals': 'off',
   'sonarjs/no-selector-parameter': 'off', // Overly restrictive.
@@ -341,8 +342,11 @@ export default {
   '@stylistic/spaced-comment': ['error', 'always', { markers: ['/'] }],
 
   ...unicornPlugin.configs.recommended.rules,
+  'unicorn/catch-error-name': 'off', // A bizarre, overly opinionated rule requiring a non-standard variable name.
   'unicorn/consistent-function-scoping': ['error', { checkArrowFunctions: false }],
   'unicorn/filename-case': 'off',
+  'unicorn/no-array-callback-reference': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
+  'unicorn/no-array-method-this-argument': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
   'unicorn/no-null': 'off',
   'unicorn/no-useless-undefined': 'off', // Conflicts with `consistent-return`.
   'unicorn/numeric-separators-style': ['error', { number: { groupLength: 3, minimumDigits: 0 } }],

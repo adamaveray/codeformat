@@ -103,12 +103,6 @@ declare module 'stylelint-order' {
   export default {} as Plugin;
 }
 
-declare module 'stylelint-plugin-defensive-css' {
-  import type { Plugin } from 'stylelint';
-
-  export default [] as [Plugin];
-}
-
 declare module 'stylelint-scss' {
   import type { Plugin } from 'stylelint';
 

@@ -1,6 +1,7 @@
 import propertiesOrder from '@averay/css-properties-sort-order';
 import recommended from 'stylelint-config-recommended';
 import standard from 'stylelint-config-standard';
+import defensiveCssStrict from 'stylelint-plugin-defensive-css/configs/strict';
 
 import patterns from '../../lib/cssPatterns.ts';
 
@@ -34,18 +35,12 @@ export default {
 
   // Extensions
   'csstools/use-logical': 'always',
+
+  ...defensiveCssStrict.rules,
+  'defensive-css/require-custom-property-fallback': null, // Makes using custom properties too burdensome.
+  'defensive-css/require-flex-wrap': null, // Not wrapping is the default for a reason.
+  'defensive-css/require-scrollbar-gutter': null, // Ruins the aesthetic to accommodate edge cases.
+
   'order/order': ['custom-properties', 'declarations'],
   'order/properties-order': [propertiesOrder, { unspecified: 'bottomAlphabetical' }],
-  'plugin/use-defensive-css': [
-    true,
-    {
-      'accidental-hover': true,
-      'background-repeat': true,
-      'custom-property-fallbacks': false, // Makes using custom properties too burdensome.
-      'flex-wrapping': false, // Not wrapping is the default for a reason.
-      'scroll-chaining': true,
-      'scrollbar-gutter': false, // Ruins the aesthetic to accommodate edge cases.
-      'vendor-prefix-grouping': true,
-    },
-  ],
 } as const;

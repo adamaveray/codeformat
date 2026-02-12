@@ -17,7 +17,7 @@ type ConfigRules = Config['rules'];
 /**
  * @returns The complete Stylelint config.
  */
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/explicit-module-boundary-types -- Preserve specific object shape.
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- Preserve specific object shape.
 export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRules: ConfigRules = {}) {
   return {
     defaultSeverity: 'error',

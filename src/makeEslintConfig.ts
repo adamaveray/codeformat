@@ -90,7 +90,7 @@ export default function makeEslintConfig({
       settings: {
         'import-x/core-modules': [
           // Treat Bun as core module even when running under Node.
-          ...(isBun ? ['bun'] : []),
+          ...(isBun ? ['bun', 'bun:test'] : []),
         ],
         'import-x/parsers': {
           espree: extensions.js.map((extension) => `.${extension}`),

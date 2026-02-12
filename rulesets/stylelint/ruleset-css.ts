@@ -36,7 +36,7 @@ export default {
   // Extensions
   'csstools/use-logical': 'always',
 
-  ...defensiveCssStrict.rules,
+  ...(defensiveCssStrict.rules as unknown as Record<`defensive-css/${string}`, true>), // Resolve TS4058 error referencing internal types.
   'defensive-css/require-custom-property-fallback': null, // Makes using custom properties too burdensome.
   'defensive-css/require-flex-wrap': null, // Not wrapping is the default for a reason.
   'defensive-css/require-scrollbar-gutter': null, // Ruins the aesthetic to accommodate edge cases.

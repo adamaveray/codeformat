@@ -33,7 +33,7 @@
     "lint": "dist/bin/codeformat.js check",
     "prepare": "bun --bun x husky",
     "prepack": "bun run build",
-    "release": "bun run lint && bun --bun x bumpp && bun publish",
+    "release": "bun run lint && bun --bun x bumpp && bun publish --access=public",
     "watch": "bun run build:tsc --watch"
   },
   "peerDependencies": {

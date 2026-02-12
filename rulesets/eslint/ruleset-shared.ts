@@ -1,6 +1,6 @@
+import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments';
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import type { TSESLint } from '@typescript-eslint/utils';
-import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import-x';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import promisePlugin from 'eslint-plugin-promise';
@@ -210,8 +210,8 @@ export default {
   },
 
   ...eslintCommentsPlugin.configs.recommended.rules,
-  'eslint-comments/no-unused-disable': 'error',
-  'eslint-comments/require-description': 'error',
+  '@eslint-community/eslint-comments/no-unused-disable': 'error',
+  '@eslint-community/eslint-comments/require-description': 'error',
 
   ...importPlugin.configs.recommended.rules,
   'import-x/consistent-type-specifier-style': ['error', 'prefer-top-level'],

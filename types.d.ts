@@ -19,14 +19,6 @@ declare module 'eslint-config-prettier' {
   export default {} as TSESLint.FlatConfig.Config;
 }
 
-declare module 'eslint-plugin-eslint-comments' {
-  import type { TSESLint } from '@typescript-eslint/utils';
-
-  export default {} as TSESLint.FlatConfig.Plugin & {
-    configs: Record<'recommended', TSESLint.FlatConfig.Config>;
-  };
-}
-
 declare module 'eslint-plugin-jsdoc' {
   import type { TSESLint } from '@typescript-eslint/utils';
 

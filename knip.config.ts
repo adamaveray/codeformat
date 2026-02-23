@@ -12,5 +12,4 @@ export default {
   ignoreExportsUsedInFile: true,
   entry: ['src/index.ts', 'bin/codeformat.ts'],
   project: ['src/**/*.ts', 'bin/**/*.ts', 'lib/**/*.ts', 'rulesets/**/*.ts'],
-  ignore: ['dist/**'],
 } satisfies KnipConfig;

@@ -5,20 +5,6 @@ declare module '@prettier/plugin-php' {
   export = plugin; // The bundled types incorrectly declare `export default plugin` while the source is `export { ... }`.
 }
 
-declare module '@stylistic/eslint-plugin' {
-  import type { TSESLint } from '@typescript-eslint/utils';
-
-  export default {} as TSESLint.FlatConfig.Plugin & {
-    configs: Record<'recommended', TSESLint.FlatConfig.Config>;
-  };
-}
-
-declare module 'eslint-config-prettier' {
-  import type { TSESLint } from '@typescript-eslint/utils';
-
-  export default {} as TSESLint.FlatConfig.Config;
-}
-
 declare module 'eslint-plugin-jsdoc' {
   import type { TSESLint } from '@typescript-eslint/utils';
 
@@ -39,22 +25,6 @@ declare module 'eslint-plugin-sonarjs' {
   import type { TSESLint } from '@typescript-eslint/utils';
 
   export default {} as TSESLint.FlatConfig.Plugin & {
-    configs: Record<'recommended', TSESLint.FlatConfig.Config>;
-  };
-}
-
-declare module 'eslint-plugin-unicorn' {
-  import type { TSESLint } from '@typescript-eslint/utils';
-
-  export default {} as TSESLint.FlatConfig.Plugin & {
-    configs: Record<'recommended', TSESLint.FlatConfig.Config>;
-  };
-}
-
-declare module 'eslint-plugin-react-hooks' {
-  import type { TSESLint } from '@typescript-eslint/utils';
-
-  export = {} as TSESLint.FlatConfig.Plugin & {
     configs: Record<'recommended', TSESLint.FlatConfig.Config>;
   };
 }

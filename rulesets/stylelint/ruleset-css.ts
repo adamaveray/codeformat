@@ -37,8 +37,10 @@ export default {
   'csstools/use-logical': 'always',
 
   ...(defensiveCssStrict.rules as unknown as Record<`defensive-css/${string}`, true>), // Resolve TS4058 error referencing internal types.
+  'defensive-css/no-accidental-hover': null, // Overbearing and disallows combining with `:focus-visible`.
   'defensive-css/require-custom-property-fallback': null, // Makes using custom properties too burdensome.
   'defensive-css/require-flex-wrap': null, // Not wrapping is the default for a reason.
+  'defensive-css/require-prefers-reduced-motion': null, // "Reduce" motion does not mean "no" motion.
   'defensive-css/require-scrollbar-gutter': null, // Ruins the aesthetic to accommodate edge cases.
 
   'order/order': ['custom-properties', 'declarations'],

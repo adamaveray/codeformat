@@ -138,19 +138,7 @@ export default {
     'no-throw-literal': 'error',
     'no-undef': 'error',
     'no-undef-init': 'error',
-    'no-underscore-dangle': [
-      'error',
-      {
-        allow: ['_', '_this', '_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9'],
-        allowAfterSuper: true,
-        allowAfterThis: true,
-        allowAfterThisConstructor: true,
-        allowFunctionParams: false,
-        allowInArrayDestructuring: false,
-        enforceInClassFields: true,
-        enforceInMethodNames: true,
-      },
-    ],
+    'no-underscore-dangle': 'off', // Sometimes necessary to have temporarily-unused values.
     'no-unmodified-loop-condition': 'error',
     'no-unneeded-ternary': 'error',
     'no-unreachable': 'error',
@@ -316,6 +304,7 @@ export default {
   ...stylisticPlugin.configs.recommended.rules,
   '@stylistic/arrow-parens': 'off',
   '@stylistic/brace-style': 'off',
+  '@stylistic/generator-star-spacing': 'off',
   '@stylistic/indent': 'off',
   '@stylistic/indent-binary-ops': 'off',
   '@stylistic/jsx-curly-newline': 'off',
@@ -349,6 +338,7 @@ export default {
   'unicorn/no-array-method-this-argument': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
   'unicorn/no-null': 'off',
   'unicorn/no-useless-undefined': 'off', // Conflicts with `consistent-return`.
+  'unicorn/number-literal-case': 'off', // Conflicts with Prettier.
   'unicorn/numeric-separators-style': ['error', { number: { groupLength: 3, minimumDigits: 0 } }],
   'unicorn/prefer-dom-node-text-content': 'off', // `innerText` and `textContent` behave differently so cannot reliably enforce one over the other.
   'unicorn/prefer-event-target': 'error',

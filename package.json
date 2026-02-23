@@ -22,7 +22,8 @@
     "/.editorconfig",
     "/dist",
     "/README.md",
-    "/tsconfig.base.json"
+    "/tsconfig.base.json",
+    "/types.d.ts"
   ],
   "scripts": {
     "build": "rm -rf dist && bun run build:tsc && bun run build:php && chmod +x dist/bin/*.js",

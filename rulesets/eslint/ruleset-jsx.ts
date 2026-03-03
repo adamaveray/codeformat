@@ -18,6 +18,8 @@ export default {
   'jsx-a11y/no-aria-hidden-on-focusable': 'error',
   'jsx-a11y/prefer-tag-over-role': 'error',
 
+  'react-hooks/refs': 'off', // Too many false positives.
+
   'react-you-might-not-need-an-effect/no-pass-ref-to-parent': 'off', // `forwardRef` is deprecated.
 
   'react/button-has-type': 'error',

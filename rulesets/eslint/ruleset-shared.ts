@@ -287,10 +287,12 @@ export default {
 
   ...sonarjsPlugin.configs.recommended.rules,
   'sonarjs/cognitive-complexity': 'off',
+  'sonarjs/deprecation': 'off', // Not practical.
   'sonarjs/function-return-type': 'off', // Overly restrictive.
   'sonarjs/max-switch-cases': 'off',
   'sonarjs/no-async-constructor': 'off', // Prevents even referencing promises in constructors.
   'sonarjs/no-inverted-boolean-check': 'error',
+  'sonarjs/no-nested-functions': 'off', // Just gets in the way.
   'sonarjs/no-nested-template-literals': 'off',
   'sonarjs/no-selector-parameter': 'off', // Overly restrictive.
   'sonarjs/no-small-switch': 'off',
@@ -336,6 +338,7 @@ export default {
   'unicorn/filename-case': 'off',
   'unicorn/no-array-callback-reference': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
   'unicorn/no-array-method-this-argument': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
+  'unicorn/no-array-sort': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
   'unicorn/no-null': 'off',
   'unicorn/no-useless-undefined': 'off', // Conflicts with `consistent-return`.
   'unicorn/number-literal-case': 'off', // Conflicts with Prettier.

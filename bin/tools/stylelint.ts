@@ -12,5 +12,5 @@ export default {
   args: {
     debug: ['--formatter', 'verbose'],
   },
-  configFiles: withExts('stylelint.config', [...commonExts.js]),
+  configFiles: withExts('stylelint.config', [...commonExts.ts, ...commonExts.js]),
 } satisfies Tool;

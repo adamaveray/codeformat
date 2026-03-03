@@ -45,10 +45,10 @@ export default [
 
 ### Stylelint
 
-Create a `stylelint.config.js` file with the following configuration:
+Create a `stylelint.config.ts` file with the following configuration:
 
 ```js
-// stylelint.config.js
+// stylelint.config.ts
 import { makeStylelintConfig } from '@averay/codeformat';
 
 export default makeStylelintConfig();

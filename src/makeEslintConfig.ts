@@ -54,6 +54,16 @@ export default function makeEslintConfig({
 }: Options = {}): TSESLint.FlatConfig.Config[] {
   isBun ??= findFirstFile(rootPath, ['bun.lock', 'bunfig.toml']) != null;
   return [
+    {
+      ignores: [
+        // Conservatively safe ignores
+        '**/.DS_Store',
+        '.cache/**/*',
+        '.git/**/*',
+        'node_modules/**/*',
+      ],
+    },
+
     prettierConfig,
 
     // Markdown

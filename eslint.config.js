@@ -4,7 +4,7 @@ import makeEslintConfig from './src/makeEslintConfig.ts';
 
 export default [
   {
-    ignores: ['dist/**/*.*', 'node_modules/**/*', 'vendor/**/*'],
+    ignores: ['dist/**/*.*', 'vendor/**/*'],
   },
   ...makeEslintConfig({ tsconfigPath: './tsconfig.json' }),
   {

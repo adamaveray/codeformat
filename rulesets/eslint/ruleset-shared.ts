@@ -199,7 +199,12 @@ export default {
 
   ...eslintCommentsPlugin.configs.recommended.rules,
   '@eslint-community/eslint-comments/no-unused-disable': 'error',
-  '@eslint-community/eslint-comments/require-description': 'error',
+  '@eslint-community/eslint-comments/require-description': [
+    'error',
+    {
+      ignore: ['eslint-enable'], // Do not require repeating the comment when re-enabling.
+    },
+  ],
 
   ...importPlugin.configs.recommended.rules,
   'import-x/consistent-type-specifier-style': ['error', 'prefer-top-level'],

@@ -1,9 +1,7 @@
-/* eslint sort-keys: "error" -- Organise rules */
-/* eslint unicorn/no-useless-spread: "off" -- Keep the basic settings together. */
+import type { Config } from 'prettier';
 
 import * as pluginPhp from '@prettier/plugin-php';
 import pluginXml from '@prettier/plugin-xml';
-import type { Config } from 'prettier';
 import pluginIni from 'prettier-plugin-ini';
 
 interface Plugins {
@@ -31,14 +29,13 @@ export default function makePrettierConfig(
     plugins.push(pluginXml);
   }
   return {
-    ...{
-      arrowParens: 'always',
-      plugins,
-      proseWrap: 'never',
-      semi: true,
-      singleQuote: true,
-      trailingComma: 'all',
-    },
+    arrowParens: 'always',
+    plugins,
+    proseWrap: 'never',
+    semi: true,
+    singleQuote: true,
+    trailingComma: 'all',
+    /* oxlint-disable eslint/sort-keys -- Logically positioned. */
     overrides: [
       {
         files: ['**/*.yml', '**/*.yaml'],
@@ -46,6 +43,7 @@ export default function makePrettierConfig(
       },
       ...overrides,
     ],
+    /* oxlint-enable eslint/sort-keys */
     ...config,
   };
 }

@@ -1,8 +1,9 @@
 import { spawn } from 'bun';
 import { parseArgs } from 'node:util';
 
-import Output from './Output.ts';
 import type { ToolAction } from './types.ts';
+
+import Output from './Output.ts';
 
 interface Options {
   verbose: boolean;
@@ -38,7 +39,11 @@ export default class Cli {
     }
   }
 
-  public static createFromArgs(argv: string[]): { cli: Cli; selectedAction: ToolAction; selectedTool?: string } {
+  public static createFromArgs(argv: string[]): {
+    cli: Cli;
+    selectedAction: ToolAction;
+    selectedTool?: string;
+  } {
     // Parse input
     const { values: options, positionals } = parseArgs({
       args: argv,
@@ -59,7 +64,11 @@ export default class Cli {
     const { dir, tool, 'cache-dir': cacheDir, 'no-cache': noCache, ...additionalOptions } = options;
     const [, scriptName, selectedAction, ...undefinedArgs] = positionals as [string, string, ...string[]];
 
-    const cli = new Cli(scriptName, dir, { cacheDir, cache: !noCache, ...additionalOptions });
+    const cli = new Cli(scriptName, dir, {
+      cacheDir,
+      cache: !noCache,
+      ...additionalOptions,
+    });
     if (options.help || selectedAction == null) {
       cli.output.usage();
     }

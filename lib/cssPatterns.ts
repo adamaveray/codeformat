@@ -1,5 +1,3 @@
-/* eslint require-unicode-regexp: 'off' -- Expressions are passed to Stylelint as strings so cannot use any flags in order to match their behaviour. */
-
 const patterns = {
   bem: /^[a-z]+(?:(?:-|--|__)[a-z]+)*$/.source,
   bemWithOptionalSingleUnderscorePrefix: /^_?[a-z]+(?:(?:-|--|__)[a-z]+)*$/.source,

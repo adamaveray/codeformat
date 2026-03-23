@@ -1,6 +1,7 @@
 import type Cli from './Cli.ts';
-import { findFirstFile } from './filesystem.ts';
 import type { Tool, ToolAction } from './types.ts';
+
+import { findFirstFile } from './filesystem.ts';
 
 export default class ToolRunner<TToolName extends string> {
   constructor(

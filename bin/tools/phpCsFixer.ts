@@ -1,6 +1,7 @@
+import type { Tool } from '../utils/types.ts';
+
 import { withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
-import type { Tool } from '../utils/types.ts';
 
 export default {
   exec: runners.composer,

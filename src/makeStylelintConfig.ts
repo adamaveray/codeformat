@@ -1,7 +1,6 @@
-/* eslint sort-keys: "error" -- Organise rules */
+import type { Config, CustomSyntax } from 'stylelint';
 
 import postcssScss from 'postcss-scss';
-import type { Config, CustomSyntax } from 'stylelint';
 import orderPlugin from 'stylelint-order';
 import defensiveCssPlugins from 'stylelint-plugin-defensive-css';
 import scssPlugin from 'stylelint-scss';
@@ -9,16 +8,16 @@ import useLogicalPlugin from 'stylelint-use-logical';
 
 import rulesetStylelintCss from '../rulesets/stylelint/ruleset-css.ts';
 import rulesetStylelintScss from '../rulesets/stylelint/ruleset-scss.ts';
-
 import extensions from './extensions.ts';
 
 type ConfigRules = Config['rules'];
 
 /**
+ * @param cssRules Additional CSS rules to merge.
+ * @param scssRules Additional SCSS rules to merge.
  * @returns The complete Stylelint config.
  */
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- Preserve specific object shape.
-export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRules: ConfigRules = {}) {
+export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRules: ConfigRules = {}): Config {
   return {
     defaultSeverity: 'error',
     ignoreFiles: ['**/*.min.*'],
@@ -31,7 +30,7 @@ export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRule
       ...cssRules,
     },
 
-    // eslint-disable-next-line sort-keys -- Logically positioned.
+    /* oxlint-disable eslint/sort-keys -- Logically positioned. */
     overrides: [
       {
         customSyntax: postcssScss as unknown as CustomSyntax,
@@ -43,5 +42,6 @@ export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRule
         },
       },
     ],
+    /* oxlint-enable eslint/sort-keys */
   } satisfies Config;
 }

@@ -6,8 +6,11 @@ export default {
     // Build tools
     'bumpp',
     'husky',
-    // To be dealt with
-    'typescript-eslint',
+
+    // Internal tools
+    'oxfmt',
+    'oxlint',
+    'oxlint-tsgolint',
   ],
   ignoreExportsUsedInFile: true,
   entry: ['src/index.ts', 'bin/codeformat.ts'],

@@ -4,10 +4,11 @@ import runners from '../utils/runners.ts';
 
 export default {
   exec: runners.bun,
-  command: 'tsc',
+  command: 'oxfmt',
   actions: (configPath) => ({
-    check: ['--noEmit', '--project', configPath],
-    fix: ['--project', configPath],
+    check: ['--check', '-c', configPath, '.'],
+    fix: ['-c', configPath, '.'],
   }),
-  configFiles: ['tsconfig.json'],
+  args: {},
+  configFiles: ['.oxfmtrc.json', '.oxfmtrc.jsonc'],
 } satisfies Tool;

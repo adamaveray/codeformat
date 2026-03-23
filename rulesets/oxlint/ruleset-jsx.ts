@@ -1,26 +1,13 @@
-import type { TSESLint } from '@typescript-eslint/utils';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import reactPlugin from 'eslint-plugin-react';
-import reactYouMightNotNeedAnEffectPlugin from 'eslint-plugin-react-you-might-not-need-an-effect';
-
-const reactHooksPlugin = await import('eslint-plugin-react-hooks').then((module) => module.default);
+import type { OxlintRules } from '../types.ts';
 
 export default {
-  ...jsxA11yPlugin.configs.strict.rules,
-  ...reactPlugin.configs.flat['recommended']?.rules,
-  ...reactPlugin.configs.flat['jsx-runtime']?.rules,
-  ...reactHooksPlugin.configs.recommended.rules,
-  ...reactYouMightNotNeedAnEffectPlugin.configs.recommended.rules,
-
-  'jsx-a11y/aria-role': ['error', { allowInvalidRoles: ['text'] }],
+  'jsx-a11y/aria-role': ['error', { allowedInvalidRoles: ['text'] }],
   'jsx-a11y/control-has-associated-label': 'error',
   'jsx-a11y/lang': 'error',
   'jsx-a11y/no-aria-hidden-on-focusable': 'error',
   'jsx-a11y/prefer-tag-over-role': 'error',
 
-  'react-hooks/refs': 'off', // Too many false positives.
-
-  'react-you-might-not-need-an-effect/no-pass-ref-to-parent': 'off', // `forwardRef` is deprecated.
+  'react-hooks/exhaustive-deps': 'error',
 
   'react/button-has-type': 'error',
   'react/checked-requires-onchange-or-readonly': 'error',
@@ -28,7 +15,10 @@ export default {
   'react/forward-ref-uses-ref': 'error',
   'react/function-component-definition': [
     'error',
-    { namedComponents: 'function-declaration', unnamedComponents: 'arrow-function' },
+    {
+      namedComponents: 'function-declaration',
+      unnamedComponents: 'arrow-function',
+    },
   ],
   'react/hook-use-state': ['error', { allowDestructuredState: true }],
   'react/iframe-missing-sandbox': 'error',
@@ -37,9 +27,19 @@ export default {
   'react/jsx-fragments': ['error', 'syntax'],
   'react/jsx-handler-names': [
     'error',
-    { checkLocalVariables: true, eventHandlerPrefix: /(handle|set|unset|clear|with)/u.source },
+    {
+      checkLocalVariables: true,
+      eventHandlerPrefix: /(handle|set|unset|clear|with)/u.source,
+    },
   ],
-  'react/jsx-key': ['error', { checkFragmentShorthand: true, checkKeyMustBeforeSpread: true, warnOnDuplicates: true }],
+  'react/jsx-key': [
+    'error',
+    {
+      checkFragmentShorthand: true,
+      checkKeyMustBeforeSpread: true,
+      warnOnDuplicates: true,
+    },
+  ],
   'react/jsx-no-bind': ['error', { allowArrowFunctions: true }],
   'react/jsx-no-constructed-context-values': 'error',
   'react/jsx-no-script-url': 'error',
@@ -49,7 +49,12 @@ export default {
   'react/jsx-props-no-spread-multi': 'error',
   'react/jsx-sort-props': [
     'error',
-    { callbacksLast: true, multiline: 'last', noSortAlphabetically: true, reservedFirst: ['key'] },
+    {
+      callbacksLast: true,
+      multiline: 'last',
+      noSortAlphabetically: true,
+      reservedFirst: ['key'],
+    },
   ],
   'react/no-access-state-in-setstate': 'error',
   'react/no-array-index-key': 'error',
@@ -73,4 +78,4 @@ export default {
   'react/prefer-es6-class': 'error',
   'react/prefer-stateless-function': 'error',
   'react/self-closing-comp': 'error',
-} as const satisfies TSESLint.FlatConfig.Rules;
+} as const satisfies OxlintRules;

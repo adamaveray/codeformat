@@ -75,7 +75,6 @@ const testSets = {
 
 describe('patterns', () => {
   for (const [patternName, { valid, invalid }] of Object.entries(testSets)) {
-    // eslint-disable-next-line require-unicode-regexp -- Expressions are passed to Stylelint as strings so cannot use any flags in order to match their behaviour.
     const pattern = new RegExp(patterns[patternName as keyof typeof patterns]);
     test.each(valid)(`"${patternName}" matches correct strings`, (string) => {
       expect(string).toMatch(pattern);

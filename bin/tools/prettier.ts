@@ -1,13 +1,15 @@
+import type { Tool } from '../utils/types.ts';
+
 import { commonExts, withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
-import type { Tool } from '../utils/types.ts';
 
 export default {
   exec: runners.bun,
   command: 'prettier',
   actions: (configPath) => ({
-    check: ['--check', '--config', configPath, '.'],
-    fix: ['--write', '--config', configPath, '.'],
+    // Only target file types not handled by Oxfmt (PHP, XML, INI)
+    check: ['--check', '--config', configPath, '**/*.{php,xml,ini}'],
+    fix: ['--write', '--config', configPath, '**/*.{php,xml,ini}'],
   }),
   args: {
     debug: ['--log-level', 'debug'],

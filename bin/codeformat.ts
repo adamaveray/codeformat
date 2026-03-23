@@ -1,19 +1,24 @@
 #!/usr/bin/env bun
 
-import { eslint, knip, phpCsFixer, prettier, stylelint, tsc } from './tools/index.ts';
+import { knip, oxfmt, oxlint, phpCsFixer, prettier, stylelint, tsc } from './tools/index.ts';
 import Cli from './utils/Cli.ts';
 import ToolRunner from './utils/ToolRunner.ts';
 
 const { cli, selectedAction, selectedTool } = Cli.createFromArgs(Bun.argv);
 
 const runner = new ToolRunner(cli, {
-  // Common
+  // Formatting
+  oxfmt,
   prettier,
+
+  // Dead code detection
   knip,
 
-  // JavaScript/TypeScript
+  // Linting & type checking (`--type-check` replaces standalone `tsc --noEmit`)
+  oxlint,
+
+  // Standalone type checking (kept for backwards compat, superseded by oxlint `--type-check`)
   tsc,
-  eslint,
 
   // Other languages
   stylelint,

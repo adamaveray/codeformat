@@ -3,7 +3,7 @@ import type { Tool } from '../utils/types.ts';
 import { commonExts, withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
 
-const commonArgs = ['--treat-config-hints-as-errors', '--isolate-workspaces'];
+const commonArgs = ['--treat-config-hints-as-errors'];
 export default {
   exec: runners.bun,
   command: 'knip',

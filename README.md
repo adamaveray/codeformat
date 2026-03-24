@@ -16,38 +16,44 @@ A very opinionated collection of configurations for a number of code formatting 
 
 4. Lint the codebase with `bun x codeformat check`, or apply automatic fixes with `bun x codeformat fix`
 
-### Prettier
+### Oxfmt
+
+Create an `.oxfmtrc.json` file, or generate one programmatically:
+
+```ts
+import { makeOxfmtConfig } from '@averay/codeformat';
+
+const config = makeOxfmtConfig(/* Customisations can be made here */);
+// Write to .oxfmtrc.json
+```
+
+### Oxlint
+
+Create an `oxlint.config.ts` file with the following configuration:
+
+```ts
+// oxlint.config.ts
+import { makeOxlintConfig } from '@averay/codeformat';
+
+export default makeOxlintConfig({ tsconfigPath: './tsconfig.json' });
+```
+
+### Prettier (PHP/XML/INI only)
 
 Create a `prettier.config.ts` file with the following configuration:
 
-```js
+```ts
+// prettier.config.ts
 import { makePrettierConfig } from '@averay/codeformat';
 
-export default makePrettierConfig(/* Customisations can be made here */);
-```
-
-### ESLint
-
-Create an `eslint.config.js` file with the following configuration:
-
-```js
-// eslint.config.js
-import { makeEslintConfig } from '@averay/codeformat';
-
-export default [
-  {
-    ignores: ['dist/**/*'],
-  },
-  ...makeEslintConfig({ tsconfigPath: './tsconfig.json' }),
-  // Custom overrides can be added here
-];
+export default makePrettierConfig({ php: true });
 ```
 
 ### Stylelint
 
 Create a `stylelint.config.ts` file with the following configuration:
 
-```js
+```ts
 // stylelint.config.ts
 import { makeStylelintConfig } from '@averay/codeformat';
 
@@ -56,13 +62,16 @@ export default makeStylelintConfig();
 
 ### Knip
 
-Create a `knip.config.js` with
+Create a `knip.config.ts` file with the following configuration:
 
-```js
-// knip.config.js
-import { makeStylelintConfig } from '@averay/codeformat';
+```ts
+// knip.config.ts
+import type { KnipConfig } from 'knip';
 
-export default makeStylelintConfig();
+export default {
+  entry: ['src/index.ts'],
+  project: ['src/**/*.ts'],
+} satisfies KnipConfig;
 ```
 
 ### PHP-CS-Fixer

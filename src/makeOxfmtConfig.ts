@@ -31,7 +31,7 @@ export default function makeOxfmtConfig(config: Config = {}): Config {
   return {
     $schema: './node_modules/oxfmt/configuration_schema.json',
     arrowParens: 'always',
-    printWidth: 80,
+    printWidth: 120,
     proseWrap: 'never',
     semi: true,
     singleQuote: true,

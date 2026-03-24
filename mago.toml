@@ -1,0 +1,6 @@
+[formatter]
+print-width = 120
+
+[source]
+paths = ["."]
+excludes = ["dist", "node_modules", "vendor"]

@@ -38,17 +38,6 @@ import { makeOxlintConfig } from '@averay/codeformat';
 export default makeOxlintConfig({ tsconfigPath: './tsconfig.json' });
 ```
 
-### Prettier (PHP/XML/INI only)
-
-Create a `prettier.config.ts` file with the following configuration:
-
-```ts
-// prettier.config.ts
-import { makePrettierConfig } from '@averay/codeformat';
-
-export default makePrettierConfig({ php: true });
-```
-
 ### Stylelint
 
 Create a `stylelint.config.ts` file with the following configuration:
@@ -74,18 +63,15 @@ export default {
 } satisfies KnipConfig;
 ```
 
-### PHP-CS-Fixer
+### Mago (PHP)
 
-Create a `.php-cs-fixer.php` file with the following configuration:
+Create a `mago.toml` file with the following example configuration:
 
-```php
-<?php
-declare(strict_types=1);
+```toml
+[formatter]
+print-width = 120
 
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/node_modules/@averay/codeformat/dist/src/php/PhpCsFixerConfig.php';
-
-$finder = new PhpCsFixer\Finder()->in([__DIR__]);
-
-return PhpCsFixerConfig::default($finder);
+[source]
+paths = ["."]
+excludes = ["vendor"]
 ```

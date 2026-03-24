@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { knip, oxfmt, oxlint, phpCsFixer, prettier, stylelint, tsc } from './tools/index.ts';
+import { knip, magoAnalyze, magoFmt, magoLint, oxfmt, oxlint, stylelint, tsc } from './tools/index.ts';
 import Cli from './utils/Cli.ts';
 import ToolRunner from './utils/ToolRunner.ts';
 
@@ -9,7 +9,6 @@ const { cli, selectedAction, selectedTool } = Cli.createFromArgs(Bun.argv);
 const runner = new ToolRunner(cli, {
   // Formatting
   oxfmt,
-  prettier,
 
   // Dead code detection
   knip,
@@ -20,9 +19,13 @@ const runner = new ToolRunner(cli, {
   // Standalone type checking (kept for backwards compat, superseded by oxlint `--type-check`)
   tsc,
 
-  // Other languages
+  // CSS/SCSS
   stylelint,
-  phpCsFixer,
+
+  // PHP
+  magoFmt,
+  magoLint,
+  magoAnalyze,
 });
 
 try {

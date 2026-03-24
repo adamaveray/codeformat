@@ -1,16 +1,3 @@
-declare module '@prettier/plugin-php' {
-  import type { Plugin } from 'prettier';
-
-  declare const plugin: Plugin;
-  export = plugin; // The bundled types incorrectly declare `export default plugin` while the source is `export { ... }`.
-}
-
-declare module 'prettier-plugin-ini' {
-  import type { Plugin } from 'prettier';
-
-  export default {} as Plugin;
-}
-
 declare module 'stylelint-config-recommended' {
   import type { Config } from 'stylelint';
 

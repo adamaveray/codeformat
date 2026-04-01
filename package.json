@@ -1,6 +1,6 @@
 {
   "name": "@averay/codeformat",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A very opinionated collection of configurations for a number of code formatting tools.",
   "homepage": "https://github.com/adamaveray/codeformat",
   "author": "Adam Averay (https://adamaveray.com.au/)",

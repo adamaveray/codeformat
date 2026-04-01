@@ -77,5 +77,6 @@ export default {
   'react/no-will-update-set-state': 'error',
   'react/prefer-es6-class': 'error',
   'react/prefer-stateless-function': 'error',
+  'react/react-in-jsx-scope': 'off', // Not always applicable.
   'react/self-closing-comp': 'error',
 } as const satisfies OxlintRules;

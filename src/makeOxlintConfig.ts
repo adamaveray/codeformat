@@ -52,6 +52,7 @@ export default function makeOxlintConfig({
 
     options: {
       typeAware: true,
+      typeCheck: true,
     },
 
     plugins: ['typescript', 'unicorn', 'import', 'jsdoc', 'promise', 'jsx-a11y', 'react'],

@@ -1,35 +1,13 @@
-interface SortImportsOptions {
-  /** Custom grouping for import sorting. */
-  groups?: (string | string[])[];
-  /** Whether to add newlines between groups. */
-  newlinesBetween?: boolean;
-}
+import type { OxfmtConfig } from 'oxfmt';
 
-interface Config {
-  $schema?: string;
-  arrowParens?: 'always' | 'avoid';
-  bracketSameLine?: boolean;
-  bracketSpacing?: boolean;
-  endOfLine?: 'lf' | 'crlf' | 'cr' | 'auto';
-  jsxSingleQuote?: boolean;
-  printWidth?: number;
-  proseWrap?: 'always' | 'never' | 'preserve';
-  quoteProps?: 'as-needed' | 'consistent' | 'preserve';
-  semi?: boolean;
-  singleQuote?: boolean;
-  sortImports?: SortImportsOptions | boolean;
-  tabWidth?: number;
-  trailingComma?: 'all' | 'es5' | 'none';
-  useTabs?: boolean;
-}
+import { defineConfig } from 'oxfmt';
 
 /**
  * @param config Project-specific customisations.
  * @returns The complete Oxfmt config.
  */
-export default function makeOxfmtConfig(config: Config = {}): Config {
-  return {
-    $schema: './node_modules/oxfmt/configuration_schema.json',
+export default function makeOxfmtConfig(config: OxfmtConfig = {}): OxfmtConfig {
+  return defineConfig({
     arrowParens: 'always',
     printWidth: 120,
     proseWrap: 'never',
@@ -49,5 +27,5 @@ export default function makeOxfmtConfig(config: Config = {}): Config {
     },
     trailingComma: 'all',
     ...config,
-  };
+  });
 }

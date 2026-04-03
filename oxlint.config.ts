@@ -7,7 +7,7 @@ config.globals = { ...config.globals, Bun: 'readonly' };
 
 // Allow useless spreads in ruleset files (keeps unprefixed core rules visually grouped)
 config.overrides = [
-  ...config.overrides,
+  ...(config.overrides ?? []),
   {
     files: ['rulesets/**/*.ts', 'src/makePrettierConfig.ts', 'src/makeStylelintConfig.ts'],
     rules: {

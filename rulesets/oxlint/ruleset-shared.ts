@@ -1,4 +1,4 @@
-import type { OxlintRules } from '../types.ts';
+import type { DummyRuleMap } from 'oxlint';
 
 export default {
   'eslint/accessor-pairs': ['error', { setWithoutGet: true }],
@@ -238,4 +238,4 @@ export default {
   'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-post-message-target-origin': 'error',
   'unicorn/text-encoding-identifier-case': 'off', // Too many false positives.
-} as const satisfies OxlintRules;
+} as const satisfies DummyRuleMap;

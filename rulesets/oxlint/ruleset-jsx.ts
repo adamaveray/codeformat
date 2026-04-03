@@ -1,4 +1,4 @@
-import type { OxlintRules } from '../types.ts';
+import type { DummyRuleMap } from 'oxlint';
 
 export default {
   'jsx-a11y/aria-role': ['error', { allowedInvalidRoles: ['text'] }],
@@ -79,4 +79,4 @@ export default {
   'react/prefer-stateless-function': 'error',
   'react/react-in-jsx-scope': 'off', // Not always applicable.
   'react/self-closing-comp': 'error',
-} as const satisfies OxlintRules;
+} as const satisfies DummyRuleMap;

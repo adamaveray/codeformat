@@ -1,4 +1,6 @@
-import type { OxlintRules } from '../rulesets/types.ts';
+import type { OxlintConfig } from 'oxlint';
+
+import { defineConfig } from 'oxlint';
 
 import { findFirstFile } from '../bin/utils/filesystem.ts';
 import rulesetOxlintJsx from '../rulesets/oxlint/ruleset-jsx.ts';
@@ -17,25 +19,6 @@ interface Options {
   isBun?: boolean;
 }
 
-export interface OxlintConfig {
-  $schema?: string;
-  options?: Record<string, unknown>;
-  plugins: string[];
-  categories: Record<string, string>;
-  env: Record<string, boolean>;
-  globals?: Record<string, string>;
-  rules: OxlintRules;
-  overrides: OxlintOverride[];
-  ignorePatterns: string[];
-  settings?: Record<string, unknown>;
-}
-
-interface OxlintOverride {
-  files: string[];
-  rules: OxlintRules;
-  plugins?: string[];
-}
-
 /**
  * @param options Project-specific customisations.
  * @returns The complete Oxlint config.
@@ -47,9 +30,7 @@ export default function makeOxlintConfig({
 }: Options = {}): OxlintConfig {
   isBun ??= findFirstFile(rootPath, ['bun.lock', 'bunfig.toml']) != null;
 
-  return {
-    $schema: './node_modules/oxlint/configuration_schema.json',
-
+  return defineConfig({
     options: {
       typeAware: true,
       typeCheck: true,
@@ -101,5 +82,5 @@ export default function makeOxlintConfig({
         rules: rulesetOxlintTypescriptModuleDeclarations,
       },
     ],
-  };
+  });
 }

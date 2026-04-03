@@ -1,4 +1,4 @@
-import type { OxlintRules } from '../types.ts';
+import type { DummyRuleMap } from 'oxlint';
 
 export default {
   'eslint/array-callback-return': 'off',
@@ -219,8 +219,8 @@ export default {
   'jsdoc/no-types': 'error',
   'jsdoc/require-param-type': 'off',
   'jsdoc/require-returns-type': 'off',
-} as const satisfies OxlintRules;
+} as const satisfies DummyRuleMap;
 
 export const moduleDeclarations = {
   'eslint/no-duplicate-imports': 'off', // Allow imports within multiple module declarations.
-} as const satisfies OxlintRules;
+} as const satisfies DummyRuleMap;

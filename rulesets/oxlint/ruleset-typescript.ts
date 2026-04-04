@@ -2,40 +2,24 @@ import type { DummyRuleMap } from 'oxlint';
 
 export default {
   'eslint/array-callback-return': 'off',
-  'eslint/consistent-return': 'off',
   'eslint/default-case': 'off',
-  'eslint/default-param-last': 'off',
-  'eslint/dot-notation': 'off',
-  'eslint/no-array-constructor': 'off',
-  'eslint/no-dupe-class-members': 'off',
   'eslint/no-duplicate-imports': 'off',
-  'eslint/no-empty-function': 'off',
-  'eslint/no-implied-eval': 'off',
-  'eslint/no-invalid-this': 'off',
-  'eslint/no-loop-func': 'off',
-  'eslint/no-loss-of-precision': 'off',
-  'eslint/no-magic-numbers': 'off',
-  'eslint/no-redeclare': 'off',
-  'eslint/no-restricted-syntax': ['error', 'WithStatement'],
-  'eslint/no-return-await': 'off',
-  'eslint/no-shadow': 'off',
   'eslint/no-throw-literal': 'off',
-  'eslint/no-unused-expressions': 'off',
-  'eslint/no-unused-vars': 'off',
-  'eslint/no-use-before-define': 'off',
-  'eslint/no-useless-constructor': 'off',
+
+  'jsdoc/require-param-type': 'off',
+  'jsdoc/require-returns-type': 'off',
 
   'typescript/adjacent-overload-signatures': 'error',
   'typescript/array-type': 'error',
   'typescript/await-thenable': 'error',
   'typescript/ban-ts-comment': 'error',
-  'typescript/class-literal-property-style': 'off', // Breaks subclassed getters
+  'typescript/class-literal-property-style': 'off',
   'typescript/consistent-indexed-object-style': 'error',
+  'typescript/consistent-return': 'error',
   'typescript/consistent-type-assertions': ['error', { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
   'typescript/consistent-type-definitions': ['error', 'interface'],
   'typescript/consistent-type-exports': ['error', { fixMixedExportsWithInlineTypeSpecifier: true }],
   'typescript/consistent-type-imports': 'error',
-  'typescript/default-param-last': 'error',
   'typescript/dot-notation': 'error',
   'typescript/explicit-function-return-type': [
     'error',
@@ -45,81 +29,11 @@ export default {
       allowIIFEs: true,
     },
   ],
-  'typescript/explicit-member-accessibility': ['error', { overrides: { constructors: 'no-public' } }],
   'typescript/explicit-module-boundary-types': ['error', { allowArgumentsExplicitlyTypedAsAny: true }],
-  'typescript/member-ordering': 'off',
-  'typescript/method-signature-style': 'off',
-  /* oxlint-disable eslint/sort-keys -- Logically ordered. */
-  'typescript/naming-convention': [
-    'error',
-    {
-      selector: 'default',
-      format: ['strictCamelCase'],
-    },
-    {
-      selector: 'import',
-      format: null,
-    },
-    {
-      selector: 'variable',
-      modifiers: ['const'],
-      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
-    },
-    {
-      selector: 'variable',
-      modifiers: ['const'],
-      filter: { regex: /^_(static|\d+)?$/u.source, match: true },
-      format: ['strictCamelCase'],
-      leadingUnderscore: 'allow',
-    },
-    {
-      selector: 'parameter',
-      format: ['strictCamelCase'],
-      leadingUnderscore: 'allow',
-    },
-    {
-      selector: 'property',
-      format: ['strictCamelCase', 'UPPER_CASE'],
-    },
-    {
-      selector: 'classProperty',
-      modifiers: ['static'],
-      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
-    },
-    {
-      selector: 'enumMember',
-      format: ['strictCamelCase', 'StrictPascalCase', 'UPPER_CASE'],
-    },
-    {
-      selector: 'function',
-      format: ['strictCamelCase', 'StrictPascalCase'],
-    },
-    {
-      selector: 'typeLike',
-      format: ['StrictPascalCase'],
-    },
-    {
-      selector: ['objectLiteralProperty'],
-      format: null,
-    },
-    {
-      selector: ['classProperty', 'objectLiteralMethod'],
-      format: ['strictCamelCase', 'UPPER_CASE'],
-    },
-    {
-      selector: 'typeParameter',
-      format: null,
-      custom: { regex: /^([A-Z]|T[A-Z][a-zA-Z]+|key)$/u.source, match: true },
-    },
-  ],
-  /* oxlint-enable eslint/sort-keys */
-  'typescript/no-array-constructor': 'error',
   'typescript/no-base-to-string': 'error',
   'typescript/no-confusing-non-null-assertion': 'error',
   'typescript/no-confusing-void-expression': 'error',
-  'typescript/no-dupe-class-members': 'error',
   'typescript/no-dynamic-delete': 'off',
-  'typescript/no-empty-function': 'error',
   'typescript/no-empty-interface': ['error', { allowSingleExtends: true }],
   'typescript/no-empty-object-type': ['error', { allowObjectTypes: 'always' }],
   'typescript/no-explicit-any': 'off',
@@ -129,11 +43,7 @@ export default {
   'typescript/no-for-in-array': 'error',
   'typescript/no-implied-eval': 'error',
   'typescript/no-inferrable-types': ['error', { ignoreParameters: true }],
-  'typescript/no-invalid-this': 'error',
   'typescript/no-invalid-void-type': ['error', { allowAsThisParameter: true }],
-  'typescript/no-loop-func': 'error',
-  'typescript/no-loss-of-precision': 'error',
-  'typescript/no-magic-numbers': 'off', // Too many scenarios it is reasonable yet flagged.
   'typescript/no-meaningless-void-operator': 'error',
   'typescript/no-misused-new': 'error',
   'typescript/no-misused-promises': 'error',
@@ -141,10 +51,7 @@ export default {
   'typescript/no-non-null-asserted-nullish-coalescing': 'error',
   'typescript/no-non-null-asserted-optional-chain': 'error',
   'typescript/no-non-null-assertion': 'error',
-  'typescript/no-redeclare': 'error',
   'typescript/no-require-imports': 'error',
-  'typescript/no-restricted-imports': 'error',
-  'typescript/no-shadow': ['error', { hoist: 'all' }],
   'typescript/no-this-alias': 'error',
   'typescript/no-unnecessary-boolean-literal-compare': 'error',
   'typescript/no-unnecessary-condition': ['error', { allowConstantLoopConditions: true }],
@@ -152,17 +59,6 @@ export default {
   'typescript/no-unnecessary-type-arguments': 'error',
   'typescript/no-unnecessary-type-assertion': 'error',
   'typescript/no-unnecessary-type-constraint': 'error',
-  'typescript/no-unused-expressions': 'error',
-  'typescript/no-unused-vars': [
-    'error',
-    {
-      argsIgnorePattern: /^_\w*$/u.source,
-      caughtErrorsIgnorePattern: /^_\w*$/u.source,
-      varsIgnorePattern: /^(_\d*|React)$/u.source,
-    },
-  ],
-  'typescript/no-use-before-define': 'error',
-  'typescript/no-useless-constructor': 'error',
   'typescript/no-useless-empty-export': 'error',
   'typescript/no-var-requires': 'error',
   'typescript/non-nullable-type-assertion-style': 'error',
@@ -186,7 +82,7 @@ export default {
   'typescript/prefer-ts-expect-error': 'error',
   'typescript/promise-function-async': 'error',
   'typescript/require-array-sort-compare': 'error',
-  'typescript/require-await': 'off', // Causes errors when implementing interfaces that require a promise.
+  'typescript/require-await': 'off',
   'typescript/restrict-plus-operands': 'error',
   'typescript/restrict-template-expressions': 'error',
   'typescript/return-await': 'error',
@@ -208,19 +104,8 @@ export default {
     },
   ],
   'typescript/triple-slash-reference': 'error',
-  'typescript/no-unsafe-type-assertion': 'off', // Too strict for codebases allowing `as` casts (every narrowing cast is flagged).
-  'typescript/unbound-method': 'off', // Does not support @autobind nor recognise binding in constructors
-  'typescript/unified-signatures': 'off',
-
-  // Disable import/no-unresolved for TypeScript (validated by TypeScript itself)
-  'import/no-unresolved': 'off',
-
-  // JSDoc adjustments for TypeScript
-  'jsdoc/no-types': 'error',
-  'jsdoc/require-param-type': 'off',
-  'jsdoc/require-returns-type': 'off',
 } as const satisfies DummyRuleMap;
 
 export const moduleDeclarations = {
-  'eslint/no-duplicate-imports': 'off', // Allow imports within multiple module declarations.
+  'eslint/no-duplicate-imports': 'off',
 } as const satisfies DummyRuleMap;

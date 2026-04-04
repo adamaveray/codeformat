@@ -12,24 +12,18 @@ export default {
       ignorePattern: /language=/u.source,
     },
   ],
-  'eslint/consistent-return': 'error',
-  'eslint/consistent-this': ['error', '_this'],
   'eslint/constructor-super': 'error',
   'eslint/curly': ['error', 'all'],
   'eslint/default-case': 'error',
   'eslint/default-case-last': 'error',
   'eslint/default-param-last': 'error',
-  'eslint/dot-notation': 'error',
   'eslint/eqeqeq': ['error', 'always', { null: 'ignore' }],
   'eslint/for-direction': 'error',
   'eslint/func-names': ['error', 'as-needed'],
   'eslint/func-style': ['error', 'declaration', { allowArrowFunctions: true }],
   'eslint/getter-return': 'error',
-  'eslint/global-require': 'error',
   'eslint/grouped-accessor-pairs': ['error', 'getBeforeSet'],
   'eslint/guard-for-in': 'error',
-  'eslint/id-denylist': ['error', ...['cb', 'ctx', 'e', 'el', 'enc', 'err', 'evt', 'req', 'res']],
-  'eslint/logical-assignment-operators': ['error', 'always'],
   'eslint/no-alert': 'error',
   'eslint/no-array-constructor': 'error',
   'eslint/no-async-promise-executor': 'error',
@@ -68,12 +62,9 @@ export default {
   'eslint/no-func-assign': 'error',
   'eslint/no-global-assign': 'error',
   'eslint/no-implicit-coercion': 'error',
-  'eslint/no-implicit-globals': 'error',
-  'eslint/no-implied-eval': 'error',
   'eslint/no-import-assign': 'error',
   'eslint/no-inner-declarations': 'error',
   'eslint/no-invalid-regexp': 'error',
-  'eslint/no-invalid-this': 'error',
   'eslint/no-irregular-whitespace': 'error',
   'eslint/no-iterator': 'error',
   'eslint/no-label-var': 'error',
@@ -81,7 +72,7 @@ export default {
   'eslint/no-lone-blocks': 'error',
   'eslint/no-loop-func': 'error',
   'eslint/no-loss-of-precision': 'error',
-  'eslint/no-magic-numbers': 'off', // Too many scenarios it is reasonable yet flagged.
+  'eslint/no-magic-numbers': 'off',
   'eslint/no-misleading-character-class': 'error',
   'eslint/no-multi-assign': 'error',
   'eslint/no-multi-str': 'error',
@@ -93,17 +84,13 @@ export default {
   'eslint/no-nonoctal-decimal-escape': 'error',
   'eslint/no-obj-calls': 'error',
   'eslint/no-plusplus': 'error',
-  'eslint/no-process-env': 'error',
-  'eslint/no-process-exit': 'error',
   'eslint/no-promise-executor-return': 'error',
   'eslint/no-proto': 'error',
   'eslint/no-prototype-builtins': 'error',
   'eslint/no-redeclare': 'error',
   'eslint/no-regex-spaces': 'error',
   'eslint/no-restricted-globals': ['error', 'event'],
-  'eslint/no-restricted-syntax': ['error', 'WithStatement', "BinaryExpression[operator='in']"],
   'eslint/no-return-assign': 'error',
-  'eslint/no-return-await': 'error',
   'eslint/no-script-url': 'error',
   'eslint/no-self-assign': 'error',
   'eslint/no-self-compare': 'error',
@@ -116,12 +103,9 @@ export default {
   'eslint/no-this-before-super': 'error',
   'eslint/no-throw-literal': 'error',
   'eslint/no-undef': 'error',
-  'eslint/no-undef-init': 'error',
-  'eslint/no-underscore-dangle': 'off', // Sometimes necessary to have temporarily-unused values.
   'eslint/no-unmodified-loop-condition': 'error',
   'eslint/no-unneeded-ternary': 'error',
   'eslint/no-unreachable': 'error',
-  'eslint/no-unreachable-loop': 'error',
   'eslint/no-unsafe-finally': 'error',
   'eslint/no-unsafe-negation': 'error',
   'eslint/no-unsafe-optional-chaining': 'error',
@@ -149,23 +133,17 @@ export default {
   'eslint/no-var': 'error',
   'eslint/no-void': 'error',
   'eslint/no-with': 'error',
-  'eslint/object-shorthand': ['error', 'always', { avoidExplicitReturnArrows: true, avoidQuotes: true }],
-  'eslint/one-var': ['error', 'never'],
   'eslint/operator-assignment': 'error',
-  'eslint/prefer-arrow-callback': 'error',
   'eslint/prefer-const': 'error',
-  'eslint/prefer-destructuring': 'off', // Sometimes it is just too much.
+  'eslint/prefer-destructuring': 'off',
   'eslint/prefer-exponentiation-operator': 'error',
   'eslint/prefer-numeric-literals': 'error',
   'eslint/prefer-object-spread': 'error',
   'eslint/prefer-promise-reject-errors': 'error',
-  'eslint/prefer-regex-literals': ['error', { disallowRedundantWrapping: true }],
   'eslint/prefer-rest-params': 'error',
   'eslint/prefer-spread': 'error',
   'eslint/prefer-template': 'error',
   'eslint/radix': 'error',
-  'eslint/require-atomic-updates': 'off', // Too many false positives.
-  'eslint/require-unicode-regexp': 'error',
   'eslint/require-yield': 'error',
   'eslint/symbol-description': 'error',
   'eslint/use-isnan': 'error',
@@ -193,26 +171,17 @@ export default {
   'import/no-dynamic-require': 'error',
   'import/no-empty-named-blocks': 'error',
   'import/no-mutable-exports': 'error',
-  'import/no-named-as-default-member': 'off', // Overbearing
+  'import/no-named-as-default-member': 'off',
   'import/no-named-default': 'error',
   'import/no-self-import': 'error',
-  'import/no-useless-path-segments': 'error',
   'import/no-webpack-loader-syntax': 'error',
-  // `import/order` – handled by Oxfmt's sortImports
-  // `import/no-unresolved` – intentionally not implemented in Oxlint (false positives)
-  // `import/newline-after-import` – not yet implemented in Oxlint
-  // `import/no-extraneous-dependencies` – not yet implemented in Oxlint
-  // `import/no-unused-modules` – not yet implemented in Oxlint
-  // `import/prefer-default-export` – intentionally off
 
   'jsdoc/no-defaults': 'error',
-  'jsdoc/require-jsdoc': 'off',
   'jsdoc/require-param': ['error', { checkDestructured: false }],
   'jsdoc/require-returns': 'off',
-  // The following jsdoc rules have no Oxlint equivalent and are dropped:
-  // check-indentation, check-param-names, check-syntax, match-description,
-  // no-bad-blocks, require-asterisk-prefix, sort-tags, tag-lines,
-  // no-types, require-param-type, require-returns-type
+
+  'node/global-require': 'error',
+  'node/no-process-env': 'error',
 
   'promise/always-return': [
     'error',
@@ -223,19 +192,19 @@ export default {
   ],
   'promise/no-multiple-resolved': 'error',
 
-  'unicorn/catch-error-name': 'off', // A bizarre, overly opinionated rule requiring a non-standard variable name.
+  'unicorn/catch-error-name': 'off',
   'unicorn/consistent-function-scoping': ['error', { checkArrowFunctions: false }],
   'unicorn/filename-case': 'off',
-  'unicorn/no-array-callback-reference': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
-  'unicorn/no-array-method-this-argument': 'off', // Does not perform type inference so incorrectly flags any method matching an inbuilt array method.
+  'unicorn/no-array-callback-reference': 'off',
+  'unicorn/no-array-method-this-argument': 'off',
   'unicorn/no-null': 'off',
-  'unicorn/no-useless-undefined': 'off', // Conflicts with consistent-return.
-  'unicorn/number-literal-case': 'off', // Conflicts with formatter.
+  'unicorn/no-process-exit': 'error',
+  'unicorn/no-useless-undefined': 'off',
+  'unicorn/number-literal-case': 'off',
   'unicorn/numeric-separators-style': ['error', { number: { groupLength: 3, minimumDigits: 0 } }],
-  'unicorn/prefer-dom-node-text-content': 'off', // `innerText` and `textContent` behave differently so cannot reliably enforce one over the other.
+  'unicorn/prefer-dom-node-text-content': 'off',
   'unicorn/prefer-event-target': 'error',
   'unicorn/prefer-query-selector': 'off',
-  'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-post-message-target-origin': 'error',
-  'unicorn/text-encoding-identifier-case': 'off', // Too many false positives.
+  'unicorn/text-encoding-identifier-case': 'off',
 } as const satisfies DummyRuleMap;

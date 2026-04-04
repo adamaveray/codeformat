@@ -18,8 +18,7 @@ config.overrides = [
   {
     files: ['bin/**/*.ts'],
     rules: {
-      'eslint/no-process-env': 'off',
-      'eslint/no-process-exit': 'off',
+      'node/no-process-env': 'off',
       'unicorn/no-process-exit': 'off',
     },
   },

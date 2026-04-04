@@ -59,6 +59,7 @@ export default {
   'typescript/no-unnecessary-type-arguments': 'error',
   'typescript/no-unnecessary-type-assertion': 'error',
   'typescript/no-unnecessary-type-constraint': 'error',
+  'typescript/no-unsafe-type-assertion': 'off', // Too buggy under oxlint.
   'typescript/no-useless-empty-export': 'error',
   'typescript/no-var-requires': 'error',
   'typescript/non-nullable-type-assertion-style': 'error',

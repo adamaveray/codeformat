@@ -177,7 +177,7 @@ export default {
   'import/no-webpack-loader-syntax': 'error',
 
   'jsdoc/no-defaults': 'error',
-  'jsdoc/require-param': ['error', { checkDestructured: false }],
+  'jsdoc/require-param': 'off',
   'jsdoc/require-returns': 'off',
 
   'node/global-require': 'error',

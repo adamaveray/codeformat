@@ -1,0 +1,151 @@
+#:schema vendor/carthage-software/mago/schema.json
+version = "1"
+php-version = "8.5"
+
+[source]
+excludes = ["node_modules/**", "packages/*/*/vendor/**"]
+
+[source.glob]
+literal-separator = true
+
+[parser]
+enable-short-tags = false
+
+# See https://mago.carthage.software/latest/en/tools/linter/configuration-reference
+[linter]
+minimum-fail-level = "note"
+
+integrations = ["laravel", "pest", "phpunit", "symfony", "wordpress"]
+
+[linter.rules]
+ambiguous-constant-access = { enabled = true }
+ambiguous-function-call = { enabled = true }
+no-array-accumulation-in-loop = { enabled = true }
+no-assign-in-argument = { enabled = true }
+no-assign-in-condition = { enabled = true, ignore-while-statements = true }
+no-dead-store = { enabled = true }
+no-inline = { enabled = true }
+no-is-null = { enabled = true }
+no-iterator-to-array-in-foreach = { enabled = true }
+no-literal-namespace-string = { enabled = true }
+no-literal-password = { enabled = true, exclude = ["**/{test,tests}/**"] } # Not applicable in tests
+no-negated-ternary = { enabled = true }
+no-null-property-init = { enabled = true }
+no-parameter-shadowing = { enabled = true }
+no-redundant-variable = { enabled = true }
+no-short-bool-cast = { enabled = true }
+no-side-effects-with-declarations = { enabled = true }
+no-unused-closure-capture = { enabled = true }
+no-unused-global = { enabled = true }
+no-unused-static = { enabled = true }
+prefer-array-spread = { enabled = true }
+prefer-datetimeimmutable-create-from-timestamp = { enabled = true }
+prefer-explode-over-preg-split = { enabled = true }
+prefer-self-return-type = { enabled = true }
+redundant-static = { enabled = true }
+require-namespace = { enabled = true }
+sensitive-parameter = { enabled = true, exclude = ["**/{test,tests}/**"] } # Not applicable in tests
+sorted-integer-keys = { enabled = true }
+string-style = { enabled = true, style = "concatenation" }
+switch-continue-to-break = { enabled = true }
+yoda-conditions = { enabled = true, mode = "deny" }
+
+# Naming conventions
+function-name = { enabled = true, either = true }
+method-name = { enabled = true, camel = true }
+property-name = { enabled = true, either = true }
+variable-name = { enabled = true, either = true, check-parameters = true }
+
+# PHPUnit
+assertion-style = { enabled = true, style = "self" }
+prefer-test-attribute = { enabled = true }
+
+# WordPress
+nonce-verification = { enabled = true }
+prepared-sql = { enabled = true }
+validated-sanitized-input = { enabled = true }
+
+# Unwanted rules
+combine-consecutive-issets = { enabled = false } # Separate statements are clearer
+cyclomatic-complexity = { enabled = false } # Too opinionated
+excessive-nesting = { enabled = false } # Too opinionated
+excessive-parameter-list = { enabled = false } # Too opinionated
+halstead = { enabled = false } # Too opinionated
+inline-variable-return = { enabled = false }
+kan-defect = { enabled = false } # Too opinionated
+literal-named-argument = { enabled = false } # Overbearing for every single argument
+no-boolean-flag-parameter = { enabled = false } # Too opinionated
+no-else-clause = { enabled = false } # Too opinionated
+no-fully-qualified-global-class-like = { enabled = false } # Fully qualified is the preferred syntax
+no-fully-qualified-global-constant = { enabled = false } # Fully qualified is the preferred syntax
+no-fully-qualified-global-function = { enabled = false } # Fully qualified is the preferred syntax
+no-isset = { enabled = false } # Avoids needing to apply `??` to test possibly-undefined array keys
+no-sprintf-concat = { enabled = false } # Sometimes cleaner to combine concatenation mechanisms
+prefer-arrow-function = { enabled = false } # Sometimes makes code less readable
+prefer-early-continue = { enabled = false } # Too opinionated
+tagged-fixme = { enabled = false } # Too opinionated
+tagged-todo = { enabled = false } # Too opinionated
+too-many-enum-cases = { enabled = false } # Too opinionated
+too-many-methods = { enabled = false } # Too opinionated
+too-many-properties = { enabled = false } # Too opinionated
+
+# See https://mago.carthage.software/latest/en/tools/analyzer/configuration-reference
+[analyzer]
+minimum-fail-level = "note"
+
+plugins = ["psr-container"]
+
+# Feature flags (https://mago.carthage.software/latest/en/tools/analyzer/configuration-reference/#feature-flags)
+analyze-dead-code = true
+check-arrow-function-missing-type-hints = true
+check-closure-missing-type-hints = true
+check-experimental = true
+check-missing-override = true
+check-missing-type-hints = true
+check-name-casing = true
+check-property-initialization = true
+check-use-statements = true
+enforce-class-finality = true
+find-overly-wide-return-types = true
+find-unused-definitions = true
+find-unused-expressions = true
+find-unused-parameters = true
+no-boolean-literal-comparison = true
+require-api-or-internal = true
+strict-array-index-existence = true
+strict-list-index-checks = true
+
+allow-implicit-pipe-callable-types = false # Require explicit pipe callable type declarations
+check-throws = false # Too overbearing
+
+ignore = [
+  "incompatible-parameter-type",
+  "mixed-assignment", # Flags even when performing assertions immediately after assignment
+]
+
+# See https://mago.carthage.software/latest/en/tools/formatter/configuration-reference/
+[formatter]
+single-quote = true
+trailing-comma = true
+
+# Match editorconfig
+end-of-line = "lf"
+print-width = 120
+tab-width = 2
+use-tabs = false
+
+# Preserve parentheses around ambiguous expressions
+omit-redundant-arithmetic-binary-expression-parentheses = false
+omit-redundant-bitwise-binary-expression-parentheses = false
+preserve-redundant-logical-binary-expression-parentheses = true
+
+# Apply preferences
+array-table-style-alignment = false
+attributes-order = "alphanumeric-ascending"
+indent-binary-expression-continuation = true
+remove-trailing-close-tag = true
+sort-class-methods = true
+
+# See https://mago.carthage.software/latest/en/tools/guard/configuration-reference
+[guard]
+minimum-fail-level = "note"

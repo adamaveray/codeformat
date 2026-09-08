@@ -65,13 +65,12 @@ export default {
 
 ### Mago (PHP)
 
-Create a `mago.toml` file with the following example configuration:
+Create a `mago.toml` file with the following configuration:
 
 ```toml
-[formatter]
-print-width = 120
+#:schema vendor/carthage-software/mago/schema.json
+extends = "node_modules/@averay/codeformat/mago.base.toml"
 
 [source]
 paths = ["."]
-excludes = ["vendor"]
 ```

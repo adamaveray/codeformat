@@ -1,6 +1,6 @@
-[formatter]
-print-width = 120
+#:schema vendor/carthage-software/mago/schema.json
+extends = "mago.base.toml"
 
 [source]
 paths = ["."]
-excludes = ["dist", "node_modules", "vendor"]
+excludes = ["dist/**", "node_modules/**", "vendor/**"]

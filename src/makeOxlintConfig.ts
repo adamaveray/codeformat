@@ -1,22 +1,11 @@
-import type { OxlintConfig } from 'oxlint';
+import type { OxlintConfig } from 'vite-plus/lint';
 
-import { defineConfig } from 'oxlint';
-
-import { findFirstFile } from '../bin/utils/filesystem.ts';
-import rulesetOxlintJsx from '../rulesets/oxlint/ruleset-jsx.ts';
-import rulesetOxlintShared from '../rulesets/oxlint/ruleset-shared.ts';
-import rulesetOxlintTypescript, {
-  moduleDeclarations as rulesetOxlintTypescriptModuleDeclarations,
-} from '../rulesets/oxlint/ruleset-typescript.ts';
+import * as rulesets from '../rulesets/oxlint.ts';
 import extensions from './extensions.ts';
 
-interface Options {
-  /** The absolute path to the project's root. */
-  rootPath?: string;
-  /** The relative path to the project's `tsconfig.json` file. */
+interface Options extends Partial<Pick<OxlintConfig, 'env' | 'settings' | 'options' | 'overrides'>> {
+  /** The relative path to the project’s `tsconfig.json` file. */
   tsconfigPath?: string;
-  /** Whether the project uses the Bun runtime. */
-  isBun?: boolean;
 }
 
 /**
@@ -24,63 +13,69 @@ interface Options {
  * @returns The complete Oxlint config.
  */
 export default function makeOxlintConfig({
-  rootPath = process.cwd(),
   tsconfigPath,
-  isBun,
+  env,
+  settings = {},
+  options = {},
+  overrides = [],
 }: Options = {}): OxlintConfig {
-  isBun ??= findFirstFile(rootPath, ['bun.lock', 'bunfig.toml']) != null;
-
-  return defineConfig({
-    options: {
-      typeAware: true,
-      typeCheck: true,
-    },
-
-    plugins: ['typescript', 'unicorn', 'import', 'jsdoc', 'promise', 'jsx-a11y', 'react'],
-
+  return {
     categories: {
       correctness: 'error',
-      suspicious: 'error',
-      pedantic: 'off',
+      pedantic: 'error',
       perf: 'error',
-      style: 'off',
-      restriction: 'off',
-      nursery: 'off',
+      restriction: 'error',
+      style: 'error',
+      suspicious: 'error',
     },
 
     env: {
       browser: true,
       node: true,
-      ...(isBun ? { 'shared-node-browser': true } : {}),
+      ...env,
     },
 
     ignorePatterns: ['**/.DS_Store', '.cache/**/*', '.git/**/*', 'node_modules/**/*'],
 
-    settings: tsconfigPath != null ? { typescript: { project: tsconfigPath } } : {},
+    jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
 
-    rules: {
-      // Shared rules for all JS/TS files
-      ...rulesetOxlintShared,
+    options: {
+      denyWarnings: true,
+      reportUnusedDisableDirectives: 'error',
+      typeAware: true,
+      typeCheck: true,
+      ...options,
     },
 
     overrides: [
-      // JSX/TSX files
-      {
-        files: [`**/*.{${[...extensions.jsx, ...extensions.tsx].join(',')}}`],
-        rules: rulesetOxlintJsx,
-      },
-
       // TypeScript files
       {
         files: [`**/*.{${extensions.ts.join(',')}}`],
-        rules: rulesetOxlintTypescript,
+        rules: rulesets.typescript,
       },
 
       // Module declaration files
       {
         files: ['**/*.d.ts'],
-        rules: rulesetOxlintTypescriptModuleDeclarations,
+        rules: rulesets.typescriptModules,
       },
+
+      ...overrides,
     ],
-  });
+
+    plugins: ['import', 'jsdoc', 'jsx-a11y', 'node', 'oxc', 'promise', 'react', 'typescript', 'unicorn', 'vitest'],
+
+    rules: {
+      // Shared rules for all JS/TS files
+      ...rulesets.shared,
+    },
+
+    settings: {
+      typescript: {
+        project: tsconfigPath,
+        ...(settings['typescript'] as object | undefined),
+      },
+      ...settings,
+    },
+  } satisfies OxlintConfig;
 }

@@ -7,11 +7,11 @@ export const commonExts = {
   yaml: ['yaml', 'yml'],
 };
 
-export function withExts(base: string, exts: string[]): string[] {
+export function withExts(base: string, exts: readonly string[]): string[] {
   return exts.map((ext) => `${base}.${ext}`);
 }
 
-export function findFirstFile(root: string, suffixes: string[]): string | undefined {
+export function findFirstFile(root: string, suffixes: readonly string[]): string | undefined {
   for (const suffix of suffixes) {
     const filePath = path.join(root, suffix);
     if (existsSync(filePath)) {

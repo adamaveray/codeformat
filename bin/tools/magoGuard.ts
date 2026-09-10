@@ -6,8 +6,8 @@ export default {
   exec: runners.composer,
   command: 'mago',
   actions: () => ({
-    check: ['analyze'],
-    fix: ['analyze', '--fix', '--format-after-fix'],
+    check: ['guard'],
+    fix: ['guard', '--fix'],
   }),
   args: {},
   configFiles: ['mago.toml', 'mago.yaml', 'mago.json'],

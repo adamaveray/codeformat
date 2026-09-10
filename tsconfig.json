@@ -5,6 +5,6 @@
     "rootDir": "./",
     "lib": ["ESNext"],
     "target": "ESNext",
-    "types": ["bun", "./types.d.ts"]
+    "types": ["./types.d.ts"]
   }
 }

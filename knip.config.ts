@@ -1,11 +1,10 @@
 import type { KnipConfig } from 'knip';
 
 export default {
-  ignoreBinaries: [/^dist\/bin\//u],
   ignoreDependencies: [
     // Build tools
     'bumpp',
-    'husky',
+    'vite',
   ],
   ignoreExportsUsedInFile: true,
   entry: ['src/index.ts', 'bin/codeformat.ts'],

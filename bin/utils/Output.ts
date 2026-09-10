@@ -1,7 +1,7 @@
 export default class Output {
   constructor(
     private readonly scriptName: string,
-    private readonly options: Record<'debug' | 'verbose', boolean>,
+    private readonly options: Readonly<Record<'debug' | 'verbose', boolean>>,
   ) {}
 
   public usage(exitCode: number = 0): never {
@@ -11,19 +11,19 @@ export default class Output {
     process.exit(exitCode);
   }
 
-  public debug(message: string, additionalValues: unknown[] = []): void {
+  public debug(message: string, additionalValues: readonly unknown[] = []): void {
     if (this.options.debug) {
       console.debug(message, ...additionalValues);
     }
   }
 
-  public verbose(message: string, additionalValues: unknown[] = []): void {
+  public verbose(message: string, additionalValues: readonly unknown[] = []): void {
     if (this.options.verbose) {
       console.debug(message, ...additionalValues);
     }
   }
 
-  public error(message: string, additionalValues: unknown[] = [], exitCode: number = 1): never {
+  public error(message: string, additionalValues: readonly unknown[] = [], exitCode: number = 1): never {
     console.error(message, ...additionalValues);
     process.exit(exitCode);
   }

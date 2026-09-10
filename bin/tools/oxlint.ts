@@ -3,7 +3,7 @@ import type { Tool } from '../utils/types.ts';
 import runners from '../utils/runners.ts';
 
 export default {
-  exec: runners.bun,
+  exec: runners.viteplus.exec,
   command: 'oxlint',
   actions: (configPath) => ({
     check: ['--type-check', '--config', configPath, '.'],

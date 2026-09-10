@@ -1,15 +1,15 @@
-import type { OxfmtConfig } from 'oxfmt';
+import type { OxfmtConfig } from 'vite-plus/fmt';
 
-import { defineConfig } from 'oxfmt';
+const MAXIMUM_CHARS = 120;
 
 /**
  * @param config Project-specific customisations.
  * @returns The complete Oxfmt config.
  */
-export default function makeOxfmtConfig(config: OxfmtConfig = {}): OxfmtConfig {
-  return defineConfig({
+export default function makeOxfmtConfig(config: Readonly<OxfmtConfig> = {}): OxfmtConfig {
+  return {
     arrowParens: 'always',
-    printWidth: 120,
+    printWidth: MAXIMUM_CHARS,
     proseWrap: 'never',
     semi: true,
     singleQuote: true,
@@ -27,5 +27,5 @@ export default function makeOxfmtConfig(config: OxfmtConfig = {}): OxfmtConfig {
     },
     trailingComma: 'all',
     ...config,
-  });
+  } satisfies OxfmtConfig;
 }

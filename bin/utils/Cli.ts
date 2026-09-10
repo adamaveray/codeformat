@@ -1,4 +1,4 @@
-import { spawn } from 'bun';
+import { spawn } from 'node:child_process';
 import { parseArgs } from 'node:util';
 
 import type { ToolAction } from './types.ts';
@@ -6,11 +6,11 @@ import type { ToolAction } from './types.ts';
 import Output from './Output.ts';
 
 interface Options {
-  verbose: boolean;
-  debug: boolean;
-  help: boolean;
-  cache: boolean;
-  cacheDir: string;
+  readonly verbose: boolean;
+  readonly debug: boolean;
+  readonly help: boolean;
+  readonly cache: boolean;
+  readonly cacheDir: string;
 }
 
 export default class Cli {
@@ -24,22 +24,31 @@ export default class Cli {
     this.output = new Output(scriptName, options);
   }
 
-  public async runSubprocess(args: string[], env: Record<string, string> = {}): Promise<void> {
-    this.output.verbose('Running command:', args);
+  public async runSubprocess(
+    command: string,
+    args: readonly string[],
+    env: Readonly<Record<string, string>> = {},
+  ): Promise<void> {
+    this.output.verbose('Running command:', [command, ...args]);
 
-    const proc = spawn(args, {
-      env: { ...process.env, ...env },
+    const proc = spawn(command, args, {
       cwd: this.directory,
+      env: { ...process.env, ...env },
       stdio: ['inherit', 'inherit', 'inherit'],
     });
 
-    const exitCode = await proc.exited;
-    if (exitCode !== 0) {
-      process.exit(exitCode);
-    }
+    await new Promise<void>((resolve) => {
+      proc.on('close', (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          process.exit(code);
+        }
+      });
+    });
   }
 
-  public static createFromArgs(argv: string[]): {
+  public static createFromArgs(argv: readonly string[]): {
     cli: Cli;
     selectedAction: ToolAction;
     selectedTool?: string;

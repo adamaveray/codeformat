@@ -25,7 +25,7 @@ export default class ToolRunner<TToolName extends string> {
     }
   }
 
-  private loadConfigPath(toolName: TToolName, configFiles: string[]): string | undefined {
+  private loadConfigPath(toolName: TToolName, configFiles: readonly string[]): string | undefined {
     const filePath = findFirstFile(this.cli.directory, configFiles);
     if (filePath == null) {
       this.cli.output.debug(`Could not find config file for tool "${toolName}".`);

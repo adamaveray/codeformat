@@ -1,0 +1,6 @@
+minimumReleaseAgeExclude:
+  - '@types/node@26.5.0'
+
+overrides:
+  cosmiconfig: '10.0' # v9.0 does not support TypeScript 7 (https://github.com/cosmiconfig/cosmiconfig/issues/350)
+  vite: 'npm:@voidzero-dev/vite-plus-core@0.3'

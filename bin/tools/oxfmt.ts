@@ -3,7 +3,7 @@ import type { Tool } from '../utils/types.ts';
 import runners from '../utils/runners.ts';
 
 export default {
-  exec: runners.bun,
+  exec: runners.viteplus.exec,
   command: 'oxfmt',
   actions: (configPath) => ({
     check: ['--check', '-c', configPath, '.'],

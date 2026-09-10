@@ -1,9 +1,9 @@
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, it } from 'vite-plus/test';
 
 import patterns from './cssPatterns.ts';
 
 type PatternName = keyof typeof patterns;
-type PatternsMap<T = any> = Record<PatternName, T>;
+type PatternsMap<T = unknown> = Record<PatternName, T>;
 
 const strings = {
   camelCase: 'helloWorld',
@@ -73,14 +73,16 @@ const testSets = {
   },
 } as const satisfies PatternsMap<{ valid: string[]; invalid: string[] }>;
 
-describe('patterns', () => {
-  for (const [patternName, { valid, invalid }] of Object.entries(testSets)) {
-    const pattern = new RegExp(patterns[patternName as keyof typeof patterns]);
-    test.each(valid)(`"${patternName}" matches correct strings`, (string) => {
+describe('css patterns', () => {
+  describe.for(Object.entries(testSets))('%s', ([patternName, { valid, invalid }]) => {
+    const pattern = new RegExp(patterns[patternName as keyof typeof patterns], 'v');
+
+    it.for(valid)('matches correct string %s', (string) => {
       expect(string).toMatch(pattern);
     });
-    test.each(invalid)(`"${patternName}" does not match incorrect strings`, (string) => {
+
+    it.for(invalid)('does not match incorrect string %s', (string) => {
       expect(string).not.toMatch(pattern);
     });
-  }
+  });
 });

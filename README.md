@@ -4,7 +4,7 @@ A very opinionated collection of configurations for a number of code formatting 
 
 ## Default Usage
 
-1. Install the package with `bun i -D @averay/codeformat`
+1. Install [Vite+](https://viteplus.dev) and this package with `vp i -D @averay/codeformat`.
 
 2. Symlink the static configuration files to the project root:
 
@@ -14,28 +14,34 @@ A very opinionated collection of configurations for a number of code formatting 
 
 3. Import and call the relevant configuration builders for specific tools
 
-4. Lint the codebase with `bun x codeformat check`, or apply automatic fixes with `bun x codeformat fix`
+4. Lint the codebase with `vpx codeformat check`, or apply automatic fixes with `vpx codeformat fix`
 
-### Oxfmt
+### Vite+ Format (via Oxfmt)
 
-Create an `.oxfmtrc.json` file, or generate one programmatically:
+Create a `vite.config.ts` file, or generate one programmatically:
 
 ```ts
+// vite.config.ts
 import { makeOxfmtConfig } from '@averay/codeformat';
+import { defineConfig } from 'vite-plus';
 
-const config = makeOxfmtConfig(/* Customisations can be made here */);
-// Write to .oxfmtrc.json
+export default defineConfig({
+  fmt: makeOxfmtConfig(/* Customisations can be made here */),
+});
 ```
 
-### Oxlint
+### Vite+ Lint (via Oxlint)
 
 Create an `oxlint.config.ts` file with the following configuration:
 
 ```ts
-// oxlint.config.ts
+// vite.config.ts
 import { makeOxlintConfig } from '@averay/codeformat';
+import { defineConfig } from 'vite-plus';
 
-export default makeOxlintConfig({ tsconfigPath: './tsconfig.json' });
+export default defineConfig({
+  lint: makeOxlintConfig({ tsconfigPath: './tsconfig.json' }),
+});
 ```
 
 ### Stylelint

@@ -1,8 +1,8 @@
 const patterns = {
-  bem: /^[a-z]+(?:(?:-|--|__)[a-z]+)*$/.source,
-  bemWithOptionalSingleUnderscorePrefix: /^_?[a-z]+(?:(?:-|--|__)[a-z]+)*$/.source,
-  bemWithOptionalUnderscoresPrefix: /^(?:__)?[a-z]+(?:(?:-|--|__)[a-z]+)*$/.source,
-  kebab: /^[a-z]+(?:-[a-z]+)*$/.source,
+  bem: /^[a-z]+(?:(?:-|--|__)[a-z]+)*$/v.source,
+  bemWithOptionalSingleUnderscorePrefix: /^_?[a-z]+(?:(?:-|--|__)[a-z]+)*$/v.source,
+  bemWithOptionalUnderscoresPrefix: /^(?:__)?[a-z]+(?:(?:-|--|__)[a-z]+)*$/v.source,
+  kebab: /^[a-z]+(?:-[a-z]+)*$/v.source,
 } as const satisfies Record<string, string>;
 
 export function patternOrScssInterpolation(pattern: string): string {
@@ -10,9 +10,9 @@ export function patternOrScssInterpolation(pattern: string): string {
   if (!pattern.startsWith('^') || !pattern.endsWith('$')) {
     throw new Error('Pattern must use both start & end anchors.');
   }
-  pattern = pattern.slice(1, -1);
 
-  return new RegExp(`^(?:#{[^}]+}|${pattern})$`).source;
+  const innerPattern = pattern.slice(1, -1);
+  return /^(?:#\{[^\}]+\}|__inner__)$/v.source.replace('__inner__', innerPattern);
 }
 
 export default patterns;

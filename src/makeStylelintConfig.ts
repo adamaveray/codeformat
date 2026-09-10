@@ -4,13 +4,11 @@ import postcssScss from 'postcss-scss';
 import orderPlugin from 'stylelint-order';
 import defensiveCssPlugins from 'stylelint-plugin-defensive-css';
 import scssPlugin from 'stylelint-scss';
-import useLogicalPlugin from 'stylelint-use-logical';
 
-import rulesetStylelintCss from '../rulesets/stylelint/ruleset-css.ts';
-import rulesetStylelintScss from '../rulesets/stylelint/ruleset-scss.ts';
+import * as rulesets from '../rulesets/stylelint.ts';
 import extensions from './extensions.ts';
 
-type ConfigRules = Config['rules'];
+type ConfigRules = NonNullable<Config['rules']>;
 
 /**
  * @param cssRules Additional CSS rules to merge.
@@ -21,12 +19,14 @@ export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRule
   return {
     defaultSeverity: 'error',
     ignoreFiles: ['**/*.min.*'],
-    plugins: [...defensiveCssPlugins, orderPlugin, useLogicalPlugin],
+    languageOptions: { directionality: { block: 'top-to-bottom', inline: 'left-to-right' } },
+    plugins: [...defensiveCssPlugins, orderPlugin],
     reportDescriptionlessDisables: true,
     reportInvalidScopeDisables: true,
     reportNeedlessDisables: true,
+    reportUnscopedDisables: true,
     rules: {
-      ...rulesetStylelintCss,
+      ...rulesets.css,
       ...cssRules,
     },
 
@@ -37,7 +37,7 @@ export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRule
         files: extensions.scss.map((ext) => `**/*.${ext}`), // Does not support glob braces
         plugins: [scssPlugin],
         rules: {
-          ...rulesetStylelintScss,
+          ...rulesets.scss,
           ...scssRules,
         },
       },

@@ -21,4 +21,5 @@ export default {
     ...withExts('.knip', ['json', 'jsonc']),
     ...withExts('knip.config', [...extensions.js, ...extensions.ts]),
   ],
+  perFile: false,
 } satisfies Tool;

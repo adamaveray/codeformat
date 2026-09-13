@@ -12,4 +12,5 @@ export default {
   }),
   args: {},
   configFiles: ['.swift-format'],
+  supportedExtensions: ['swift'],
 } satisfies Tool;

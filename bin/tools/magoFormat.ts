@@ -1,5 +1,6 @@
 import type { Tool } from '../utils/types.ts';
 
+import extensions from '../../src/extensions.ts';
 import runners from '../utils/runners.ts';
 
 export default {
@@ -11,4 +12,5 @@ export default {
   }),
   args: {},
   configFiles: ['mago.toml', 'mago.yaml', 'mago.json'],
+  supportedExtensions: extensions.php,
 } satisfies Tool;

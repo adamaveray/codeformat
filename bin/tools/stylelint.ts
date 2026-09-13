@@ -15,4 +15,14 @@ export default {
     debug: ['--formatter', 'verbose'],
   },
   configFiles: withExts('stylelint.config', [...extensions.ts, ...extensions.js]),
+  supportedExtensions: [
+    ...extensions.css,
+    ...extensions.scss,
+    ...extensions.html,
+    ...extensions.htmlLike,
+    ...extensions.jsx,
+    ...extensions.tsx,
+    'pcss',
+    'postcss',
+  ],
 } satisfies Tool;

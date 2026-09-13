@@ -12,4 +12,6 @@ export default {
 
   md: ['md', 'mdown', 'markdown'],
   yaml: ['yaml', 'yml'],
+
+  php: ['php'],
 } as const satisfies Record<string, readonly string[]>;

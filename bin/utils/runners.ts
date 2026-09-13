@@ -9,6 +9,9 @@ export default {
       return cli.runSubprocess('vp', ['exec', command, ...args], env);
     },
   },
+  async node(this: void, cli, { command, args, env = {} }) {
+    return cli.runSubprocess(`node_modules/.bin/${command}`, args, env);
+  },
   async composer(this: void, cli, { command, args, env = {} }) {
     return cli.runSubprocess('composer', ['exec', command, '--', ...args], env);
   },

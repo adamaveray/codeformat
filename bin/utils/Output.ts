@@ -6,8 +6,8 @@ export default class Output {
 
   public usage(exitCode: number = 0): never {
     console.error(`Usage:
-    ${this.scriptName} check [root-path]
-    ${this.scriptName} fix [root-path]`);
+    ${this.scriptName} check [paths...]
+    ${this.scriptName} fix [paths...]`);
     process.exit(exitCode);
   }
 

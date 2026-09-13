@@ -11,6 +11,7 @@ interface Options {
   readonly help: boolean;
   readonly cache: boolean;
   readonly cacheDir: string;
+  readonly ignorePatterns?: readonly string[];
 }
 
 export default class Cli {
@@ -20,6 +21,7 @@ export default class Cli {
     scriptName: string,
     public readonly directory: string,
     public readonly options: Options,
+    public readonly paths: readonly string[] = [],
   ) {
     this.output = new Output(scriptName, options);
   }
@@ -62,6 +64,7 @@ export default class Cli {
       options: {
         dir: { type: 'string', short: 'd', default: process.cwd() },
         tool: { type: 'string', short: 't', default: undefined },
+        ignore: { type: 'string', multiple: true },
 
         'no-cache': { type: 'boolean', default: false },
         'cache-dir': { type: 'string', default: '.cache' },
@@ -73,23 +76,33 @@ export default class Cli {
       allowPositionals: true,
     });
 
-    const { dir, tool, 'cache-dir': cacheDir, 'no-cache': noCache, ...additionalOptions } = options;
-    const [, scriptName, selectedAction, ...undefinedArgs] = positionals as [string, string, ...string[]];
+    const {
+      dir,
+      tool,
+      'cache-dir': cacheDir,
+      'no-cache': noCache,
+      ignore: ignorePatterns,
+      ...additionalOptions
+    } = options;
+    const [, scriptName, selectedAction, ...paths] = positionals as [string, string, ...string[]];
 
-    const cli = new Cli(scriptName, dir, {
-      cacheDir,
-      cache: !noCache,
-      ...additionalOptions,
-    });
+    const cli = new Cli(
+      scriptName,
+      dir,
+      {
+        cacheDir,
+        cache: !noCache,
+        ignorePatterns,
+        ...additionalOptions,
+      },
+      paths,
+    );
     if (options.help || selectedAction == null) {
       cli.output.usage();
     }
 
-    if (undefinedArgs.length > 0) {
-      cli.output.error('Unexpected additional arguments.', [undefinedArgs]);
-    }
     if (!(['check', 'fix'] satisfies ToolAction[] as unknown[]).includes(selectedAction)) {
-      cli.output.error(`Unknown action "${selectedAction}".`, [undefinedArgs]);
+      cli.output.error(`Unknown action "${selectedAction}".`);
     }
 
     return {

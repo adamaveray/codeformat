@@ -38,6 +38,9 @@ export default class Cli {
     });
 
     await new Promise<void>((resolve) => {
+      proc.on('error', (error) => {
+        this.output.error(`Failed to run "${command}":`, [error instanceof Error ? error.message : error]);
+      });
       proc.on('close', (code) => {
         if (code === 0) {
           resolve();

@@ -7,10 +7,13 @@ import runners from '../utils/runners.ts';
 export default {
   exec: runners.viteplus.exec,
   command: 'stylelint',
-  actions: ({ configPath, supportedExtensions }) => ({
-    check: ['--allow-empty-input', '--config', configPath, `**/*.{${supportedExtensions.join(',')}}`],
-    fix: ['--fix', '--allow-empty-input', '--config', configPath, `**/*.{${supportedExtensions.join(',')}}`],
-  }),
+  actions: ({ configPath, paths, supportedExtensions }) => {
+    const targets = paths ?? [`**/*.{${supportedExtensions.join(',')}}`];
+    return {
+      check: ['--allow-empty-input', '--config', configPath, ...targets],
+      fix: ['--fix', '--allow-empty-input', '--config', configPath, ...targets],
+    };
+  },
   args: {
     debug: ['--formatter', 'verbose'],
   },

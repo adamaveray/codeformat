@@ -12,9 +12,9 @@ export const additionalExtensions: readonly FileExtension[] = [
 export default {
   exec: runners.viteplus.cmd,
   command: 'lint',
-  actions: () => ({
-    check: [],
-    fix: ['--fix'],
+  actions: ({ paths = [] }) => ({
+    check: [...paths],
+    fix: ['--fix', ...paths],
   }),
   args: {
     debug: ['--format', 'default'],

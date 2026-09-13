@@ -19,6 +19,7 @@ export type ToolAction = 'check' | 'fix';
 export interface ToolActionContext {
   readonly configPath: string;
   readonly supportedExtensions: readonly FileExtension[];
+  readonly paths?: readonly string[];
 }
 
 export type Tool = {

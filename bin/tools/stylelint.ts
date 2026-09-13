@@ -7,9 +7,9 @@ import runners from '../utils/runners.ts';
 export default {
   exec: runners.viteplus.exec,
   command: 'stylelint',
-  actions: ({ configPath }) => ({
-    check: ['--allow-empty-input', '--config', configPath, `**/*.{css,scss}`],
-    fix: ['--fix', '--allow-empty-input', '--config', configPath, `**/*.{css,scss}`],
+  actions: ({ configPath, supportedExtensions }) => ({
+    check: ['--allow-empty-input', '--config', configPath, `**/*.{${supportedExtensions.join(',')}}`],
+    fix: ['--fix', '--allow-empty-input', '--config', configPath, `**/*.{${supportedExtensions.join(',')}}`],
   }),
   args: {
     debug: ['--formatter', 'verbose'],

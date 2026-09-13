@@ -38,11 +38,9 @@ export default class ToolRunner<TToolName extends string> {
     return filePath;
   }
 
-  private async runTool(
-    toolName: TToolName,
-    { command, exec, actions, args: additionalArgs = {}, env, configFiles }: Tool,
-    action: ToolAction,
-  ): Promise<void> {
+  private async runTool(toolName: TToolName, tool: Tool, action: ToolAction): Promise<void> {
+    const { command, exec, actions, args: additionalArgs = {}, env, configFiles } = tool;
+
     const configPath = this.loadConfigPath(toolName, configFiles);
     if (configPath == null) {
       return;
@@ -50,6 +48,7 @@ export default class ToolRunner<TToolName extends string> {
 
     const context: ToolActionContext = {
       configPath,
+      supportedExtensions: tool.perFile === false ? [] : tool.supportedExtensions,
     };
     const actionArgs = actions(context)[action];
     if (actionArgs == null) {

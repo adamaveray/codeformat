@@ -80,3 +80,11 @@ extends = "node_modules/@averay/codeformat/mago.base.toml"
 [source]
 paths = ["."]
 ```
+
+### swift-format (Swift)
+
+Symlink the configuration file to the project root:
+
+```sh
+ln -s node_modules/@averay/codeformat/.swift-format ./
+```

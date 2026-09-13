@@ -14,6 +14,7 @@
   },
   "files": [
     "/.editorconfig",
+    "/.swift-format",
     "/dist",
     "/mago.base.toml",
     "/README.md",

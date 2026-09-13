@@ -11,6 +11,7 @@ import {
   oxfmt,
   oxlint,
   stylelint,
+  swiftFormat,
   vitePlusFmt,
   vitePlusLint,
 } from './tools/index.ts';
@@ -39,6 +40,9 @@ const runner = new ToolRunner(cli, {
   magoLint,
   magoAnalyze,
   magoGuard,
+
+  // Swift
+  swiftFormat,
 });
 
 try {

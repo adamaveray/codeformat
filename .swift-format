@@ -1,0 +1,18 @@
+{
+  version: 1,
+
+  // Match .editorconfig
+  indentation: {
+    "spaces": 2,
+  },
+  lineLength: 120,
+  tabWidth: 2,
+
+  // Customise format
+  lineBreakBeforeEachArgument: true,
+  multilineTrailingCommaBehavior: "alwaysUsed",
+  orderedImports: {
+    "includeConditionalImports": true,
+  },
+  respectsExistingLineBreaks: true, // Breaks syntax (e.g. https://github.com/swiftlang/swift-format/issues/1005)
+}

@@ -34,6 +34,11 @@ jobs:
         env:
           fail-fast: true
 
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '6.3'
+
       - name: Cache NPM packages
         uses: actions/cache@v4
         env: { cache-name: npm }

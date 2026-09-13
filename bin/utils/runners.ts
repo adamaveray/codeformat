@@ -12,4 +12,7 @@ export default {
   async composer(this: void, cli, { command, args, env = {} }) {
     return cli.runSubprocess('composer', ['exec', command, '--', ...args], env);
   },
+  async system(this: void, cli, { command, args, env = {} }) {
+    return cli.runSubprocess(command, args, env);
+  },
 } as const satisfies Record<string, ToolExec | Record<string, ToolExec>>;

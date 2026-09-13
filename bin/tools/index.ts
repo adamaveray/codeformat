@@ -6,5 +6,6 @@ export { default as magoLint } from './magoLint.ts';
 export { default as oxfmt } from './oxfmt.ts';
 export { default as oxlint } from './oxlint.ts';
 export { default as stylelint } from './stylelint.ts';
+export { default as swiftFormat } from './swiftFormat.ts';
 export { default as vitePlusFmt } from './vitePlusFmt.ts';
 export { default as vitePlusLint } from './vitePlusLint.ts';

@@ -37,6 +37,7 @@
   "dependencies": {
     "@averay/css-properties-sort-order": "^1.0.3",
     "globals": "^17.12.0",
+    "ignore": "^7.0.9",
     "postcss-html": "^2.0.0",
     "postcss-scss": "^4.0.9",
     "postcss-styled-syntax": "^0.7.2",

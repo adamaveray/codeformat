@@ -366,6 +366,7 @@ export const shared = {
   'vitest/prefer-to-be-falsy': 'off', // Prefer strict matchers with prefer-strict-boolean-matchers
   'vitest/prefer-to-be-truthy': 'off', // Prefer strict matchers with prefer-strict-boolean-matchers
   'vitest/require-test-timeout': 'off', // Too much of an edge case
+  'vitest/valid-title': ['error', { allowArguments: true }],
   'vitest/warn-todo': 'off', // Too opinionated
 } as const satisfies DummyRuleMap;
 

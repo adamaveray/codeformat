@@ -289,6 +289,7 @@ export const shared = {
   'typescript/no-extraneous-class': 'off', // Sometimes useful as a pseudo-namespace.
   'typescript/no-inferrable-types': ['error', { ignoreParameters: true }],
   'typescript/no-invalid-void-type': ['error', { allowAsThisParameter: true }],
+  'typescript/no-namespace': ['error', { allowDeclarations: true, allowDefinitionFiles: true }],
   'typescript/no-unnecessary-condition': ['error', { allowConstantLoopConditions: true }],
   'typescript/no-unnecessary-type-assertion': 'off', // Too buggy under oxlint.
   'typescript/no-unnecessary-type-parameters': 'off', // Too many false positives

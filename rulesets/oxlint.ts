@@ -388,5 +388,6 @@ export const typescript = {
 export const typescriptModules = {
   'eslint/no-duplicate-imports': 'off', // Imports within module declarations and outside module declarations behave differently
 
+  'import/no-unassigned-import': 'off', // Necessary for module augmentation
   'import/unambiguous': 'off', // False positives on .d.ts files
 } as const satisfies DummyRuleMap;

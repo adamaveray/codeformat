@@ -27,4 +27,7 @@ export default defineConfig({
       },
     ],
   },
+  test: {
+    setupFiles: ['testExtensions.ts'],
+  },
 });

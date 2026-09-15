@@ -1,4 +1,4 @@
-import type { Config, CustomSyntax } from 'stylelint';
+import type { Config, CustomSyntax, Plugin } from 'stylelint';
 
 import postcssScss from 'postcss-scss';
 import orderPlugin from 'stylelint-order';
@@ -10,24 +10,42 @@ import extensions from './extensions.ts';
 
 type ConfigRules = NonNullable<Config['rules']>;
 
+interface Options {
+  /** Additional file patterns to exclude from linting. */
+  ignoreFiles?: readonly string[];
+  /** Additional overrides, appended after the built-in ones. */
+  overrides?: NonNullable<Config['overrides']>;
+  /** Additional plugins to load. */
+  plugins?: readonly (Plugin | string)[];
+  /** Additional syntax-specific rules to merge. */
+  rules?: {
+    css?: ConfigRules;
+    scss?: ConfigRules;
+  };
+}
+
 /**
- * @param cssRules Additional CSS rules to merge.
- * @param scssRules Additional SCSS rules to merge.
+ * @param options Project-specific customisations.
  * @returns The complete Stylelint config.
  */
-export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRules: ConfigRules = {}): Config {
+export default function makeStylelintConfig({
+  ignoreFiles = [],
+  overrides = [],
+  plugins = [],
+  rules = {},
+}: Options = {}): Config {
   return {
     defaultSeverity: 'error',
-    ignoreFiles: ['**/*.min.*'],
+    ignoreFiles: ['**/*.min.*', ...ignoreFiles],
     languageOptions: { directionality: { block: 'top-to-bottom', inline: 'left-to-right' } },
-    plugins: [...defensiveCssPlugins, orderPlugin],
+    plugins: [...defensiveCssPlugins, orderPlugin, ...plugins],
     reportDescriptionlessDisables: true,
     reportInvalidScopeDisables: true,
     reportNeedlessDisables: true,
     reportUnscopedDisables: true,
     rules: {
       ...rulesets.css,
-      ...cssRules,
+      ...rules.css,
     },
 
     /* oxlint-disable eslint/sort-keys -- Logically positioned. */
@@ -38,9 +56,10 @@ export default function makeStylelintConfig(cssRules: ConfigRules = {}, scssRule
         plugins: [scssPlugin],
         rules: {
           ...rulesets.scss,
-          ...scssRules,
+          ...rules.scss,
         },
       },
+      ...overrides,
     ],
     /* oxlint-enable eslint/sort-keys */
   } satisfies Config;

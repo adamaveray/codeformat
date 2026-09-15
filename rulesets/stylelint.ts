@@ -15,6 +15,12 @@ export const css: ConfigRules = {
   ...recommendedCss.rules,
   ...standardCss.rules,
 
+  // Disable oxfmt conflicts
+  ...{
+    'declaration-block-single-line-max-declarations': null,
+    'selector-attribute-quotes': null,
+  },
+
   // Core rules
   ...{
     'at-rule-property-required-list': {

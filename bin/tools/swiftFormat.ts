@@ -6,7 +6,7 @@ const commonArgs = ['--recursive', '--parallel'];
 export default {
   exec: runners.system,
   command: 'swift-format',
-  actions: (configPath) => ({
+  actions: ({ configPath }) => ({
     check: ['lint', ...commonArgs, '--strict', '--configuration', configPath, '.'],
     fix: ['format', ...commonArgs, '--in-place', '--configuration', configPath, '.'],
   }),

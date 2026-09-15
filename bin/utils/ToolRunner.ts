@@ -1,7 +1,7 @@
 import path from 'node:path';
 
 import type Cli from './Cli.ts';
-import type { Tool, ToolAction } from './types.ts';
+import type { Tool, ToolAction, ToolActionContext } from './types.ts';
 
 import { findFirstFile } from './filesystem.ts';
 
@@ -48,7 +48,10 @@ export default class ToolRunner<TToolName extends string> {
       return;
     }
 
-    const actionArgs = actions(configPath)[action];
+    const context: ToolActionContext = {
+      configPath,
+    };
+    const actionArgs = actions(context)[action];
     if (actionArgs == null) {
       return;
     }

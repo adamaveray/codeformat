@@ -11,10 +11,14 @@ export type ToolExec = (cli: Cli, command: Command) => Promise<void>;
 
 export type ToolAction = 'check' | 'fix';
 
+export interface ToolActionContext {
+  readonly configPath: string;
+}
+
 export interface Tool {
   readonly exec: ToolExec;
   readonly command: string;
-  readonly actions: (configPath: string) => Partial<Record<ToolAction, readonly string[]>>;
+  readonly actions: (context: ToolActionContext) => Partial<Record<ToolAction, readonly string[]>>;
   readonly args?: Partial<{
     readonly debug: readonly string[];
     readonly cache: (cacheDir: string) => readonly string[];

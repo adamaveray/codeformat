@@ -374,7 +374,6 @@ export const shared = {
 export const typescript = {
   'jsdoc/require-param-type': 'off', // Irrelevant in TypeScript
   'jsdoc/require-returns-type': 'off', // Irrelevant in TypeScript
-  'jsdoc/require-throws-type': 'off', // Irrelevant in TypeScript
   'jsdoc/require-yields-type': 'off', // Irrelevant in TypeScript
 
   'typescript/no-unsafe-argument': 'error', // (Re-enabling rule disabled in shared)

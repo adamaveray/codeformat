@@ -1,6 +1,7 @@
 import type { Tool } from '../utils/types.ts';
 
-import { commonExts, withExts } from '../utils/filesystem.ts';
+import extensions from '../../src/extensions.ts';
+import { withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
 
 export default {
@@ -13,5 +14,5 @@ export default {
   args: {
     debug: ['--formatter', 'verbose'],
   },
-  configFiles: withExts('stylelint.config', [...commonExts.ts, ...commonExts.js]),
+  configFiles: withExts('stylelint.config', [...extensions.ts, ...extensions.js]),
 } satisfies Tool;

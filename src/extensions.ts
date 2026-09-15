@@ -8,4 +8,5 @@ export default {
   scss: ['scss'],
 
   md: ['md', 'mdown', 'markdown'],
+  yaml: ['yaml', 'yml'],
 } satisfies Record<string, string[]>;

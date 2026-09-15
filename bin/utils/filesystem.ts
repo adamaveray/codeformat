@@ -1,12 +1,6 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-export const commonExts = {
-  js: ['js', 'mjs', 'cjs'],
-  ts: ['ts', 'mts', 'cts'],
-  yaml: ['yaml', 'yml'],
-};
-
 export function withExts(base: string, exts: readonly string[]): string[] {
   return exts.map((ext) => `${base}.${ext}`);
 }

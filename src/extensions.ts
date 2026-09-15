@@ -12,4 +12,4 @@ export default {
 
   md: ['md', 'mdown', 'markdown'],
   yaml: ['yaml', 'yml'],
-} satisfies Record<string, string[]>;
+} as const satisfies Record<string, readonly string[]>;

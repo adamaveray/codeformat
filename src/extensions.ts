@@ -7,6 +7,9 @@ export default {
   css: ['css'],
   scss: ['scss'],
 
+  html: ['html', 'htm'],
+  htmlLike: ['astro', 'svelte', 'vue'],
+
   md: ['md', 'mdown', 'markdown'],
   yaml: ['yaml', 'yml'],
 } satisfies Record<string, string[]>;

@@ -160,3 +160,9 @@ export const scss: ConfigRules = {
     'scss/no-unused-private-members': true,
   },
 };
+
+export const embeddedScss: ConfigRules = {
+  'no-invalid-position-declaration': null, // Incompatible with inline `style` attribute styles
+};
+
+export default { css, embeddedScss, scss };

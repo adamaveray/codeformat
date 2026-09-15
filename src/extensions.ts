@@ -1,7 +1,7 @@
 export default {
-  js: ['js', 'jsx', 'cjs', 'cjsx', 'mjs', 'mjsx'],
+  js: ['js', 'cjs', 'mjs'],
   jsx: ['jsx', 'cjsx', 'mjsx'],
-  ts: ['ts', 'tsx', 'cts', 'ctsx', 'mts', 'mtsx'],
+  ts: ['ts', 'cts', 'mts'],
   tsx: ['tsx', 'ctsx', 'mtsx'],
 
   css: ['css'],

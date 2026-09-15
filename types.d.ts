@@ -1,3 +1,12 @@
+declare module 'postcss-styled-syntax' {
+  import type { CustomSyntax } from 'stylelint';
+
+  type Syntax = Exclude<CustomSyntax, string>;
+
+  export const parse: NonNullable<Syntax['parse']>;
+  export const stringify: NonNullable<Syntax['stringify']>;
+}
+
 declare module 'stylelint-config-recommended' {
   import type { Config } from 'stylelint';
 

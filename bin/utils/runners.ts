@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import type { ToolExec } from './types.ts';
 
 export default {
@@ -10,7 +12,7 @@ export default {
     },
   },
   async node(this: void, cli, { command, args, env = {} }) {
-    return cli.runSubprocess(`node_modules/.bin/${command}`, args, env);
+    return cli.runSubprocess(path.join('node_modules', '.bin', command), args, env);
   },
   async composer(this: void, cli, { command, args, env = {} }) {
     return cli.runSubprocess('composer', ['exec', command, '--', ...args], env);

@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import type Cli from './Cli.ts';
 import type { Tool, ToolAction } from './types.ts';
 
@@ -56,7 +58,7 @@ export default class ToolRunner<TToolName extends string> {
       args.push(...(additionalArgs.debug ?? []));
     }
     if (this.cli.options.cache) {
-      const toolCacheDir = `${this.cli.options.cacheDir}/${toolName}`;
+      const toolCacheDir = path.join(this.cli.options.cacheDir, toolName);
       args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
     }
     await exec(this.cli, { command, args, env });

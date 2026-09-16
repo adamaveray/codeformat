@@ -11,6 +11,10 @@ export default class Output {
     process.exit(exitCode);
   }
 
+  public info(message: string, additionalValues: readonly unknown[] = []): void {
+    console.info(message, ...additionalValues);
+  }
+
   public debug(message: string, additionalValues: readonly unknown[] = []): void {
     if (this.options.debug) {
       console.debug(message, ...additionalValues);

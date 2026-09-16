@@ -129,3 +129,12 @@ export function createFileExtensionFilter(fileExtensions: readonly FileExtension
   const matchedExtensions = new Set<string>(fileExtensions);
   return (filePath) => matchedExtensions.has(path.extname(filePath).slice(1).toLowerCase());
 }
+
+/**
+ * @param pathName A file path name.
+ * @param testDirectory A directory to test whether pathName is equal to.
+ * @returns Whether pathName resolves to equal testDirectory.
+ */
+export function pathEqualsDirectory(pathName: string, testDirectory: string): boolean {
+  return path.relative(testDirectory, path.resolve(testDirectory, pathName)) === '';
+}

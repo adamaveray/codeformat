@@ -5,7 +5,7 @@ import type { FileExtension, Tool, ToolAction, ToolActionContext } from './types
 
 import { findFirstFile } from './filesystem.ts';
 import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
-import { createFileExtensionFilter, FileError, resolvePaths } from './paths.ts';
+import { createFileExtensionFilter, FileError, pathEqualsDirectory, resolvePaths } from './paths.ts';
 
 export default class ToolRunner<TToolName extends string> {
   constructor(
@@ -85,9 +85,20 @@ export default class ToolRunner<TToolName extends string> {
       return;
     }
 
-    let supportedExtensions: readonly FileExtension[] = [];
-    let paths: readonly string[] | undefined = undefined;
-    if (tool.perFile !== false) {
+    let supportedExtensions: readonly FileExtension[];
+    let paths: readonly string[] | undefined;
+    if (tool.perFile === false) {
+      // Global tool
+      supportedExtensions = [];
+      paths = undefined;
+
+      if (!this.isWholeProject()) {
+        // Specific paths provided - skip tool
+        this.cli.output.info(`Skipping tool "${toolName}": global tool not applicable to specific files.`);
+        return;
+      }
+    } else {
+      // Per-file tool
       supportedExtensions = tool.supportedExtensions;
 
       if (givenPaths != null) {
@@ -120,6 +131,20 @@ export default class ToolRunner<TToolName extends string> {
       args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
     }
     await exec(this.cli, { command, args, env });
+  }
+
+  /**
+   * @returns Whether a given path encompasses the entire project.
+   */
+  private isWholeProject(): boolean {
+    const { directory: projectDirectory, paths } = this.cli;
+    if (paths.length === 0) {
+      // Defaults to project
+      return true;
+    }
+
+    // One path must match project directory
+    return paths.some((pathName) => pathEqualsDirectory(pathName, projectDirectory));
   }
 
   private static filterFilesByExtensions(

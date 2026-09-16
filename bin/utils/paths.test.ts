@@ -5,7 +5,14 @@ import { describe, expect, it, onTestFinished } from 'vite-plus/test';
 
 import type { ResolvedPaths } from './paths.ts';
 
-import { expandPath, FileNotFoundError, createFileExtensionFilter, NonChildPathError, resolvePaths } from './paths.ts';
+import {
+  expandPath,
+  FileNotFoundError,
+  createFileExtensionFilter,
+  NonChildPathError,
+  pathEqualsDirectory,
+  resolvePaths,
+} from './paths.ts';
 
 /** Entries ending in a slash are created as empty directories. */
 function makeTemporaryTree(entries: readonly string[]): string {
@@ -372,6 +379,61 @@ describe(createFileExtensionFilter, () => {
     'does not match %s given no extensions at all',
     (filePath) => {
       expect(createFileExtensionFilter([])).not.toMatchAsTest(filePath);
+    },
+  );
+});
+
+describe(pathEqualsDirectory, () => {
+  it.for([
+    ['.', '/project'],
+    ['./', '/srv/www/app'],
+    ['src/..', '/Users/someone/Code/my-app'],
+    ['src/../.', '/opt/services/api/v2'],
+    ['./nested/deeper/../..', '/Volumes/Work/My Project'],
+  ] as const satisfies readonly (readonly [pathName: string, testDirectory: string])[])(
+    'matches %s within %s',
+    ([pathName, testDirectory]) => {
+      expect(pathEqualsDirectory(pathName, testDirectory)).toBe(true);
+    },
+  );
+
+  it.for([
+    ['/project', '/project'],
+    ['/srv/www/app/', '/srv/www/app'],
+    ['/tmp/build-123/src/..', '/tmp/build-123'],
+  ] as const satisfies readonly (readonly [pathName: string, testDirectory: string])[])(
+    'matches absolute path %s within %s',
+    ([pathName, testDirectory]) => {
+      expect(pathEqualsDirectory(pathName, testDirectory)).toBe(true);
+    },
+  );
+
+  it('matches a path leading out of the directory and back into it', () => {
+    expect(pathEqualsDirectory('../my-app', '/Users/someone/Code/my-app')).toBe(true);
+  });
+
+  it.for([
+    ['src', '/project'],
+    ['src/', '/srv/www/app'],
+    ['./src', '/opt/services/api/v2'],
+    ['src/app.ts', '/Users/someone/Code/my-app'],
+    ['..', '/tmp/build-123'],
+    ['../', '/Volumes/Work/My Project'],
+  ] as const satisfies readonly (readonly [pathName: string, testDirectory: string])[])(
+    'does not match %s within %s',
+    ([pathName, testDirectory]) => {
+      expect(pathEqualsDirectory(pathName, testDirectory)).toBe(false);
+    },
+  );
+
+  it.for([
+    ['/other', '/project'],
+    ['/srv/www/app/src', '/srv/www/app'],
+    ['/tmp/build-1234', '/tmp/build-123'],
+  ] as const satisfies readonly (readonly [pathName: string, testDirectory: string])[])(
+    'does not match absolute path %s within %s',
+    ([pathName, testDirectory]) => {
+      expect(pathEqualsDirectory(pathName, testDirectory)).toBe(false);
     },
   );
 });

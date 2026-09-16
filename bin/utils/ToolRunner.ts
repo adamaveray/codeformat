@@ -1,9 +1,11 @@
 import path from 'node:path';
 
 import type Cli from './Cli.ts';
-import type { Tool, ToolAction, ToolActionContext } from './types.ts';
+import type { FileExtension, Tool, ToolAction, ToolActionContext } from './types.ts';
 
 import { findFirstFile } from './filesystem.ts';
+import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
+import { createFileExtensionFilter, FileError, resolvePaths } from './paths.ts';
 
 export default class ToolRunner<TToolName extends string> {
   constructor(
@@ -18,13 +20,45 @@ export default class ToolRunner<TToolName extends string> {
       if (tool == null) {
         this.cli.output.error(`Unknown tool "${toolName}".`);
       }
-      return this.runTool(toolName as TToolName, tool, action);
+      return this.runTool(toolName as TToolName, tool, action, this.resolveGivenPaths());
     }
 
     // Run all tools
+    const givenPaths = this.resolveGivenPaths();
     for (const [thisToolName, thisTool] of Object.entries(this.tools) as [TToolName, Tool][]) {
-      await this.runTool(thisToolName, thisTool, action);
+      await this.runTool(thisToolName, thisTool, action, givenPaths);
     }
+  }
+
+  /**
+   * @returns The files to process, or `undefined` if no paths were given.
+   */
+  private resolveGivenPaths(): readonly string[] | undefined {
+    if (this.cli.paths.length === 0) {
+      return undefined; // Each tool covers the whole project itself
+    }
+
+    const ignorePatterns =
+      this.cli.options.ignorePatterns ?? resolveIgnoreSource(this.cli.directory)?.patterns ?? defaultIgnorePatterns;
+
+    let files: readonly string[];
+    let emptyPaths: readonly string[];
+    try {
+      ({ files, emptyPaths } = resolvePaths(this.cli.paths, {
+        rootPath: this.cli.directory,
+        ignoreFilters: createIgnoreFilters(ignorePatterns),
+      }));
+    } catch (error) {
+      if (error instanceof FileError) {
+        this.cli.output.error(error.message);
+      }
+      throw error;
+    }
+
+    if (emptyPaths.length > 0) {
+      this.cli.output.warn('No files found for given paths:', emptyPaths);
+    }
+    return files;
   }
 
   private loadConfigPath(toolName: TToolName, configFiles: readonly string[]): string | undefined {
@@ -38,7 +72,12 @@ export default class ToolRunner<TToolName extends string> {
     return filePath;
   }
 
-  private async runTool(toolName: TToolName, tool: Tool, action: ToolAction): Promise<void> {
+  private async runTool(
+    toolName: TToolName,
+    tool: Tool,
+    action: ToolAction,
+    givenPaths: readonly string[] | undefined,
+  ): Promise<void> {
     const { command, exec, actions, args: additionalArgs = {}, env, configFiles } = tool;
 
     const configPath = this.loadConfigPath(toolName, configFiles);
@@ -46,9 +85,26 @@ export default class ToolRunner<TToolName extends string> {
       return;
     }
 
+    let supportedExtensions: readonly FileExtension[] = [];
+    let paths: readonly string[] | undefined = undefined;
+    if (tool.perFile !== false) {
+      supportedExtensions = tool.supportedExtensions;
+
+      if (givenPaths != null) {
+        const filteredGivenPaths = ToolRunner.filterFilesByExtensions(givenPaths, supportedExtensions);
+        if (filteredGivenPaths == null) {
+          // Skip tool
+          this.cli.output.debug(`Skipping tool "${toolName}": no supported files given.`);
+          return;
+        }
+        paths = filteredGivenPaths;
+      }
+    }
+
     const context: ToolActionContext = {
       configPath,
-      supportedExtensions: tool.perFile === false ? [] : tool.supportedExtensions,
+      supportedExtensions,
+      paths,
     };
     const actionArgs = actions(context)[action];
     if (actionArgs == null) {
@@ -64,5 +120,14 @@ export default class ToolRunner<TToolName extends string> {
       args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
     }
     await exec(this.cli, { command, args, env });
+  }
+
+  private static filterFilesByExtensions(
+    pathNames: readonly string[],
+    supportedExtensions: readonly FileExtension[],
+  ): readonly string[] | undefined {
+    const isSupportedFile = createFileExtensionFilter(supportedExtensions);
+    const paths = pathNames.filter((filePath) => isSupportedFile(filePath));
+    return paths.length === 0 ? undefined : paths;
   }
 }

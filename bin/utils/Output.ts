@@ -23,6 +23,10 @@ export default class Output {
     }
   }
 
+  public warn(message: string, additionalValues: readonly unknown[] = []): void {
+    console.warn(message, ...additionalValues);
+  }
+
   public error(message: string, additionalValues: readonly unknown[] = [], exitCode: number = 1): never {
     console.error(message, ...additionalValues);
     process.exit(exitCode);

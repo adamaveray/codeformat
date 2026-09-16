@@ -12,6 +12,7 @@ export interface Command {
   readonly env?: Readonly<Record<string, string>>;
 }
 
+export type ExitCode = number;
 export type ToolExec = (cli: Cli, command: Command) => Promise<void>;
 
 export type ToolAction = 'check' | 'fix';

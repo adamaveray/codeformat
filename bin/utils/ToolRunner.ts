@@ -1,11 +1,13 @@
 import path from 'node:path';
 
 import type Cli from './Cli.ts';
-import type { FileExtension, Tool, ToolAction, ToolActionContext } from './types.ts';
+import type { ExitCode, FileExtension, Tool, ToolAction, ToolActionContext } from './types.ts';
 
 import { findFirstFile } from './filesystem.ts';
 import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
 import { createFileExtensionFilter, FileError, pathEqualsDirectory, resolvePaths } from './paths.ts';
+import { EXIT_CODE_OK } from './processes.ts';
+
 
 export default class ToolRunner<TToolName extends string> {
   constructor(
@@ -13,7 +15,7 @@ export default class ToolRunner<TToolName extends string> {
     private readonly tools: Record<TToolName, Tool>,
   ) {}
 
-  public async run(action: ToolAction, toolName?: string): Promise<void> {
+  public async run(action: ToolAction, toolName?: string): Promise<ExitCode> {
     // Run single tool
     if (toolName != null) {
       const tool = (this.tools as Record<string, Tool>)[toolName];
@@ -26,8 +28,13 @@ export default class ToolRunner<TToolName extends string> {
     // Run all tools
     const givenPaths = this.resolveGivenPaths();
     for (const [thisToolName, thisTool] of Object.entries(this.tools) as [TToolName, Tool][]) {
-      await this.runTool(thisToolName, thisTool, action, givenPaths);
+      const exitCode = await this.runTool(thisToolName, thisTool, action, givenPaths);
+      if (exitCode !== EXIT_CODE_OK) {
+        // Tool failed - abort
+        return exitCode;
+      }
     }
+    return EXIT_CODE_OK;
   }
 
   /**
@@ -77,12 +84,12 @@ export default class ToolRunner<TToolName extends string> {
     tool: Tool,
     action: ToolAction,
     givenPaths: readonly string[] | undefined,
-  ): Promise<void> {
+  ): Promise<ExitCode> {
     const { command, exec, actions, args: additionalArgs = {}, env, configFiles } = tool;
 
     const configPath = this.loadConfigPath(toolName, configFiles);
     if (configPath == null) {
-      return;
+      return EXIT_CODE_OK;
     }
 
     let supportedExtensions: readonly FileExtension[];
@@ -95,7 +102,7 @@ export default class ToolRunner<TToolName extends string> {
       if (!this.isWholeProject()) {
         // Specific paths provided - skip tool
         this.cli.output.info(`Skipping tool "${toolName}": global tool not applicable to specific files.`);
-        return;
+        return EXIT_CODE_OK;
       }
     } else {
       // Per-file tool
@@ -106,7 +113,7 @@ export default class ToolRunner<TToolName extends string> {
         if (filteredGivenPaths == null) {
           // Skip tool
           this.cli.output.debug(`Skipping tool "${toolName}": no supported files given.`);
-          return;
+          return EXIT_CODE_OK;
         }
         paths = filteredGivenPaths;
       }
@@ -119,7 +126,7 @@ export default class ToolRunner<TToolName extends string> {
     };
     const actionArgs = actions(context)[action];
     if (actionArgs == null) {
-      return;
+      return EXIT_CODE_OK;
     }
 
     const args = [...actionArgs];
@@ -130,7 +137,7 @@ export default class ToolRunner<TToolName extends string> {
       const toolCacheDir = path.join(this.cli.options.cacheDir, toolName);
       args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
     }
-    await exec(this.cli, { command, args, env });
+    return exec(this.cli, { command, args, env });
   }
 
   /**

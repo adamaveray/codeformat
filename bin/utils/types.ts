@@ -13,7 +13,7 @@ export interface Command {
 }
 
 export type ExitCode = number;
-export type ToolExec = (cli: Cli, command: Command) => Promise<void>;
+export type ToolExec = (cli: Cli, command: Command) => Promise<ExitCode>;
 
 export type ToolAction = 'check' | 'fix';
 

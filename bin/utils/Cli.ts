@@ -31,6 +31,7 @@ export default class Cli {
 
   /**
    * @returns The command's exit code.
+   * @throws {Error} If the command could not be run at all.
    */
   public async runSubprocess(
     command: string,
@@ -45,9 +46,9 @@ export default class Cli {
       stdio: ['inherit', 'inherit', 'inherit'],
     });
 
-    return new Promise<ExitCode>((resolve) => {
+    return new Promise<ExitCode>((resolve, reject) => {
       proc.on('error', (error) => {
-        this.output.error(`Failed to run "${command}":`, [error instanceof Error ? error.message : error]);
+        reject(new Error(`Failed to run "${command}": ${error.message}`, { cause: error }));
       });
       proc.on('close', (code, signal) => {
         if (code != null) {

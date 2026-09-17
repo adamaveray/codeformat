@@ -34,6 +34,8 @@ declare module 'vite-plus/test' {
     toMatchFilePath: T extends PatternsValue ? (relativePath: string) => void : never;
     toMatchDirectoryPath: T extends PatternsValue ? (relativePath: string) => void : never;
 
+    toSelectOnlyPaths: T extends string ? (selected: readonly string[], rejected: readonly string[]) => void : never;
+
     toExpandInPathContextTo: T extends string
       ? (expectedFiles: readonly string[], context: TestPathContext) => void
       : never;
@@ -98,6 +100,23 @@ const buildExpectMatch = (type: keyof IgnoreFilters): Matcher => {
 expect.extend({
   toMatchFilePath: buildExpectMatch('file'),
   toMatchDirectoryPath: buildExpectMatch('directory'),
+
+  toSelectOnlyPaths(contents: string, selected: readonly string[], rejected: readonly string[]) {
+    const isIgnored = createIgnoreFilters(contents.split(/\r?\n/v)).file;
+    const missing = selected.filter((filePath) => isIgnored(filePath));
+    const unwanted = rejected.filter((filePath) => !isIgnored(filePath));
+
+    return {
+      pass: missing.length === 0 && unwanted.length === 0,
+      expected: { missing: [], unwanted: [] },
+      actual: { missing, unwanted },
+      message: () =>
+        buildMessage(
+          `expected the list ${this.isNot ? 'not to' : 'to'} select exactly {selected}, but it omitted {missing} and included {unwanted}`,
+          { selected, missing, unwanted },
+        ),
+    };
+  },
 
   toExpandInPathContextTo(pathName: string, expectedFiles: readonly string[], context: TestPathContext) {
     const actual = expandPath(pathName, buildPathContext(context));

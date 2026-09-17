@@ -3,9 +3,9 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it, onTestFinished } from 'vite-plus/test';
 
-import type { ignoreFiles } from './ignores.ts';
+import type { IgnoreDialect, ignoreFiles } from './ignores.ts';
 
-import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
+import { buildIgnoreList, createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
 
 type TestSourceFiles = Partial<Record<(typeof ignoreFiles)[number]['fileName'], string>>;
 
@@ -231,5 +231,112 @@ describe(createIgnoreFilters, () => {
     it('does not match project sources', () => {
       expect(defaultIgnorePatterns).not.toMatchFilePath('src/app.ts');
     });
+  });
+});
+
+describe(buildIgnoreList, () => {
+  /** @returns The lines selecting a path, without the surrounding boilerplate. */
+  // oxlint-disable-next-line unicorn/consistent-function-scoping -- Scoped to relevant `describe` block.
+  function selectionsOf(contents: string): readonly string[] {
+    return contents.split('\n').filter((line) => line.startsWith('!/'));
+  }
+
+  describe('selection', () => {
+    it('selects the given paths & nothing else', () => {
+      const { contents } = buildIgnoreList(['src/app.ts', 'lib/deep/nested.ts'], 'gitignore');
+      expect(contents).toSelectOnlyPaths(['src/app.ts', 'lib/deep/nested.ts'], ['src/other.ts', 'lib/deep/sibling.ts']);
+    });
+
+    it('anchors patterns so the same name at another depth is not selected', () => {
+      const { contents } = buildIgnoreList(['README.md'], 'gitignore');
+      expect(contents).toSelectOnlyPaths(['README.md'], ['docs/README.md']);
+    });
+
+    it('selects nothing when given no paths', () => {
+      const { contents } = buildIgnoreList([], 'gitignore');
+      expect(contents).toSelectOnlyPaths([], ['src/app.ts']);
+    });
+
+    it('normalises platform separators', () => {
+      const { contents } = buildIgnoreList([path.join('src', 'app.ts')], 'gitignore');
+      expect(selectionsOf(contents)).toStrictEqual(['!/src/app.ts']);
+    });
+
+    it('drops a leading current-directory prefix', () => {
+      const { contents } = buildIgnoreList(['./src/app.ts'], 'gitignore');
+      expect(selectionsOf(contents)).toStrictEqual(['!/src/app.ts']);
+    });
+  });
+
+  describe('dialects', () => {
+    interface DialectConfig {
+      readonly reinstatesDirectories: boolean;
+    }
+    const dialects = {
+      gitignore: { reinstatesDirectories: true },
+      swiftFormat: { reinstatesDirectories: false },
+    } as const satisfies Record<IgnoreDialect, DialectConfig>;
+
+    it.for(Object.keys(dialects) as readonly IgnoreDialect[])(
+      'excludes everything before making selections for %s',
+      (dialect) => {
+        const lines = buildIgnoreList(['src/app.ts'], dialect).contents.split('\n');
+        expect(lines.indexOf('**')).toBeLessThan(lines.indexOf('!/src/app.ts'));
+      },
+    );
+
+    it.for(Object.entries(dialects) as readonly (readonly [dialect: IgnoreDialect, config: DialectConfig])[])(
+      'reinstates directories for %s: %s',
+      ([dialect, { reinstatesDirectories }]) => {
+        const lines = buildIgnoreList(['src/app.ts'], dialect).contents.split('\n');
+        expect(lines.includes('!**/')).toBe(reinstatesDirectories);
+      },
+    );
+
+    it.for(Object.keys(dialects) as readonly IgnoreDialect[])('marks the generated block for %s', (dialect) => {
+      const { contents } = buildIgnoreList(['src/app.ts'], dialect);
+      expect(contents).toMatch(/^# >>> codeformat generated\b/v);
+      expect(contents.trimEnd()).toMatch(/# <<< codeformat generated$/v);
+    });
+  });
+
+  describe('escaping', () => {
+    it.for([
+      ['an asterisk', 'a*b.ts', String.raw`!/a\*b.ts`],
+      ['a question mark', 'a?b.ts', String.raw`!/a\?b.ts`],
+      ['a character class', 'a[1].ts', String.raw`!/a\[1\].ts`],
+      ['a backslash', String.raw`a\b.ts`, String.raw`!/a\\b.ts`],
+      ['a trailing space', 'trailing .ts ', String.raw`!/trailing .ts\ `],
+      ['a leading hash', '#hash.ts', '!/#hash.ts'],
+      ['a leading exclamation mark', '!bang.ts', '!/!bang.ts'],
+    ] as const satisfies readonly (readonly [label: string, filePath: string, expected: string])[])(
+      'escapes %s for gitignore',
+      ([, filePath, expected]) => {
+        const { contents, unexpressiblePaths } = buildIgnoreList([filePath], 'gitignore');
+        expect(selectionsOf(contents)).toStrictEqual([expected]);
+        expect(unexpressiblePaths).toStrictEqual([]);
+      },
+    );
+
+    it.for([
+      ['a character class', 'a[1].ts', '!/a[1].ts'],
+      ['a backslash', String.raw`a\b.ts`, String.raw`!/a\b.ts`],
+    ] as const satisfies readonly (readonly [label: string, filePath: string, expected: string])[])(
+      'leaves %s literal for swiftFormat',
+      ([, filePath, expected]) => {
+        const { contents, unexpressiblePaths } = buildIgnoreList([filePath], 'swiftFormat');
+        expect(selectionsOf(contents)).toStrictEqual([expected]);
+        expect(unexpressiblePaths).toStrictEqual([]);
+      },
+    );
+
+    it.for(['a*b.ts', 'a?b.ts', 'trailing .ts ', ' leading.ts'])(
+      'omits %s as inexpressible for swiftFormat',
+      (filePath) => {
+        const { contents, unexpressiblePaths } = buildIgnoreList(['src/app.ts', filePath], 'swiftFormat');
+        expect(unexpressiblePaths).toStrictEqual([filePath]);
+        expect(selectionsOf(contents)).toStrictEqual(['!/src/app.ts']);
+      },
+    );
   });
 });

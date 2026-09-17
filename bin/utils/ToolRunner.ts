@@ -29,13 +29,13 @@ export default class ToolRunner<TToolName extends string> {
       if (tool == null) {
         this.cli.output.error(`Unknown tool "${toolName}".`);
       }
-      return this.runTool(toolName as TToolName, tool, action, this.resolveGivenPaths());
+      return this.runTool({ ...tool, name: toolName as TToolName }, action, this.resolveGivenPaths());
     }
 
     // Run all tools
     const givenPaths = this.resolveGivenPaths();
     for (const [thisToolName, thisTool] of Object.entries(this.tools) as [TToolName, Tool][]) {
-      const exitCode = await this.runTool(thisToolName, thisTool, action, givenPaths);
+      const exitCode = await this.runTool({ ...thisTool, name: thisToolName }, action, givenPaths);
       if (exitCode !== EXIT_CODE_OK) {
         // Tool failed - abort
         return exitCode;
@@ -87,24 +87,23 @@ export default class ToolRunner<TToolName extends string> {
   }
 
   private async runTool(
-    toolName: TToolName,
-    tool: Tool,
+    tool: NamedTool<TToolName>,
     action: ToolAction,
     givenPaths: readonly string[] | undefined,
   ): Promise<ExitCode> {
     const exec = async (args: readonly string[]) => tool.exec(this.cli, { command: tool.command, args, env: tool.env });
 
-    const configPath = this.loadConfigPath(toolName, tool.configFiles);
+    const configPath = this.loadConfigPath(tool.name, tool.configFiles);
     if (configPath == null) {
       return EXIT_CODE_OK;
     }
 
-    return this.executeTool({ name: toolName, ...tool }, action, configPath, {
+    return this.executeTool(tool, action, configPath, {
       // Global tool
       global: async (args) => {
         if (!this.isWholeProject()) {
           // Specific paths provided - skip tool
-          this.cli.output.info(`Skipping tool "${toolName}": global tool not applicable to specific files.`);
+          this.cli.output.info(`Skipping tool "${tool.name}": global tool not applicable to specific files.`);
           return EXIT_CODE_OK;
         }
 
@@ -121,7 +120,7 @@ export default class ToolRunner<TToolName extends string> {
         const paths = ToolRunner.filterFilesByExtensions(givenPaths, supportedExtensions);
         if (paths == null) {
           // Skip tool
-          this.cli.output.debug(`Skipping tool "${toolName}": no supported files given.`);
+          this.cli.output.debug(`Skipping tool "${tool.name}": no supported files given.`);
           return EXIT_CODE_OK;
         }
 
@@ -138,13 +137,13 @@ export default class ToolRunner<TToolName extends string> {
         let exitCode: ExitCode = EXIT_CODE_OK;
         for (const { index, values: batchArgs, totalBatches } of batches) {
           if (totalBatches > 1) {
-            this.cli.output.info(`Running tool "${toolName}" (${batchInfo(index, totalBatches)}).`);
+            this.cli.output.info(`Running tool "${tool.name}" (${batchInfo(index, totalBatches)}).`);
           }
 
           const batchExitCode = await exec(batchArgs);
           if (batchExitCode !== EXIT_CODE_OK) {
             if (totalBatches > 1) {
-              this.cli.output.warn(`Tool "${toolName}" failed (${batchInfo(index, totalBatches)}).`);
+              this.cli.output.warn(`Tool "${tool.name}" failed (${batchInfo(index, totalBatches)}).`);
             }
             exitCode = getMostSevereExitCode(exitCode, batchExitCode);
           }

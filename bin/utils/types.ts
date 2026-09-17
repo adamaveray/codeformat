@@ -46,4 +46,4 @@ export type Tool = {
     }
 );
 
-export type NamedTool = Tool & { name: string };
+export type NamedTool<TName extends string = string> = Tool & { name: TName };

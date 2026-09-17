@@ -52,10 +52,7 @@ export interface ScopeFile {
   readonly id: string;
   readonly location: GeneratedFileLocation;
   /** @returns Contents restricting the tool to the given root-relative paths. */
-  readonly build: (
-    paths: readonly string[],
-    context: ScopeFileContext,
-  ) => ScopeFileContents | Promise<ScopeFileContents>;
+  readonly build: (paths: readonly string[], context: ScopeFileContext) => MaybePromise<ScopeFileContents>;
 }
 
 export interface ToolActionContext {

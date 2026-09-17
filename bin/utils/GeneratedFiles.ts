@@ -72,7 +72,7 @@ export default class GeneratedFiles {
   public async create(
     id: string,
     location: GeneratedFileLocation,
-    build: () => string | Promise<string>,
+    build: () => MaybePromise<string>,
   ): Promise<ResolvedLocation['toolPath']> {
     let toolPath: ResolvedLocation['toolPath'] | undefined = this.toolPaths.get(id);
     if (toolPath == null) {

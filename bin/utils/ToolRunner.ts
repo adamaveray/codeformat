@@ -1,13 +1,20 @@
 import path from 'node:path';
+import process from 'node:process';
 
 import type Cli from './Cli.ts';
-import type { ExitCode, FileExtension, Tool, ToolAction, ToolActionContext } from './types.ts';
+import type { ExitCode, FileExtension, NamedTool, Tool, ToolAction, ToolActionContext } from './types.ts';
 
+import ExecutionBatcher from './ExecutionBatcher.ts';
 import { findFirstFile } from './filesystem.ts';
 import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
 import { createFileExtensionFilter, FileError, pathEqualsDirectory, resolvePaths } from './paths.ts';
-import { EXIT_CODE_OK } from './processes.ts';
+import { EXIT_CODE_OK, getMostSevereExitCode } from './processes.ts';
 
+type ArgsBuilder = (context?: Partial<ToolActionContext>) => readonly string[] | undefined;
+type ToolExecutor<T = Tool> = (args: readonly string[], buildArgs: ArgsBuilder, tool: Tool & T) => Promise<ExitCode>;
+
+const maximumBatchArguments = 4_000;
+const argumentBytesBuffer = 1_000; // The number of bytes to reserve for additional command-specific arguments.
 
 export default class ToolRunner<TToolName extends string> {
   constructor(
@@ -85,51 +92,117 @@ export default class ToolRunner<TToolName extends string> {
     action: ToolAction,
     givenPaths: readonly string[] | undefined,
   ): Promise<ExitCode> {
-    const { command, exec, actions, args: additionalArgs = {}, env, configFiles } = tool;
+    const exec = async (args: readonly string[]) => tool.exec(this.cli, { command: tool.command, args, env: tool.env });
 
-    const configPath = this.loadConfigPath(toolName, configFiles);
+    const configPath = this.loadConfigPath(toolName, tool.configFiles);
     if (configPath == null) {
       return EXIT_CODE_OK;
     }
 
-    let supportedExtensions: readonly FileExtension[];
-    let paths: readonly string[] | undefined;
-    if (tool.perFile === false) {
+    return this.executeTool({ name: toolName, ...tool }, action, configPath, {
       // Global tool
-      supportedExtensions = [];
-      paths = undefined;
+      global: async (args) => {
+        if (!this.isWholeProject()) {
+          // Specific paths provided - skip tool
+          this.cli.output.info(`Skipping tool "${toolName}": global tool not applicable to specific files.`);
+          return EXIT_CODE_OK;
+        }
 
-      if (!this.isWholeProject()) {
-        // Specific paths provided - skip tool
-        this.cli.output.info(`Skipping tool "${toolName}": global tool not applicable to specific files.`);
-        return EXIT_CODE_OK;
-      }
-    } else {
+        return exec(args);
+      },
+
       // Per-file tool
-      supportedExtensions = tool.supportedExtensions;
-
-      if (givenPaths != null) {
-        const filteredGivenPaths = ToolRunner.filterFilesByExtensions(givenPaths, supportedExtensions);
-        if (filteredGivenPaths == null) {
+      perFile: async (commonArgs, buildArgs, { supportedExtensions }) => {
+        const paths =
+          givenPaths == null ? undefined : ToolRunner.filterFilesByExtensions(givenPaths, supportedExtensions);
+        if (paths == null) {
           // Skip tool
           this.cli.output.debug(`Skipping tool "${toolName}": no supported files given.`);
           return EXIT_CODE_OK;
         }
-        paths = filteredGivenPaths;
-      }
+
+        const batcher = ExecutionBatcher.createForPlatform(
+          process.platform,
+          [tool.command, ...commonArgs],
+          { ...process.env, ...tool.env },
+          maximumBatchArguments,
+          argumentBytesBuffer,
+        );
+        const batches = batcher.batch(paths, (batchPaths) => buildArgs({ paths: batchPaths }));
+
+        const batchInfo = (index: number, total: number): string => `batch ${index + 1}/${total}`;
+        let exitCode: ExitCode = EXIT_CODE_OK;
+        for (const { index, values: batchArgs, totalBatches } of batches) {
+          if (totalBatches > 1) {
+            this.cli.output.info(`Running tool "${toolName}" (${batchInfo(index, totalBatches)}).`);
+          }
+
+          const batchExitCode = await exec(batchArgs);
+          if (batchExitCode !== EXIT_CODE_OK) {
+            if (totalBatches > 1) {
+              this.cli.output.warn(`Tool "${toolName}" failed (${batchInfo(index, totalBatches)}).`);
+            }
+            exitCode = getMostSevereExitCode(exitCode, batchExitCode);
+          }
+        }
+        return exitCode;
+      },
+    });
+  }
+
+  private async executeTool(
+    tool: NamedTool,
+    action: ToolAction,
+    configPath: string,
+    executors: {
+      global: ToolExecutor<{ perFile: false }>;
+      perFile: ToolExecutor<{ perFile?: true }>;
+    },
+  ): Promise<ExitCode> {
+    let executor: ToolExecutor;
+    let buildArgsContext: Omit<ToolActionContext, 'configPath'>;
+
+    if (tool.perFile === false) {
+      executor = executors.global;
+      buildArgsContext = {
+        supportedExtensions: [],
+        paths: undefined,
+      };
+    } else {
+      executor = executors.perFile;
+      buildArgsContext = {
+        supportedExtensions: tool.supportedExtensions,
+        paths: [],
+      };
     }
 
-    const context: ToolActionContext = {
-      configPath,
-      supportedExtensions,
-      paths,
-    };
-    const actionArgs = actions(context)[action];
-    if (actionArgs == null) {
+    const buildArgs: ArgsBuilder = (extraContext) =>
+      this.buildArgs(tool, action, {
+        configPath,
+        ...buildArgsContext,
+        ...extraContext,
+      });
+
+    const args = buildArgs();
+    if (args == null) {
+      // No command to run
       return EXIT_CODE_OK;
     }
 
-    const args = [...actionArgs];
+    return executor(args, buildArgs, tool);
+  }
+
+  private buildArgs(
+    { actions, args: additionalArgs = {}, name: toolName }: NamedTool,
+    action: ToolAction,
+    context: ToolActionContext,
+  ): readonly string[] | undefined {
+    const actionArgs = actions(context)[action];
+    if (actionArgs == null) {
+      return undefined;
+    }
+
+    const args: string[] = [...actionArgs];
     if (this.cli.options.debug) {
       args.push(...(additionalArgs.debug ?? []));
     }
@@ -137,7 +210,7 @@ export default class ToolRunner<TToolName extends string> {
       const toolCacheDir = path.join(this.cli.options.cacheDir, toolName);
       args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
     }
-    return exec(this.cli, { command, args, env });
+    return args;
   }
 
   /**

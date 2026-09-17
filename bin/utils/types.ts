@@ -45,3 +45,5 @@ export type Tool = {
       readonly supportedExtensions?: undefined;
     }
 );
+
+export type NamedTool = Tool & { name: string };

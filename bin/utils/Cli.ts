@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { parseArgs } from 'node:util';
 
-import type { ExitCode, ToolAction } from './types.ts';
+import type { CapturedOutput, ExitCode, ToolAction } from './types.ts';
 
 import Output from './Output.ts';
 import { getExitCodeForSignal } from './processes.ts';
@@ -39,28 +39,49 @@ export default class Cli {
     args: readonly string[],
     env: Readonly<Record<string, string>> = {},
   ): Promise<ExitCode> {
+    const { exitCode } = await this.spawnSubprocess(command, args, env, false);
+    return exitCode;
+  }
+
+  private async spawnSubprocess(
+    command: string,
+    args: readonly string[],
+    env: Readonly<Record<string, string>>,
+    captureStdout: boolean,
+  ): Promise<CapturedOutput> {
     this.output.verbose('Running command:', [command, ...args]);
 
     const proc = spawn(command, args, {
       cwd: this.directory,
       env: { ...process.env, ...env },
-      stdio: ['inherit', 'inherit', 'inherit'],
+      stdio: ['inherit', captureStdout ? 'pipe' : 'inherit', 'inherit'],
     });
 
-    return new Promise<ExitCode>((resolve, reject) => {
+    let stdout = '';
+    if (proc.stdout != null) {
+      proc.stdout.setEncoding('utf8').on('data', (chunk: string) => {
+        stdout += chunk;
+      });
+    }
+
+    return new Promise<CapturedOutput>((resolve, reject) => {
+      const end = (exitCode: ExitCode): void => {
+        resolve({ exitCode, stdout });
+      };
+
       proc.on('error', (error) => {
         reject(new Error(`Failed to run "${command}": ${error.message}`, { cause: error }));
       });
       proc.on('close', (code, signal) => {
         if (code != null) {
-          resolve(code);
+          end(code);
           return;
         }
         if (signal == null) {
-          resolve(EXIT_CODE_UNKNOWN_ERROR);
+          end(EXIT_CODE_UNKNOWN_ERROR);
           return;
         }
-        resolve(getExitCodeForSignal(signal));
+        end(getExitCodeForSignal(signal));
       });
     });
   }

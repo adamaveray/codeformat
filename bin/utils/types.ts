@@ -13,6 +13,11 @@ export interface Command {
 }
 
 export type ExitCode = number;
+
+export interface CapturedOutput {
+  readonly exitCode: ExitCode;
+  readonly stdout: string;
+}
 export type ToolExec = (cli: Cli, command: Command) => Promise<ExitCode>;
 
 export interface Runner {

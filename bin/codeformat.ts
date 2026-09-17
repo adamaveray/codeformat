@@ -8,8 +8,6 @@ import {
   magoFormat,
   magoGuard,
   magoLint,
-  oxfmt,
-  oxlint,
   stylelint,
   swiftFormat,
   vitePlusFmt,
@@ -23,14 +21,12 @@ const { cli, selectedAction, selectedTool } = Cli.createFromArgs(argv);
 const runner = new ToolRunner(cli, {
   // Formatting
   vitePlusFmt,
-  oxfmt,
 
   // Dead code detection
   knip,
 
   // Linting & type checking
   vitePlusLint,
-  oxlint,
 
   // CSS/SCSS
   stylelint,

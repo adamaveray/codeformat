@@ -151,7 +151,8 @@ export default class ToolRunner<TToolName extends string> {
   }
 
   private async runTool(tool: NamedTool<TToolName>, action: ToolAction, scope: ToolScope): Promise<ExitCode> {
-    const exec = async (args: readonly string[]) => tool.exec(this.cli, { command: tool.command, args, env: tool.env });
+    const exec = async (args: readonly string[]) =>
+      tool.runner.exec(this.cli, { command: tool.command, args, env: tool.env });
 
     const configPath = this.loadConfigPath(tool.name, tool.configFiles);
     if (configPath == null) {

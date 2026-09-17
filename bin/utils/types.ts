@@ -15,6 +15,11 @@ export interface Command {
 export type ExitCode = number;
 export type ToolExec = (cli: Cli, command: Command) => Promise<ExitCode>;
 
+export interface Runner {
+  /** Runs the command, letting its output through to the user. */
+  readonly exec: ToolExec;
+}
+
 export type ToolAction = 'check' | 'fix';
 
 export interface ToolActionContext {
@@ -24,7 +29,7 @@ export interface ToolActionContext {
 }
 
 export type Tool = {
-  readonly exec: ToolExec;
+  readonly runner: Runner;
   readonly command: string;
   readonly actions: (context: ToolActionContext) => Partial<Record<ToolAction, readonly string[]>>;
   readonly args?: Partial<{

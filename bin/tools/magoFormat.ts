@@ -4,7 +4,7 @@ import extensions from '../../src/extensions.ts';
 import runners from '../utils/runners.ts';
 
 export default {
-  exec: runners.composer,
+  runner: runners.composer,
   command: 'mago',
   actions: ({ paths = [] }) => ({
     check: ['format', '--check', ...paths],

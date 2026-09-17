@@ -5,7 +5,7 @@ import { withExts } from '../utils/filesystem.ts';
 import runners from '../utils/runners.ts';
 
 export default {
-  exec: runners.viteplus.exec,
+  runner: runners.viteplus.exec,
   command: 'stylelint',
   actions: ({ configPath, paths, supportedExtensions }) => {
     const targets = paths ?? [`**/*.{${supportedExtensions.join(',')}}`];

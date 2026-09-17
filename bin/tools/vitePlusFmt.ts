@@ -21,7 +21,7 @@ export const additionalExtensions: readonly FileExtension[] = [
 ];
 
 export default {
-  exec: runners.viteplus.cmd,
+  runner: runners.viteplus.cmd,
   command: 'fmt',
   actions: ({ paths = [] }) => ({
     check: ['--check', ...paths],

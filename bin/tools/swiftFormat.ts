@@ -4,7 +4,7 @@ import runners from '../utils/runners.ts';
 
 const commonArgs = ['--recursive', '--parallel'];
 export default {
-  exec: runners.system,
+  runner: runners.system,
   command: 'swift-format',
   actions: ({ configPath, paths = ['.'] }) => ({
     check: ['lint', ...commonArgs, '--strict', '--configuration', configPath, ...paths],

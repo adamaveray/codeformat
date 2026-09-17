@@ -13,6 +13,7 @@
   multilineTrailingCommaBehavior: "alwaysUsed",
   orderedImports: {
     "includeConditionalImports": true,
+    "shouldGroupImports": true,
   },
   respectsExistingLineBreaks: true, // Breaks syntax (e.g. https://github.com/swiftlang/swift-format/issues/1005)
 }

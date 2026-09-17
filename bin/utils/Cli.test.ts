@@ -45,4 +45,31 @@ describe(Cli, () => {
       await expect(output).rejects.toThrow(/^Failed to run/v);
     });
   });
+
+  describe('captureSubprocess', () => {
+    it('returns the standard output & exit code', async () => {
+      const source = /* language=JavaScript */ 'process.stdout.write("captured"); process.exit(3)';
+      const output = makeCli().captureSubprocess(...buildSubprocessExec(source));
+      await expect(output).resolves.toStrictEqual({ exitCode: 3, stdout: 'captured' });
+    });
+
+    it('captures output spanning multiple chunks', async () => {
+      const length = 512 * 1_024;
+      const source = /* language=JavaScript */ `process.stdout.write("x".repeat(${length}))`;
+      const { stdout } = await makeCli().captureSubprocess(...buildSubprocessExec(source));
+      expect(stdout).toHaveLength(length);
+    });
+
+    it('leaves standard error uncaptured, so failures stay visible', async () => {
+      const source = /* language=JavaScript */ 'process.stderr.write("diagnostic"); process.stdout.write("data")';
+      const { stdout } = await makeCli().captureSubprocess(...buildSubprocessExec(source));
+      expect(stdout).toBe('data');
+    });
+
+    it('returns empty output for a command writing nothing', async () => {
+      const source = /* language=JavaScript */ 'process.exit(0)';
+      const output = makeCli().captureSubprocess(...buildSubprocessExec(source));
+      await expect(output).resolves.toStrictEqual({ exitCode: 0, stdout: '' });
+    });
+  });
 });

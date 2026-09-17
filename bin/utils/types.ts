@@ -18,11 +18,15 @@ export interface CapturedOutput {
   readonly exitCode: ExitCode;
   readonly stdout: string;
 }
+
 export type ToolExec = (cli: Cli, command: Command) => Promise<ExitCode>;
+export type ToolCapture = (cli: Cli, command: Command) => Promise<CapturedOutput>;
 
 export interface Runner {
   /** Runs the command, letting its output through to the user. */
   readonly exec: ToolExec;
+  /** Runs the command, collecting its standard output instead of displaying it. */
+  readonly capture: ToolCapture;
 }
 
 export type ToolAction = 'check' | 'fix';

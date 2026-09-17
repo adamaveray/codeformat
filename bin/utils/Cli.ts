@@ -43,6 +43,18 @@ export default class Cli {
     return exitCode;
   }
 
+  /**
+   * @returns The command's output.
+   * @throws {Error} If the command could not be run.
+   */
+  public async captureSubprocess(
+    command: string,
+    args: readonly string[],
+    env: Readonly<Record<string, string>> = {},
+  ): Promise<CapturedOutput> {
+    return this.spawnSubprocess(command, args, env, true);
+  }
+
   private async spawnSubprocess(
     command: string,
     args: readonly string[],

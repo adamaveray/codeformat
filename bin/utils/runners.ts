@@ -9,6 +9,10 @@ function makeRunner(build: CommandBuilder): Runner {
       const { command, args } = build(toolCommand);
       return cli.runSubprocess(command, args, toolCommand.env ?? {});
     },
+    async capture(this: void, cli, toolCommand) {
+      const { command, args } = build(toolCommand);
+      return cli.captureSubprocess(command, args, toolCommand.env ?? {});
+    },
   };
 }
 

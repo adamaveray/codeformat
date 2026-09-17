@@ -269,6 +269,7 @@ export const shared = {
   'react/state-in-constructor': 'off', // Class components are legacy
 
   'typescript/ban-types': 'off', // Deprecated in favour of separate rules
+  'typescript/consistent-return': 'off', // Does not detect exhaustive switches etc, and already handled by `noImplicitReturns`.
   'typescript/consistent-type-assertions': ['error', { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
   'typescript/consistent-type-definitions': ['error', 'interface'],
   'typescript/consistent-type-exports': ['error', { fixMixedExportsWithInlineTypeSpecifier: true }],

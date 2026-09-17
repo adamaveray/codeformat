@@ -4,7 +4,7 @@ import process from 'node:process';
 import type Cli from './Cli.ts';
 import type { StagedFiles } from './git.ts';
 import type { IgnoreFilters } from './ignores.ts';
-import type { ExitCode, FileExtension, NamedTool, Tool, ToolAction, ToolActionContext } from './types.ts';
+import type { ExitCode, FileExtension, NamedTool, ScopeFile, Tool, ToolAction, ToolActionContext } from './types.ts';
 
 import ExecutionBatcher from './ExecutionBatcher.ts';
 import { findFirstFile } from './filesystem.ts';
@@ -199,6 +199,17 @@ export default class ToolRunner<TToolName extends string> {
           return EXIT_CODE_OK;
         }
 
+        if (tool.scopeFile != null) {
+          // Narrow the tool via a generated file
+          const scopeFilePath = await this.createScopeFile(tool, tool.scopeFile, configPath, paths);
+          const args = buildArgs({ scopeFilePath });
+          if (args == null) {
+            return EXIT_CODE_OK;
+          }
+          return exec(args);
+        }
+
+        // Run the tool in batches
         const batcher = ExecutionBatcher.createForPlatform(
           process.platform,
           [tool.command, ...commonArgs],
@@ -225,6 +236,31 @@ export default class ToolRunner<TToolName extends string> {
         }
         return exitCode;
       },
+    });
+  }
+
+  /**
+   * @returns The path the tool must be given to restrict itself to the given paths.
+   */
+  private async createScopeFile(
+    { command, env, name, runner }: NamedTool<TToolName>,
+    scopeFile: ScopeFile,
+    configPath: string,
+    paths: readonly string[],
+  ): Promise<string> {
+    // Use the same ID for tools producing identical contents
+    const id = [scopeFile.id, ...paths].join('\0');
+    return this.generatedFiles.create(id, scopeFile.location, async () => {
+      const { contents, unexpressiblePaths = [] } = await scopeFile.build(paths, {
+        configPath,
+        output: this.cli.output,
+        capture: async (args) => runner.capture(this.cli, { command, args, env }),
+      });
+
+      if (unexpressiblePaths.length > 0) {
+        this.cli.output.warn(`Skipping paths tool "${name}" cannot be restricted to:`, [unexpressiblePaths]);
+      }
+      return contents;
     });
   }
 

@@ -6,7 +6,7 @@ import runners from '../utils/runners.ts';
 
 const commonArgs = ['--treat-config-hints-as-errors'];
 export default {
-  exec: runners.viteplus.exec,
+  runner: runners.viteplus.exec,
   command: 'knip',
   actions: ({ configPath }) => ({
     check: ['--config', configPath, ...commonArgs],

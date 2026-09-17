@@ -1,17 +1,16 @@
 import path from 'node:path';
-import process from 'node:process';
 
 import type Cli from './Cli.ts';
 import type { StagedFiles } from './git.ts';
 import type { IgnoreFilters } from './ignores.ts';
-import type { ExitCode, FileExtension, NamedTool, Tool, ToolAction, ToolActionContext } from './types.ts';
+import type { ExitCode, FileExtension, NamedTool, ScopeFile, Tool, ToolAction, ToolActionContext } from './types.ts';
 
-import ExecutionBatcher from './ExecutionBatcher.ts';
 import { findFirstFile } from './filesystem.ts';
+import GeneratedFiles from './GeneratedFiles.ts';
 import { getStagedFiles, GitError } from './git.ts';
 import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
 import { createFileExtensionFilter, FileError, pathEqualsDirectory, resolvePaths } from './paths.ts';
-import { EXIT_CODE_OK, getMostSevereExitCode } from './processes.ts';
+import { EXIT_CODE_OK } from './processes.ts';
 
 type ArgsBuilder = (context?: Partial<ToolActionContext>) => readonly string[] | undefined;
 type ToolExecutor<T = Tool> = (args: readonly string[], buildArgs: ArgsBuilder, tool: Tool & T) => Promise<ExitCode>;
@@ -26,16 +25,26 @@ type ToolScope =
       readonly paths: readonly string[];
     };
 
-const maximumBatchArguments = 4_000;
-const argumentBytesBuffer = 1_000; // The number of bytes to reserve for additional command-specific arguments.
-
 export default class ToolRunner<TToolName extends string> {
+  /** Files generated during execution. */
+  private readonly generatedFiles: GeneratedFiles;
+
   constructor(
     private readonly cli: Cli,
     private readonly tools: Record<TToolName, Tool>,
-  ) {}
+  ) {
+    this.generatedFiles = new GeneratedFiles(cli.directory, cli.output);
+  }
 
   public async run(action: ToolAction, toolName?: string): Promise<ExitCode> {
+    try {
+      return await this.runTools(action, toolName);
+    } finally {
+      this.generatedFiles.cleanUp();
+    }
+  }
+
+  private async runTools(action: ToolAction, toolName?: string): Promise<ExitCode> {
     const selectedTool = toolName == null ? undefined : (this.tools as Record<string, Tool>)[toolName];
     if (toolName != null && selectedTool == null) {
       this.cli.output.error(`Unknown tool "${toolName}".`);
@@ -151,7 +160,8 @@ export default class ToolRunner<TToolName extends string> {
   }
 
   private async runTool(tool: NamedTool<TToolName>, action: ToolAction, scope: ToolScope): Promise<ExitCode> {
-    const exec = async (args: readonly string[]) => tool.exec(this.cli, { command: tool.command, args, env: tool.env });
+    const exec = async (args: readonly string[]) =>
+      tool.runner.exec(this.cli, { command: tool.command, args, env: tool.env });
 
     const configPath = this.loadConfigPath(tool.name, tool.configFiles);
     if (configPath == null) {
@@ -171,45 +181,54 @@ export default class ToolRunner<TToolName extends string> {
       },
 
       // Per-file tool
-      perFile: async (commonArgs, buildArgs, { supportedExtensions }) => {
-        if (scope.isWholeProject) {
-          // Run project-wide
-          return exec(commonArgs);
-        }
+      perFile: async (commonArgs, buildArgs, { scopeFile, supportedExtensions }) => {
+        let args = commonArgs;
 
-        const paths = ToolRunner.filterFilesByExtensions(scope.paths, supportedExtensions);
-        if (paths == null) {
-          // Skip tool
-          this.cli.output.debug(`Skipping tool "${tool.name}": no supported files given.`);
-          return EXIT_CODE_OK;
-        }
-
-        const batcher = ExecutionBatcher.createForPlatform(
-          process.platform,
-          [tool.command, ...commonArgs],
-          { ...process.env, ...tool.env },
-          maximumBatchArguments,
-          argumentBytesBuffer,
-        );
-        const batches = batcher.batch(paths, (batchPaths) => buildArgs({ paths: batchPaths }));
-
-        const batchInfo = (index: number, total: number): string => `batch ${index + 1}/${total}`;
-        let exitCode: ExitCode = EXIT_CODE_OK;
-        for (const { index, values: batchArgs, totalBatches } of batches) {
-          if (totalBatches > 1) {
-            this.cli.output.info(`Running tool "${tool.name}" (${batchInfo(index, totalBatches)}).`);
+        if (!scope.isWholeProject) {
+          // Scope to paths
+          const paths = ToolRunner.filterFilesByExtensions(scope.paths, supportedExtensions);
+          if (paths == null) {
+            // Skip tool
+            this.cli.output.debug(`Skipping tool "${tool.name}": no supported files given.`);
+            return EXIT_CODE_OK;
           }
 
-          const batchExitCode = await exec(batchArgs);
-          if (batchExitCode !== EXIT_CODE_OK) {
-            if (totalBatches > 1) {
-              this.cli.output.warn(`Tool "${tool.name}" failed (${batchInfo(index, totalBatches)}).`);
-            }
-            exitCode = getMostSevereExitCode(exitCode, batchExitCode);
+          const scopeFilePath = await this.createScopeFile(tool, scopeFile, configPath, paths);
+          const scopedArgs = buildArgs({ scopeFilePath });
+          if (scopedArgs == null) {
+            return EXIT_CODE_OK;
           }
+
+          args = scopedArgs;
         }
-        return exitCode;
+
+        return exec(args);
       },
+    });
+  }
+
+  /**
+   * @returns The path the tool must be given to restrict itself to the given paths.
+   */
+  private async createScopeFile(
+    { command, env, name, runner }: NamedTool<TToolName>,
+    scopeFile: ScopeFile,
+    configPath: string,
+    paths: readonly string[],
+  ): Promise<string> {
+    // Use the same ID for tools producing identical contents
+    const id = [scopeFile.id, ...paths].join('\0');
+    return this.generatedFiles.create(id, scopeFile.location, async () => {
+      const { contents, unexpressiblePaths = [] } = await scopeFile.build(paths, {
+        configPath,
+        output: this.cli.output,
+        capture: async (args) => runner.capture(this.cli, { command, args, env }),
+      });
+
+      if (unexpressiblePaths.length > 0) {
+        this.cli.output.warn(`Skipping paths tool "${name}" cannot be restricted to:`, [unexpressiblePaths]);
+      }
+      return contents;
     });
   }
 

@@ -1,3 +1,6 @@
+/** A value usable either directly or once awaited. */
+type MaybePromise<T> = T | Promise<T>;
+
 declare module 'postcss-styled-syntax' {
   import type { CustomSyntax } from 'stylelint';
 

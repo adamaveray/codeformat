@@ -1,6 +1,7 @@
 import type { FileExtension, Tool } from '../utils/types.ts';
 
 import extensions from '../../src/extensions.ts';
+import { buildIgnoreList } from '../utils/ignores.ts';
 import runners from '../utils/runners.ts';
 
 export const additionalExtensions: readonly FileExtension[] = [
@@ -21,14 +22,22 @@ export const additionalExtensions: readonly FileExtension[] = [
 ];
 
 export default {
-  exec: runners.viteplus.cmd,
+  runner: runners.viteplus.cmd,
   command: 'fmt',
-  actions: ({ paths = [] }) => ({
-    check: ['--check', ...paths],
-    fix: [...paths],
-  }),
+  actions: ({ scopeFilePath: ignorePath }) => {
+    const ignoreArgs = ignorePath == null ? [] : ['--ignore-path', ignorePath];
+    return {
+      check: ['--check', ...ignoreArgs],
+      fix: [...ignoreArgs],
+    };
+  },
   args: {},
   configFiles: ['vite.config.ts'],
+  scopeFile: {
+    id: 'vitePlusIgnore',
+    location: { kind: 'projectScratch', extension: 'ignore' },
+    build: (paths) => buildIgnoreList(paths, 'gitignore'),
+  },
   supportedExtensions: [
     ...extensions.js,
     ...extensions.ts,

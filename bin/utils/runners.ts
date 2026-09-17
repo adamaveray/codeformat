@@ -1,23 +1,38 @@
-import path from 'node:path';
+import type { Command, Runner } from './types.ts';
 
-import type { ToolExec } from './types.ts';
+/** Maps a tool's command & arguments onto the executable actually invoked. */
+type CommandBuilder = (command: Command) => Pick<Command, 'command' | 'args'>;
+
+function makeRunner(build: CommandBuilder): Runner {
+  return {
+    async exec(this: void, cli, toolCommand) {
+      const { command, args } = build(toolCommand);
+      return cli.runSubprocess(command, args, toolCommand.env ?? {});
+    },
+    async capture(this: void, cli, toolCommand) {
+      const { command, args } = build(toolCommand);
+      return cli.captureSubprocess(command, args, toolCommand.env ?? {});
+    },
+  };
+}
 
 export default {
   viteplus: {
-    async cmd(this: void, cli, { command, args, env = {} }) {
-      return cli.runSubprocess('vp', [command, ...args], env);
-    },
-    async exec(this: void, cli, { command, args, env = {} }) {
-      return cli.runSubprocess('vp', ['exec', command, ...args], env);
-    },
+    cmd: makeRunner(({ command, args }) => ({
+      command: 'vp',
+      args: [command, ...args],
+    })),
+    exec: makeRunner(({ command, args }) => ({
+      command: 'vp',
+      args: ['exec', command, ...args],
+    })),
   },
-  async node(this: void, cli, { command, args, env = {} }) {
-    return cli.runSubprocess(path.join('node_modules', '.bin', command), args, env);
-  },
-  async composer(this: void, cli, { command, args, env = {} }) {
-    return cli.runSubprocess('composer', ['exec', command, '--', ...args], env);
-  },
-  async system(this: void, cli, { command, args, env = {} }) {
-    return cli.runSubprocess(command, args, env);
-  },
-} as const satisfies Record<string, ToolExec | Record<string, ToolExec>>;
+  composer: makeRunner(({ command, args }) => ({
+    command: 'composer',
+    args: ['exec', command, '--', ...args],
+  })),
+  system: makeRunner(({ command, args }) => ({
+    command,
+    args,
+  })),
+} as const satisfies Record<string, Runner | Record<string, Runner>>;

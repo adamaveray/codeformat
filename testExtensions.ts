@@ -4,8 +4,6 @@ import type { Matcher } from 'vite-plus/test';
 
 import { expect } from 'vite-plus/test';
 
-import type ExecutionBatcher from './bin/utils/ExecutionBatcher.ts';
-import type { Batch } from './bin/utils/ExecutionBatcher.ts';
 import type { IgnoreFilters, IgnoreSource } from './bin/utils/ignores.ts';
 import type { PathContext, ResolvedPaths } from './bin/utils/paths.ts';
 
@@ -13,9 +11,6 @@ import { createIgnoreFilters } from './bin/utils/ignores.ts';
 import { expandPath, FileError, resolvePaths } from './bin/utils/paths.ts';
 
 type PatternsValue = IgnoreSource | IgnoreSource['patterns'];
-
-/** Maps one batch's values to whatever a caller passes on to its process. */
-type BatchTransformer<T> = (batchValues: readonly string[]) => T | undefined;
 
 type FileErrorClass = new (filePath: string) => FileError;
 
@@ -47,21 +42,6 @@ declare module 'vite-plus/test' {
       : never;
 
     toMatchAsTest: T extends PathTest ? (filePath: string) => void : never;
-
-    toBatchInto: T extends ExecutionBatcher
-      ? <TValue>(
-          values: readonly string[],
-          transformer: BatchTransformer<TValue>,
-          expectedBatches: readonly Batch<TValue>[],
-        ) => void
-      : never;
-    toBatchIntoValues: T extends ExecutionBatcher
-      ? <TValue>(
-          values: readonly string[],
-          transformer: BatchTransformer<TValue>,
-          expectedBatchValues: readonly TValue[],
-        ) => void
-      : never;
   }
 }
 
@@ -189,40 +169,6 @@ expect.extend({
     return {
       pass: pathTest(filePath),
       message: () => buildMessage(`expected the test ${this.isNot ? 'not to' : 'to'} match {filePath}`, { filePath }),
-    };
-  },
-
-  toBatchInto<TValue>(
-    batcher: ExecutionBatcher,
-    values: readonly string[],
-    transformer: BatchTransformer<TValue>,
-    expectedBatches: readonly Batch<TValue>[],
-  ) {
-    const actual = [...batcher.batch(values, transformer)];
-
-    return {
-      pass: this.equals(actual, expectedBatches),
-      expected: expectedBatches,
-      actual,
-      message: () =>
-        buildMessage(`expected {values} ${this.isNot ? 'not to' : 'to'} batch into the expected batches`, { values }),
-    };
-  },
-
-  toBatchIntoValues<TValue>(
-    batcher: ExecutionBatcher,
-    values: readonly string[],
-    transformer: BatchTransformer<TValue>,
-    expectedBatchValues: readonly TValue[],
-  ) {
-    const actual = [...batcher.batch(values, transformer)].map((batch) => batch.values);
-
-    return {
-      pass: this.equals(actual, expectedBatchValues),
-      expected: expectedBatchValues,
-      actual,
-      message: () =>
-        buildMessage(`expected {values} ${this.isNot ? 'not to' : 'to'} batch into the expected values`, { values }),
     };
   },
 });

@@ -1,18 +1,16 @@
 import path from 'node:path';
-import process from 'node:process';
 
 import type Cli from './Cli.ts';
 import type { StagedFiles } from './git.ts';
 import type { IgnoreFilters } from './ignores.ts';
 import type { ExitCode, FileExtension, NamedTool, ScopeFile, Tool, ToolAction, ToolActionContext } from './types.ts';
 
-import ExecutionBatcher from './ExecutionBatcher.ts';
 import { findFirstFile } from './filesystem.ts';
 import GeneratedFiles from './GeneratedFiles.ts';
 import { getStagedFiles, GitError } from './git.ts';
 import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
 import { createFileExtensionFilter, FileError, pathEqualsDirectory, resolvePaths } from './paths.ts';
-import { EXIT_CODE_OK, getMostSevereExitCode } from './processes.ts';
+import { EXIT_CODE_OK } from './processes.ts';
 
 type ArgsBuilder = (context?: Partial<ToolActionContext>) => readonly string[] | undefined;
 type ToolExecutor<T = Tool> = (args: readonly string[], buildArgs: ArgsBuilder, tool: Tool & T) => Promise<ExitCode>;
@@ -26,9 +24,6 @@ type ToolScope =
       readonly isWholeProject: false;
       readonly paths: readonly string[];
     };
-
-const maximumBatchArguments = 4_000;
-const argumentBytesBuffer = 1_000; // The number of bytes to reserve for additional command-specific arguments.
 
 export default class ToolRunner<TToolName extends string> {
   /** Files generated during execution. */
@@ -186,55 +181,28 @@ export default class ToolRunner<TToolName extends string> {
       },
 
       // Per-file tool
-      perFile: async (commonArgs, buildArgs, { supportedExtensions }) => {
-        if (scope.isWholeProject) {
-          // Run project-wide
-          return exec(commonArgs);
-        }
+      perFile: async (commonArgs, buildArgs, { scopeFile, supportedExtensions }) => {
+        let args = commonArgs;
 
-        const paths = ToolRunner.filterFilesByExtensions(scope.paths, supportedExtensions);
-        if (paths == null) {
-          // Skip tool
-          this.cli.output.debug(`Skipping tool "${tool.name}": no supported files given.`);
-          return EXIT_CODE_OK;
-        }
-
-        if (tool.scopeFile != null) {
-          // Narrow the tool via a generated file
-          const scopeFilePath = await this.createScopeFile(tool, tool.scopeFile, configPath, paths);
-          const args = buildArgs({ scopeFilePath });
-          if (args == null) {
+        if (!scope.isWholeProject) {
+          // Scope to paths
+          const paths = ToolRunner.filterFilesByExtensions(scope.paths, supportedExtensions);
+          if (paths == null) {
+            // Skip tool
+            this.cli.output.debug(`Skipping tool "${tool.name}": no supported files given.`);
             return EXIT_CODE_OK;
           }
-          return exec(args);
-        }
 
-        // Run the tool in batches
-        const batcher = ExecutionBatcher.createForPlatform(
-          process.platform,
-          [tool.command, ...commonArgs],
-          { ...process.env, ...tool.env },
-          maximumBatchArguments,
-          argumentBytesBuffer,
-        );
-        const batches = batcher.batch(paths, (batchPaths) => buildArgs({ paths: batchPaths }));
-
-        const batchInfo = (index: number, total: number): string => `batch ${index + 1}/${total}`;
-        let exitCode: ExitCode = EXIT_CODE_OK;
-        for (const { index, values: batchArgs, totalBatches } of batches) {
-          if (totalBatches > 1) {
-            this.cli.output.info(`Running tool "${tool.name}" (${batchInfo(index, totalBatches)}).`);
+          const scopeFilePath = await this.createScopeFile(tool, scopeFile, configPath, paths);
+          const scopedArgs = buildArgs({ scopeFilePath });
+          if (scopedArgs == null) {
+            return EXIT_CODE_OK;
           }
 
-          const batchExitCode = await exec(batchArgs);
-          if (batchExitCode !== EXIT_CODE_OK) {
-            if (totalBatches > 1) {
-              this.cli.output.warn(`Tool "${tool.name}" failed (${batchInfo(index, totalBatches)}).`);
-            }
-            exitCode = getMostSevereExitCode(exitCode, batchExitCode);
-          }
+          args = scopedArgs;
         }
-        return exitCode;
+
+        return exec(args);
       },
     });
   }

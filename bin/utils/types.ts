@@ -58,7 +58,6 @@ export interface ScopeFile {
 export interface ToolActionContext {
   readonly configPath: string;
   readonly supportedExtensions: readonly FileExtension[];
-  readonly paths?: readonly string[];
   readonly scopeFilePath?: string;
 }
 
@@ -77,7 +76,7 @@ export type Tool = {
       /** The tool operates on individual files. */
       readonly perFile?: true;
       readonly supportedExtensions: readonly FileExtension[];
-      readonly scopeFile?: ScopeFile;
+      readonly scopeFile: ScopeFile;
     }
   | {
       /** The tool operates on a project, not per-file. */

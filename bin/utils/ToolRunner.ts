@@ -2,16 +2,29 @@ import path from 'node:path';
 import process from 'node:process';
 
 import type Cli from './Cli.ts';
+import type { StagedFiles } from './git.ts';
+import type { IgnoreFilters } from './ignores.ts';
 import type { ExitCode, FileExtension, NamedTool, Tool, ToolAction, ToolActionContext } from './types.ts';
 
 import ExecutionBatcher from './ExecutionBatcher.ts';
 import { findFirstFile } from './filesystem.ts';
+import { getStagedFiles, GitError } from './git.ts';
 import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
 import { createFileExtensionFilter, FileError, pathEqualsDirectory, resolvePaths } from './paths.ts';
 import { EXIT_CODE_OK, getMostSevereExitCode } from './processes.ts';
 
 type ArgsBuilder = (context?: Partial<ToolActionContext>) => readonly string[] | undefined;
 type ToolExecutor<T = Tool> = (args: readonly string[], buildArgs: ArgsBuilder, tool: Tool & T) => Promise<ExitCode>;
+
+type ToolScope =
+  | {
+      readonly isWholeProject: true;
+      readonly paths?: undefined;
+    }
+  | {
+      readonly isWholeProject: false;
+      readonly paths: readonly string[];
+    };
 
 const maximumBatchArguments = 4_000;
 const argumentBytesBuffer = 1_000; // The number of bytes to reserve for additional command-specific arguments.
@@ -23,19 +36,25 @@ export default class ToolRunner<TToolName extends string> {
   ) {}
 
   public async run(action: ToolAction, toolName?: string): Promise<ExitCode> {
+    const selectedTool = toolName == null ? undefined : (this.tools as Record<string, Tool>)[toolName];
+    if (toolName != null && selectedTool == null) {
+      this.cli.output.error(`Unknown tool "${toolName}".`);
+    }
+
+    const scope = this.resolveToolScope();
+    if (scope == null) {
+      // Nothing to process
+      return EXIT_CODE_OK;
+    }
+
     // Run single tool
-    if (toolName != null) {
-      const tool = (this.tools as Record<string, Tool>)[toolName];
-      if (tool == null) {
-        this.cli.output.error(`Unknown tool "${toolName}".`);
-      }
-      return this.runTool({ ...tool, name: toolName as TToolName }, action, this.resolveGivenPaths());
+    if (selectedTool != null) {
+      return this.runTool({ ...selectedTool, name: toolName as TToolName }, action, scope);
     }
 
     // Run all tools
-    const givenPaths = this.resolveGivenPaths();
     for (const [thisToolName, thisTool] of Object.entries(this.tools) as [TToolName, Tool][]) {
-      const exitCode = await this.runTool({ ...thisTool, name: thisToolName }, action, givenPaths);
+      const exitCode = await this.runTool({ ...thisTool, name: thisToolName }, action, scope);
       if (exitCode !== EXIT_CODE_OK) {
         // Tool failed - abort
         return exitCode;
@@ -45,22 +64,34 @@ export default class ToolRunner<TToolName extends string> {
   }
 
   /**
-   * @returns The files to process, or `undefined` if no paths were given.
+   * @returns The scope to process, or `undefined` if there is nothing to process at all.
    */
-  private resolveGivenPaths(): readonly string[] | undefined {
-    if (this.cli.paths.length === 0) {
-      return undefined; // Each tool covers the whole project itself
+  private resolveToolScope(): ToolScope | undefined {
+    if (!this.cli.options.staged && this.cli.paths.length === 0) {
+      return { isWholeProject: true };
     }
 
     const ignorePatterns =
       this.cli.options.ignorePatterns ?? resolveIgnoreSource(this.cli.directory)?.patterns ?? defaultIgnorePatterns;
+    const ignoreFilters = createIgnoreFilters(ignorePatterns);
 
-    let files: readonly string[];
+    const givenPaths = this.cli.options.staged ? this.resolveStagedPaths(ignoreFilters) : this.cli.paths;
+    if (givenPaths == null) {
+      // No scope to apply tool to
+      return undefined;
+    }
+
+    if (givenPaths.some((pathName) => pathEqualsDirectory(pathName, this.cli.directory))) {
+      // A given path covers the project, so there is no need to enumerate its files
+      return { isWholeProject: true };
+    }
+
+    let resolvedPaths: readonly string[];
     let emptyPaths: readonly string[];
     try {
-      ({ files, emptyPaths } = resolvePaths(this.cli.paths, {
+      ({ files: resolvedPaths, emptyPaths } = resolvePaths(givenPaths, {
         rootPath: this.cli.directory,
-        ignoreFilters: createIgnoreFilters(ignorePatterns),
+        ignoreFilters,
       }));
     } catch (error) {
       if (error instanceof FileError) {
@@ -72,7 +103,40 @@ export default class ToolRunner<TToolName extends string> {
     if (emptyPaths.length > 0) {
       this.cli.output.warn('No files found for given paths:', emptyPaths);
     }
-    return files;
+    return {
+      isWholeProject: false,
+      paths: resolvedPaths,
+    };
+  }
+
+  /**
+   * @param ignoreFilters The filters determining which staged files to omit.
+   * @returns The staged files to process, or `undefined` if none remain.
+   */
+  private resolveStagedPaths(ignoreFilters: IgnoreFilters): readonly string[] | undefined {
+    let staged: StagedFiles;
+    try {
+      staged = getStagedFiles(this.cli.directory);
+    } catch (error) {
+      if (error instanceof GitError) {
+        this.cli.output.error(error.message);
+      }
+      throw error;
+    }
+
+    if (staged.missingPaths.length > 0) {
+      this.cli.output.warn('Skipping staged files no longer present:', staged.missingPaths);
+    }
+
+    // Apply ignore filters to autopopulated staged files
+    const paths = staged.files.filter((filePath) => !ignoreFilters.file(filePath));
+    if (paths.length === 0) {
+      this.cli.output.info('No staged files found.');
+      return undefined;
+    }
+
+    this.cli.output.verbose('Staged files:', [paths]);
+    return paths;
   }
 
   private loadConfigPath(toolName: TToolName, configFiles: readonly string[]): string | undefined {
@@ -86,11 +150,7 @@ export default class ToolRunner<TToolName extends string> {
     return filePath;
   }
 
-  private async runTool(
-    tool: NamedTool<TToolName>,
-    action: ToolAction,
-    givenPaths: readonly string[] | undefined,
-  ): Promise<ExitCode> {
+  private async runTool(tool: NamedTool<TToolName>, action: ToolAction, scope: ToolScope): Promise<ExitCode> {
     const exec = async (args: readonly string[]) => tool.exec(this.cli, { command: tool.command, args, env: tool.env });
 
     const configPath = this.loadConfigPath(tool.name, tool.configFiles);
@@ -101,7 +161,7 @@ export default class ToolRunner<TToolName extends string> {
     return this.executeTool(tool, action, configPath, {
       // Global tool
       global: async (args) => {
-        if (!this.isWholeProject()) {
+        if (!scope.isWholeProject) {
           // Specific paths provided - skip tool
           this.cli.output.info(`Skipping tool "${tool.name}": global tool not applicable to specific files.`);
           return EXIT_CODE_OK;
@@ -112,12 +172,12 @@ export default class ToolRunner<TToolName extends string> {
 
       // Per-file tool
       perFile: async (commonArgs, buildArgs, { supportedExtensions }) => {
-        if (givenPaths == null) {
+        if (scope.isWholeProject) {
           // Run project-wide
           return exec(commonArgs);
         }
 
-        const paths = ToolRunner.filterFilesByExtensions(givenPaths, supportedExtensions);
+        const paths = ToolRunner.filterFilesByExtensions(scope.paths, supportedExtensions);
         if (paths == null) {
           // Skip tool
           this.cli.output.debug(`Skipping tool "${tool.name}": no supported files given.`);
@@ -208,20 +268,6 @@ export default class ToolRunner<TToolName extends string> {
       args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
     }
     return args;
-  }
-
-  /**
-   * @returns Whether a given path encompasses the entire project.
-   */
-  private isWholeProject(): boolean {
-    const { directory: projectDirectory, paths } = this.cli;
-    if (paths.length === 0) {
-      // Defaults to project
-      return true;
-    }
-
-    // One path must match project directory
-    return paths.some((pathName) => pathEqualsDirectory(pathName, projectDirectory));
   }
 
   private static filterFilesByExtensions(

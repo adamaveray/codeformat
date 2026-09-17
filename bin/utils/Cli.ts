@@ -13,6 +13,7 @@ interface Options {
   readonly cache: boolean;
   readonly cacheDir: string;
   readonly ignorePatterns?: readonly string[];
+  readonly staged: boolean;
 }
 
 const EXIT_CODE_UNKNOWN_ERROR: ExitCode = 1;
@@ -73,12 +74,17 @@ export default class Cli {
     const { values: options, positionals } = parseArgs({
       args: argv,
       options: {
+        // Environment
         dir: { type: 'string', short: 'd', default: process.cwd() },
+        'cache-dir': { type: 'string', default: '.cache' },
+        'no-cache': { type: 'boolean', default: false },
+
+        // Scope
         tool: { type: 'string', short: 't', default: undefined },
         ignore: { type: 'string', multiple: true },
+        staged: { type: 'boolean', default: false },
 
-        'no-cache': { type: 'boolean', default: false },
-        'cache-dir': { type: 'string', default: '.cache' },
+        // Output
         verbose: { type: 'boolean', default: false },
         debug: { type: 'boolean', default: false },
         help: { type: 'boolean', default: false },
@@ -114,6 +120,10 @@ export default class Cli {
 
     if (!(['check', 'fix'] satisfies ToolAction[] as unknown[]).includes(selectedAction)) {
       cli.output.error(`Unknown action "${selectedAction}".`);
+    }
+
+    if (options.staged && paths.length > 0) {
+      cli.output.error('Cannot combine --staged with specific paths.');
     }
 
     return {

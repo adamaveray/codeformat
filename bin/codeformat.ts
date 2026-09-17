@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { argv } from 'node:process';
+import { argv, exit } from 'node:process';
 
 import {
   knip,
@@ -42,7 +42,7 @@ const runner = new ToolRunner(cli, {
 });
 
 try {
-  await runner.run(selectedAction, selectedTool);
+  exit(await runner.run(selectedAction, selectedTool));
 } catch (error) {
   cli.output.error('Error:', [error]);
 }

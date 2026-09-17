@@ -8,7 +8,7 @@ const commonArgs = ['--treat-config-hints-as-errors'];
 export default {
   exec: runners.viteplus.exec,
   command: 'knip',
-  actions: (configPath) => ({
+  actions: ({ configPath }) => ({
     check: ['--config', configPath, ...commonArgs],
     fix: ['--fix', '--config', configPath, ...commonArgs],
   }),
@@ -21,4 +21,5 @@ export default {
     ...withExts('.knip', ['json', 'jsonc']),
     ...withExts('knip.config', [...extensions.js, ...extensions.ts]),
   ],
+  perFile: false,
 } satisfies Tool;

@@ -1,9 +1,10 @@
 import { spawn } from 'node:child_process';
 import { parseArgs } from 'node:util';
 
-import type { ToolAction } from './types.ts';
+import type { ExitCode, ToolAction } from './types.ts';
 
 import Output from './Output.ts';
+import { getExitCodeForSignal } from './processes.ts';
 
 interface Options {
   readonly verbose: boolean;
@@ -11,7 +12,10 @@ interface Options {
   readonly help: boolean;
   readonly cache: boolean;
   readonly cacheDir: string;
+  readonly ignorePatterns?: readonly string[];
 }
+
+const EXIT_CODE_UNKNOWN_ERROR: ExitCode = 1;
 
 export default class Cli {
   public readonly output: Output;
@@ -20,15 +24,20 @@ export default class Cli {
     scriptName: string,
     public readonly directory: string,
     public readonly options: Options,
+    public readonly paths: readonly string[] = [],
   ) {
     this.output = new Output(scriptName, options);
   }
 
+  /**
+   * @returns The command's exit code.
+   * @throws {Error} If the command could not be run at all.
+   */
   public async runSubprocess(
     command: string,
     args: readonly string[],
     env: Readonly<Record<string, string>> = {},
-  ): Promise<void> {
+  ): Promise<ExitCode> {
     this.output.verbose('Running command:', [command, ...args]);
 
     const proc = spawn(command, args, {
@@ -37,16 +46,20 @@ export default class Cli {
       stdio: ['inherit', 'inherit', 'inherit'],
     });
 
-    await new Promise<void>((resolve) => {
+    return new Promise<ExitCode>((resolve, reject) => {
       proc.on('error', (error) => {
-        this.output.error(`Failed to run "${command}":`, [error instanceof Error ? error.message : error]);
+        reject(new Error(`Failed to run "${command}": ${error.message}`, { cause: error }));
       });
-      proc.on('close', (code) => {
-        if (code === 0) {
-          resolve();
-        } else {
-          process.exit(code);
+      proc.on('close', (code, signal) => {
+        if (code != null) {
+          resolve(code);
+          return;
         }
+        if (signal == null) {
+          resolve(EXIT_CODE_UNKNOWN_ERROR);
+          return;
+        }
+        resolve(getExitCodeForSignal(signal));
       });
     });
   }
@@ -62,6 +75,7 @@ export default class Cli {
       options: {
         dir: { type: 'string', short: 'd', default: process.cwd() },
         tool: { type: 'string', short: 't', default: undefined },
+        ignore: { type: 'string', multiple: true },
 
         'no-cache': { type: 'boolean', default: false },
         'cache-dir': { type: 'string', default: '.cache' },
@@ -73,23 +87,33 @@ export default class Cli {
       allowPositionals: true,
     });
 
-    const { dir, tool, 'cache-dir': cacheDir, 'no-cache': noCache, ...additionalOptions } = options;
-    const [, scriptName, selectedAction, ...undefinedArgs] = positionals as [string, string, ...string[]];
+    const {
+      dir,
+      tool,
+      'cache-dir': cacheDir,
+      'no-cache': noCache,
+      ignore: ignorePatterns,
+      ...additionalOptions
+    } = options;
+    const [, scriptName, selectedAction, ...paths] = positionals as [string, string, ...string[]];
 
-    const cli = new Cli(scriptName, dir, {
-      cacheDir,
-      cache: !noCache,
-      ...additionalOptions,
-    });
+    const cli = new Cli(
+      scriptName,
+      dir,
+      {
+        cacheDir,
+        cache: !noCache,
+        ignorePatterns,
+        ...additionalOptions,
+      },
+      paths,
+    );
     if (options.help || selectedAction == null) {
       cli.output.usage();
     }
 
-    if (undefinedArgs.length > 0) {
-      cli.output.error('Unexpected additional arguments.', [undefinedArgs]);
-    }
     if (!(['check', 'fix'] satisfies ToolAction[] as unknown[]).includes(selectedAction)) {
-      cli.output.error(`Unknown action "${selectedAction}".`, [undefinedArgs]);
+      cli.output.error(`Unknown action "${selectedAction}".`);
     }
 
     return {

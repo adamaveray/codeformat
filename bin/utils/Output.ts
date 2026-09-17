@@ -6,9 +6,13 @@ export default class Output {
 
   public usage(exitCode: number = 0): never {
     console.error(`Usage:
-    ${this.scriptName} check [root-path]
-    ${this.scriptName} fix [root-path]`);
+    ${this.scriptName} check [paths...]
+    ${this.scriptName} fix [paths...]`);
     process.exit(exitCode);
+  }
+
+  public info(message: string, additionalValues: readonly unknown[] = []): void {
+    console.info(message, ...additionalValues);
   }
 
   public debug(message: string, additionalValues: readonly unknown[] = []): void {
@@ -21,6 +25,10 @@ export default class Output {
     if (this.options.verbose) {
       console.debug(message, ...additionalValues);
     }
+  }
+
+  public warn(message: string, additionalValues: readonly unknown[] = []): void {
+    console.warn(message, ...additionalValues);
   }
 
   public error(message: string, additionalValues: readonly unknown[] = [], exitCode: number = 1): never {

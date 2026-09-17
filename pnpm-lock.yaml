@@ -119,6 +119,9 @@ importers:
       globals:
         specifier: ^17.12.0
         version: 17.12.0
+      ignore:
+        specifier: ^7.0.9
+        version: 7.0.9
       postcss-html:
         specifier: ^2.0.0
         version: 2.0.0(postcss@8.5.28)

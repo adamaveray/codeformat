@@ -113,8 +113,12 @@ export default class ToolRunner<TToolName extends string> {
 
       // Per-file tool
       perFile: async (commonArgs, buildArgs, { supportedExtensions }) => {
-        const paths =
-          givenPaths == null ? undefined : ToolRunner.filterFilesByExtensions(givenPaths, supportedExtensions);
+        if (givenPaths == null) {
+          // Run project-wide
+          return exec(commonArgs);
+        }
+
+        const paths = ToolRunner.filterFilesByExtensions(givenPaths, supportedExtensions);
         if (paths == null) {
           // Skip tool
           this.cli.output.debug(`Skipping tool "${toolName}": no supported files given.`);
@@ -160,26 +164,20 @@ export default class ToolRunner<TToolName extends string> {
     },
   ): Promise<ExitCode> {
     let executor: ToolExecutor;
-    let buildArgsContext: Omit<ToolActionContext, 'configPath'>;
+    let supportedExtensions: ToolActionContext['supportedExtensions'];
 
     if (tool.perFile === false) {
       executor = executors.global;
-      buildArgsContext = {
-        supportedExtensions: [],
-        paths: undefined,
-      };
+      supportedExtensions = [];
     } else {
       executor = executors.perFile;
-      buildArgsContext = {
-        supportedExtensions: tool.supportedExtensions,
-        paths: [],
-      };
+      supportedExtensions = tool.supportedExtensions;
     }
 
     const buildArgs: ArgsBuilder = (extraContext) =>
       this.buildArgs(tool, action, {
         configPath,
-        ...buildArgsContext,
+        supportedExtensions,
         ...extraContext,
       });
 

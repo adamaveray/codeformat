@@ -5,9 +5,23 @@ export default class Output {
   ) {}
 
   public usage(exitCode: number = 0): never {
-    console.error(`Usage:
+    console.error(
+      `
+Usage:
     ${this.scriptName} check [paths...]
-    ${this.scriptName} fix [paths...]`);
+    ${this.scriptName} fix [paths...]
+
+Options:
+    -d, --dir <path>      The project directory to operate on.
+    -t, --tool <name>     Run only the named tool.
+        --ignore <glob>   Ignore patterns, replacing any ignore file. Repeatable.
+        --no-cache        Disable tool caches.
+        --cache-dir <dir> The directory tools write caches to.
+        --verbose         Print each command as it is run.
+        --debug           Pass debugging flags through to tools.
+        --help            Show this message.
+`.trim(),
+    );
     process.exit(exitCode);
   }
 

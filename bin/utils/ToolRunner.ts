@@ -8,6 +8,7 @@ import type { ExitCode, FileExtension, NamedTool, Tool, ToolAction, ToolActionCo
 
 import ExecutionBatcher from './ExecutionBatcher.ts';
 import { findFirstFile } from './filesystem.ts';
+import GeneratedFiles from './GeneratedFiles.ts';
 import { getStagedFiles, GitError } from './git.ts';
 import { createIgnoreFilters, defaultIgnorePatterns, resolveIgnoreSource } from './ignores.ts';
 import { createFileExtensionFilter, FileError, pathEqualsDirectory, resolvePaths } from './paths.ts';
@@ -30,12 +31,25 @@ const maximumBatchArguments = 4_000;
 const argumentBytesBuffer = 1_000; // The number of bytes to reserve for additional command-specific arguments.
 
 export default class ToolRunner<TToolName extends string> {
+  /** Files generated during execution. */
+  private readonly generatedFiles: GeneratedFiles;
+
   constructor(
     private readonly cli: Cli,
     private readonly tools: Record<TToolName, Tool>,
-  ) {}
+  ) {
+    this.generatedFiles = new GeneratedFiles(cli.directory, cli.output);
+  }
 
   public async run(action: ToolAction, toolName?: string): Promise<ExitCode> {
+    try {
+      return await this.runTools(action, toolName);
+    } finally {
+      this.generatedFiles.cleanUp();
+    }
+  }
+
+  private async runTools(action: ToolAction, toolName?: string): Promise<ExitCode> {
     const selectedTool = toolName == null ? undefined : (this.tools as Record<string, Tool>)[toolName];
     if (toolName != null && selectedTool == null) {
       this.cli.output.error(`Unknown tool "${toolName}".`);

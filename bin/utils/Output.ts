@@ -15,6 +15,7 @@ Options:
     -d, --dir <path>      The project directory to operate on.
     -t, --tool <name>     Run only the named tool.
         --ignore <glob>   Ignore patterns, replacing any ignore file. Repeatable.
+        --staged          Process the files staged in Git instead of given paths.
         --no-cache        Disable tool caches.
         --cache-dir <dir> The directory tools write caches to.
         --verbose         Print each command as it is run.

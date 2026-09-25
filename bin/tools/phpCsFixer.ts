@@ -19,7 +19,8 @@ export default {
   },
   args: {
     debug: ['-vvv'],
-    cache: (cacheDir) => ['--cache-file', path.join(cacheDir, '.php-cs-fixer.cache')],
+    cache: (cacheDir) =>
+      cacheDir == null ? ['--using-cache=no'] : ['--cache-file', path.join(cacheDir, '.php-cs-fixer.cache')],
   },
   configFiles: withExts('.php-cs-fixer', ['php', 'dist.php']),
   scopeFile,

@@ -69,7 +69,8 @@ export type Tool = {
   readonly actions: (context: ToolActionContext) => Partial<Record<ToolAction, readonly string[]>>;
   readonly args?: Partial<{
     readonly debug: readonly string[];
-    readonly cache: (cacheDir: string) => readonly string[];
+    /** @param cacheDir The directory to write the cache to, or `undefined` if caching is disabled. */
+    readonly cache: (cacheDir: string | undefined) => readonly string[];
   }>;
   readonly env?: Command['env'];
   readonly configFiles: readonly string[];

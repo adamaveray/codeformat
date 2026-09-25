@@ -14,7 +14,7 @@ export default {
   }),
   args: {
     debug: ['--debug'],
-    cache: (cacheDir) => ['--cache', '--cache-location', cacheDir],
+    cache: (cacheDir) => (cacheDir == null ? [] : ['--cache', '--cache-location', cacheDir]),
   },
   configFiles: [
     ...withExts('knip', ['json', 'jsonc', ...extensions.js, ...extensions.ts]),

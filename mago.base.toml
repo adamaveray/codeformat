@@ -48,6 +48,7 @@ sensitive-parameter = { enabled = true, exclude = ["**/{test,tests}/**"] } # Not
 sorted-integer-keys = { enabled = true }
 string-style = { enabled = true, style = "concatenation" }
 switch-continue-to-break = { enabled = true }
+use-wp-functions = { enabled = false } # Overly-broad WordPress rule (WordPress consumers can re-enable)
 yoda-conditions = { enabled = true, mode = "deny" }
 
 # Naming conventions

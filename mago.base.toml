@@ -3,6 +3,7 @@ version = "1"
 php-version = "8.5"
 
 [source]
+includes = ["vendor"]
 excludes = ["node_modules/**", "packages/*/*/vendor/**"]
 
 [source.glob]

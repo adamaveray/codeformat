@@ -15,6 +15,7 @@
   "files": [
     "/.editorconfig",
     "/.swift-format",
+    "/autoload.php",
     "/dist",
     "/mago.base.toml",
     "/README.md",
@@ -25,14 +26,15 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "build": "rm -rf dist && vp run --cache build:tsc && vp exec -c 'chmod +x dist/bin/*.js'",
+    "build": "rm -rf dist && vp run --cache build:tsc && vp run build:php && vp exec -c 'chmod +x dist/bin/*.js'",
     "build:tsc": "vp exec tsc --project tsconfig.build.json --outDir dist",
+    "build:php": "mkdir -p dist/src dist/rulesets && cp -R src/php dist/src/ && cp rulesets/php-cs-fixer.php dist/rulesets/",
     "test": "vp test",
     "format": "vp run build && dist/bin/codeformat.js fix",
     "lint": "vp run build && dist/bin/codeformat.js check",
     "prepack": "vp run build",
     "release": "vp run lint && vp exec bumpp && vp exec pnpm publish --access=public",
-    "watch": "vp run build:tsc --watch"
+    "watch": "vp run build:php && vp run build:tsc --watch"
   },
   "dependencies": {
     "@averay/css-properties-sort-order": "^1.0.3",

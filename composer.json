@@ -1,4 +1,9 @@
 {
+  "autoload-dev": {
+    "files": [
+      "autoload.php"
+    ]
+  },
   "require": {
     "php": ">=8.5"
   },

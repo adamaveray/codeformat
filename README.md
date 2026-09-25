@@ -81,6 +81,32 @@ extends = "node_modules/@averay/codeformat/mago.base.toml"
 paths = ["."]
 ```
 
+### PHP-CS-Fixer (PHP)
+
+Configure autoloading utility in `composer.json`:
+
+```json
+{
+  // ...
+  "autoload-dev": {
+    "files": ["node_modules/@averay/codeformat/autoload.php"]
+  }
+  // ...
+}
+```
+
+Then, create a `.php-cs-fixer.dist.php` file with the following configuration:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+$finder = new PhpCsFixer\Finder()->in([__DIR__])->exclude(['node_modules', 'vendor']);
+
+return Averay\Codeformat\PhpCsFixerConfig::default($finder);
+```
+
 ### swift-format (Swift)
 
 Symlink the configuration file to the project root:

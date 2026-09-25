@@ -8,6 +8,7 @@ import {
   magoFormat,
   magoGuard,
   magoLint,
+  phpCsFixer,
   stylelint,
   swiftFormat,
   vitePlusFmt,
@@ -32,6 +33,7 @@ const runner = new ToolRunner(cli, {
   stylelint,
 
   // PHP
+  phpCsFixer,
   magoFormat,
   magoLint,
   magoAnalyze,

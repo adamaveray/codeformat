@@ -220,6 +220,7 @@ export default class ToolRunner<TToolName extends string> {
     const id = [scopeFile.id, ...paths].join('\0');
     return this.generatedFiles.create(id, scopeFile.location, async () => {
       const { contents, unexpressiblePaths = [] } = await scopeFile.build(paths, {
+        rootPath: this.cli.directory,
         configPath,
         output: this.cli.output,
         capture: async (args) => runner.capture(this.cli, { command, args, env }),

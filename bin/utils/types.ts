@@ -34,6 +34,8 @@ export interface Runner {
 export type ToolAction = 'check' | 'fix';
 
 export interface ScopeFileContext {
+  /** The project directory the configuration file & scoped paths are relative to. */
+  readonly rootPath: string;
   /** The tool’s own configuration file. */
   readonly configPath: string;
   /** Runs the tool’s own command, collecting its standard output. */

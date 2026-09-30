@@ -42,7 +42,7 @@
     "ignore": "^7.0.10",
     "postcss-html": "^2.0.0",
     "postcss-scss": "^4.0.9",
-    "postcss-styled-syntax": "^0.7.2",
+    "postcss-styled-syntax": "^0.7.3",
     "stylelint-config-recommended": "^18.0.0",
     "stylelint-config-recommended-scss": "^17.0.1",
     "stylelint-config-standard": "^40.0.0",
@@ -52,13 +52,13 @@
     "stylelint-scss": "^7.3.0"
   },
   "devDependencies": {
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.3",
     "bumpp": "^12.3.0",
     "knip": "^6.38.0",
     "stylelint": "^17.15.0",
     "typescript": "^7.0.2",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.3",
-    "vite-plus": "^0.3.3"
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "knip": "^6.34",

@@ -24,8 +24,7 @@ interface TestPathContext {
 }
 
 declare module 'vite-plus/test' {
-  // oxlint-disable-next-line typescript/no-explicit-any -- Must match vitest's `Matchers<T = any>` declaration
-  interface Matchers<T = any> {
+  interface Matchers<R extends void | Promise<void> = void | Promise<void>, T = unknown> {
     toMatchFilePath: T extends PatternsValue ? (relativePath: string) => void : never;
     toMatchDirectoryPath: T extends PatternsValue ? (relativePath: string) => void : never;
 

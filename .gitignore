@@ -1,5 +1,6 @@
 /*.cache
 /.php-cs-fixer.php
+/.vitest
 /dist
 /node_modules
 /vendor

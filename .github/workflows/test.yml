@@ -1,5 +1,5 @@
 ---
-name: Lint
+name: Test
 
 on:
   - push
@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -36,13 +36,8 @@ jobs:
           php-version: ${{ matrix.php-version }}
         env: { fail-fast: true }
 
-      - name: Use Swift
-        uses: vapor/swiftly-action@v0.2
-        with:
-          toolchain: '6.4'
-
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v4
 
-      - name: Lint code
-        run: vp run lint
+      - name: Test code
+        run: vp run test

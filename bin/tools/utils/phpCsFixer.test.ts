@@ -49,6 +49,7 @@ describe('scopeFile.build', () => {
     rootPath,
     configPath: '.php-cs-fixer.php',
     capture: async () => ({ exitCode: 0, stdout: '' }),
+    createFile: async () => 'example/scope/file',
     output: new Output('test', { debug: false, verbose: false }),
   });
 

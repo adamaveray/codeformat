@@ -40,6 +40,12 @@ export interface ScopeFileContext {
   readonly configPath: string;
   /** Runs the tool’s own command, collecting its standard output. */
   readonly capture: (args: readonly string[]) => Promise<CapturedOutput>;
+  /** Writes a supporting file the build needs, returning the argument the tool can access the file by. */
+  readonly createFile: (
+    id: string,
+    location: GeneratedFileLocation,
+    build: () => MaybePromise<string>,
+  ) => Promise<string>;
   readonly output: Output;
 }
 

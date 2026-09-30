@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from 'node:fs';
+import { readdirSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 import type { IgnoreFilters } from './ignores.ts';
@@ -137,4 +137,35 @@ export function createFileExtensionFilter(fileExtensions: readonly FileExtension
  */
 export function pathEqualsDirectory(pathName: string, testDirectory: string): boolean {
   return path.relative(testDirectory, path.resolve(testDirectory, pathName)) === '';
+}
+
+/**
+ * @param directory The directory the path is relative to.
+ * @param pathName The path to resolve.
+ */
+export function canonicalisePath(directory: string, pathName: string): string {
+  try {
+    return realpathSync(path.resolve(directory, pathName));
+  } catch {
+    // Path does not exist - canonicalise the directory alone
+  }
+  try {
+    return path.resolve(realpathSync(directory), pathName);
+  } catch {
+    return path.resolve(directory, pathName);
+  }
+}
+
+/**
+ * @param directory The directory the paths are relative to.
+ * @param filePaths The paths to filter, relative to `directory`.
+ * @param omittedPaths The absolute paths to remove.
+ * @returns The paths that are not in `omittedPaths`.
+ */
+export function omitPaths(
+  directory: string,
+  filePaths: readonly string[],
+  omittedPaths: ReadonlySet<string>,
+): readonly string[] {
+  return filePaths.filter((filePath) => !omittedPaths.has(path.resolve(directory, filePath)));
 }

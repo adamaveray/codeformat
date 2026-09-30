@@ -216,14 +216,19 @@ export default class ToolRunner<TToolName extends string> {
     configPath: string,
     paths: readonly string[],
   ): Promise<string> {
+    const generateId = (namespace: string, values: readonly string[]): string =>
+      [namespace, scopeFile.id, ...values].join('\0');
+
     // Use the same ID for tools producing identical contents
-    const id = [scopeFile.id, ...paths].join('\0');
+    const id = generateId('scope', paths);
     return this.generatedFiles.create(id, scopeFile.location, async () => {
       const { contents, unexpressiblePaths = [] } = await scopeFile.build(paths, {
         rootPath: this.cli.directory,
         configPath,
         output: this.cli.output,
         capture: async (args) => runner.capture(this.cli, { command, args, env }),
+        createFile: async (fileId, location, build) =>
+          this.generatedFiles.create(generateId('supporting', [fileId]), location, build),
       });
 
       if (unexpressiblePaths.length > 0) {

@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it, onTestFinished } from 'vite-plus/test';
@@ -6,10 +6,12 @@ import { describe, expect, it, onTestFinished } from 'vite-plus/test';
 import type { ResolvedPaths } from './paths.ts';
 
 import {
+  canonicalisePath,
   expandPath,
   FileNotFoundError,
   createFileExtensionFilter,
   NonChildPathError,
+  omitPaths,
   pathEqualsDirectory,
   resolvePaths,
 } from './paths.ts';
@@ -32,6 +34,16 @@ function makeTemporaryTree(entries: readonly string[]): string {
   }
 
   return rootPath;
+}
+
+/**
+ * @returns The real root path and an equivalent path through a symlinked directory.
+ */
+function makeLinkedTree(): { readonly realRoot: string; readonly linkedRoot: string } {
+  const temporaryPath = makeTemporaryTree(['real/src/a.php', 'real/target.php']);
+  symlinkSync(path.join(temporaryPath, 'real'), path.join(temporaryPath, 'link'));
+  symlinkSync(path.join(temporaryPath, 'real/target.php'), path.join(temporaryPath, 'real/linked.php'));
+  return { realRoot: realpathSync(path.join(temporaryPath, 'real')), linkedRoot: path.join(temporaryPath, 'link') };
 }
 
 describe(expandPath, () => {
@@ -436,4 +448,51 @@ describe(pathEqualsDirectory, () => {
       expect(pathEqualsDirectory(pathName, testDirectory)).toBe(false);
     },
   );
+});
+
+describe(canonicalisePath, () => {
+  it.for([
+    ['an existing file', 'src/a.php', 'src/a.php'],
+    ['a missing file', 'src/missing.php', 'src/missing.php'],
+    ['a missing directory', 'missing/a.php', 'missing/a.php'],
+    ['an unnormalised path', './src/../src/a.php', 'src/a.php'],
+    ['a symlinked file', 'linked.php', 'target.php'],
+  ] as const satisfies readonly (readonly [label: string, filePath: string, expected: string])[])(
+    'resolves %s through a symlinked directory',
+    ([, filePath, expected]) => {
+      const { realRoot, linkedRoot } = makeLinkedTree();
+      expect(canonicalisePath(linkedRoot, filePath)).toBe(path.join(realRoot, expected));
+    },
+  );
+
+  it('resolves the directory itself', () => {
+    const { realRoot, linkedRoot } = makeLinkedTree();
+    expect(canonicalisePath(linkedRoot, '.')).toBe(realRoot);
+  });
+
+  it('ignores the directory for an absolute path', () => {
+    const { realRoot, linkedRoot } = makeLinkedTree();
+    expect(canonicalisePath('/elsewhere', path.join(linkedRoot, 'src/a.php'))).toBe(path.join(realRoot, 'src/a.php'));
+  });
+
+  it('resolves a missing directory without canonicalising it', () => {
+    const { linkedRoot } = makeLinkedTree();
+    const missingDirectory = path.join(linkedRoot, 'missing');
+    expect(canonicalisePath(missingDirectory, 'a.php')).toBe(path.join(missingDirectory, 'a.php'));
+  });
+});
+
+describe(omitPaths, () => {
+  it.for([
+    ['a relative path', ['src/a.php', 'src/b.php'], ['src/b.php']],
+    ['an absolute path', ['/project/src/a.php', 'src/b.php'], ['src/b.php']],
+    ['an unnormalised path', ['./src/../src/a.php', 'src/b.php'], ['src/b.php']],
+    ['no matching path', ['src/b.php', 'src/c.php'], ['src/b.php', 'src/c.php']],
+  ] as const satisfies readonly (readonly [
+    label: string,
+    filePaths: readonly string[],
+    expected: readonly string[],
+  ])[])('handles %s', ([, filePaths, expected]) => {
+    expect(omitPaths('/project', filePaths, new Set(['/project/src/a.php']))).toStrictEqual(expected);
+  });
 });

@@ -12,7 +12,7 @@ export default defineConfig({
     overrides: [
       ...(lintConfig.overrides ?? []),
       {
-        files: ['rulesets/*.ts', 'src/makeOxfmtConfig.ts', 'src/makeOxlintConfig.ts', 'src/makeStylelintConfig.ts'],
+        files: ['rulesets/*.ts', 'src/make*Config.ts'],
         rules: {
           'eslint/sort-keys': 'error',
           'unicorn/no-useless-spread': 'off', // Allow useless spreads in ruleset files (keeps unprefixed core rules visually grouped)

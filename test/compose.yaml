@@ -1,0 +1,14 @@
+name: codeformat-test
+
+services:
+  cache:
+    image: redis:8.2
+    restart: unless-stopped
+
+  web:
+    image: nginx:1.29
+    depends_on:
+      - cache
+    ports:
+      - '127.0.0.1:8080:80'
+    restart: unless-stopped

@@ -1,3 +1,4 @@
+export { default as dclint } from './dclint.ts';
 export { default as knip } from './knip.ts';
 export { default as magoAnalyze } from './magoAnalyze.ts';
 export { default as magoFormat } from './magoFormat.ts';

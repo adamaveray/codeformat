@@ -3,6 +3,7 @@
 import { argv, exit } from 'node:process';
 
 import {
+  dclint,
   knip,
   magoAnalyze,
   magoFormat,
@@ -20,6 +21,9 @@ import ToolRunner from './utils/ToolRunner.ts';
 const { cli, selectedAction, selectedTool } = Cli.createFromArgs(argv);
 
 const runner = new ToolRunner(cli, {
+  // Pre-format checks
+  dclint,
+
   // Formatting
   vitePlusFmt,
 

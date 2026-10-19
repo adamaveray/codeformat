@@ -69,6 +69,18 @@ export default {
 } satisfies KnipConfig;
 ```
 
+### DCLint
+
+Create a `dclint.config.ts` file with the following configuration:
+
+```ts
+// dclint.config.ts
+import { makeDclintConfig } from '@averay/codeformat';
+
+const config = makeDclintConfig(/* Optional customisations */);
+export { config as 'module.exports' }; // Must be exported with this syntax
+```
+
 ### Mago (PHP)
 
 Create a `mago.toml` file with the following configuration:

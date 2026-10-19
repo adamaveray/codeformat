@@ -260,6 +260,7 @@ export default class ToolRunner<TToolName extends string> {
 
     const buildArgs: ArgsBuilder = (extraContext) =>
       this.buildArgs(tool, action, {
+        rootPath: path.resolve(this.cli.directory),
         configPath,
         supportedExtensions,
         ...extraContext,

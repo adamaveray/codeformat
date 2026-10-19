@@ -64,6 +64,7 @@ export interface ScopeFile {
 }
 
 export interface ToolActionContext {
+  readonly rootPath: string;
   readonly configPath: string;
   readonly supportedExtensions: readonly FileExtension[];
   readonly scopeFilePath?: string;

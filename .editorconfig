@@ -13,3 +13,9 @@ trim_trailing_whitespace = true
 [*.md]
 max_line_length = 999999999
 trim_trailing_whitespace = false
+
+[*.html]
+max_line_length = 999999999
+
+[*.twig]
+max_line_length = 999999999

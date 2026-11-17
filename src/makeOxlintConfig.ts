@@ -90,11 +90,11 @@ export default function makeOxlintConfig({
     },
 
     settings: {
+      ...settings,
       typescript: {
         project: tsconfigPath,
         ...(settings['typescript'] as object | undefined),
       },
-      ...settings,
     },
   } satisfies OxlintConfig;
 }

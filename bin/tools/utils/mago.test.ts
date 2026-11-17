@@ -8,10 +8,10 @@ import process from 'node:process';
 import { describe, expect, it, onTestFinished, vi } from 'vite-plus/test';
 
 import type { GeneratedFileLocation } from '../../utils/GeneratedFiles.ts';
-import type { CapturedOutput, ScopeFileContext } from '../../utils/types.ts';
+import type { CapturedOutput, ScopeFile, ScopeFileContext } from '../../utils/types.ts';
 
 import Output from '../../utils/Output.ts';
-import { buildGlobalArgs, scopeFile } from './mago.ts';
+import { buildGlobalArgs, scopeFile, twigScopeFile } from './mago.ts';
 
 interface ParsedConfig {
   readonly source: Readonly<Record<string, unknown>>;
@@ -54,6 +54,7 @@ function createSymlinkedProject(): string {
 async function runBuild(
   paths: readonly string[],
   {
+    scope = scopeFile as ScopeFile,
     buildConfig = (workspacePath: string): object => ({
       version: '1',
       source: { workspace: workspacePath, paths: ['.'], includes: [], excludes: [] },
@@ -114,7 +115,7 @@ async function runBuild(
     },
   };
 
-  const config = parseConfig((await scopeFile.build(paths, context)).contents);
+  const config = parseConfig((await scope.build(paths, context)).contents);
   return { captured, config, createdFiles, source: config.source, workspace };
 }
 
@@ -232,7 +233,36 @@ describe('scopeFile.build', () => {
   );
 });
 
-describe('scopeFile.build with Mago', () => {
+describe('twigScopeFile.build', () => {
+  it('restricts processing to the given paths, with no context and no excludes', async () => {
+    const { config, workspace } = await runBuild(['templates/a.html.twig'], {
+      scope: twigScopeFile,
+      buildConfig: (configWorkspace) => ({
+        version: '1',
+        source: { workspace: configWorkspace, paths: ['.'], includes: ['vendor'], excludes: ['templates/**'] },
+        twig: { linter: { version: '3.30' } },
+      }),
+    });
+    expect(config).toStrictEqual({
+      version: '1',
+      source: { workspace, paths: ['templates/a.html.twig'], includes: [], excludes: [] },
+      twig: { linter: { version: '3.30' } },
+    });
+  });
+
+  it('only reads the configuration', async () => {
+    const { captured } = await runBuild(['templates/a.html.twig'], { scope: twigScopeFile });
+    expect(captured).toStrictEqual([['--config', 'mago.toml', 'config']]);
+  });
+
+  it('reports a failing config command', async () => {
+    await expect(
+      runBuild(['templates/a.html.twig'], { scope: twigScopeFile, failingCommand: 'config' }),
+    ).rejects.toThrow(Error);
+  });
+});
+
+describe('scope files with Mago', () => {
   const magoPath = path.resolve(import.meta.dirname, '../../../vendor/bin/mago');
 
   interface MagoIssue {
@@ -316,6 +346,9 @@ final class VendorClass
     public string $name = 'vendor';
 }
 `,
+    'templates/one.html.twig': '{{ dump(one) }}\n',
+    'templates/two.html.twig': '{{ dump(two) }}\n',
+    'excluded/excluded.html.twig': '{{ dump(excluded) }}\n',
   };
 
   /**
@@ -331,9 +364,9 @@ final class VendorClass
   }
 
   /**
-   * @returns The issues Mago's analyser reports when restricted to the given paths.
+   * @returns The issues the Mago command reports when restricted to the given paths.
    */
-  async function analyseScoped(paths: readonly string[]): Promise<readonly MagoIssue[]> {
+  async function runScoped(scope: ScopeFile, command: string, paths: readonly string[]): Promise<readonly MagoIssue[]> {
     const directory = mkdtempSync(path.join(tmpdir(), 'codeformat-mago-'));
     onTestFinished(() => {
       rmSync(directory, { recursive: true });
@@ -352,7 +385,7 @@ final class VendorClass
       return filePath;
     };
 
-    const { contents: scopedConfig } = await scopeFile.build(paths, {
+    const { contents: scopedConfig } = await scope.build(paths, {
       rootPath: projectPath,
       configPath: 'mago.toml',
       output: new Output('test', { debug: false, verbose: false }),
@@ -363,26 +396,42 @@ final class VendorClass
     const { stdout } = runMago(projectPath, [
       '--config',
       writeScratchFile(scopedConfig),
-      'analyze',
+      command,
       '--reporting-format',
       'json',
     ]);
-    expect.assert(stdout !== '', 'Mago found no files to analyse.');
+    expect.assert(stdout !== '', 'Mago found no files to check.');
     const report = JSON.parse(stdout) as MagoReport;
     return report.issues.map(({ code, annotations }) => ({ code, file: annotations[0]?.span.file_id.name ?? '' }));
   }
 
-  it('resolves classes defined outside the given paths without checking them', async () => {
-    await expect(analyseScoped(['src/ClassOne.php'])).resolves.toStrictEqual([]);
+  describe('for PHP', () => {
+    it('resolves classes defined outside the given paths without checking them', async () => {
+      await expect(runScoped(scopeFile, 'analyze', ['src/ClassOne.php'])).resolves.toStrictEqual([]);
+    });
+
+    it.for([
+      ['a file in the project', 'src/ClassTwo.php'],
+      ['a file in an excluded directory', 'excluded/Excluded.php'],
+    ] as const satisfies readonly (readonly [label: string, filePath: string])[])('checks %s', async ([, filePath]) => {
+      await expect(runScoped(scopeFile, 'analyze', [filePath])).resolves.toStrictEqual([
+        { code: 'invalid-return-statement', file: filePath },
+      ]);
+    });
   });
 
-  it.for([
-    ['a file in the project', 'src/ClassTwo.php'],
-    ['a file in an excluded directory', 'excluded/Excluded.php'],
-  ] as const satisfies readonly (readonly [label: string, filePath: string])[])('checks %s', async ([, filePath]) => {
-    await expect(analyseScoped([filePath])).resolves.toStrictEqual([
-      { code: 'invalid-return-statement', file: filePath },
-    ]);
+  describe('for Twig', () => {
+    it.for([
+      ['a template in the project', 'templates/one.html.twig'],
+      ['a template in an excluded directory', 'excluded/excluded.html.twig'],
+    ] as const satisfies readonly (readonly [label: string, filePath: string])[])(
+      'checks only %s',
+      async ([, filePath]) => {
+        await expect(runScoped(twigScopeFile, 'twig:lint', [filePath])).resolves.toStrictEqual([
+          { code: 'twig-no-dump', file: filePath },
+        ]);
+      },
+    );
   });
 });
 

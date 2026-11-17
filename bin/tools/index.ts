@@ -4,6 +4,8 @@ export { default as magoAnalyze } from './magoAnalyze.ts';
 export { default as magoFormat } from './magoFormat.ts';
 export { default as magoGuard } from './magoGuard.ts';
 export { default as magoLint } from './magoLint.ts';
+export { default as magoTwigFormat } from './magoTwigFormat.ts';
+export { default as magoTwigLint } from './magoTwigLint.ts';
 export { default as phpCsFixer } from './phpCsFixer.ts';
 export { default as stylelint } from './stylelint.ts';
 export { default as swiftFormat } from './swiftFormat.ts';

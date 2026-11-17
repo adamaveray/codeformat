@@ -78,7 +78,7 @@ function makeCapturers(capture: (args: readonly string[]) => Promise<CapturedOut
 }
 
 /**
- * The four Mago tools read the same configuration, so they share the one generated file.
+ * The four Mago PHP tools read the same configuration, so they share the one generated file.
  */
 export const scopeFile: ScopeFile = {
   id: 'magoConfig',
@@ -115,6 +115,19 @@ export const scopeFile: ScopeFile = {
     const filteredContextPaths = omitPaths(canonicalisePath(workspace, '.'), contextPaths, canonicalPaths);
 
     return { contents: buildScopedConfig(config, paths, filteredContextPaths) };
+  },
+};
+
+/**
+ * The Mago Twig tools check each template in isolation so do not need other files as context.
+ */
+export const twigScopeFile: ScopeFile = {
+  id: 'magoTwigConfig',
+  location: { kind: 'scratch', extension: 'json' },
+  build: async (paths, { capture, configPath, output }) => {
+    const capturers = makeCapturers(capture, output);
+    const config = await capturers.json<MagoConfig>(configPath, ['config'], 'Could not read the Mago configuration');
+    return { contents: buildScopedConfig(config, paths, []) };
   },
 };
 

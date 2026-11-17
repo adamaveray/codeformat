@@ -9,6 +9,8 @@ import {
   magoFormat,
   magoGuard,
   magoLint,
+  magoTwigFormat,
+  magoTwigLint,
   phpCsFixer,
   stylelint,
   swiftFormat,
@@ -42,6 +44,10 @@ const runner = new ToolRunner(cli, {
   magoLint,
   magoAnalyze,
   magoGuard,
+
+  // Twig
+  magoTwigLint, // Must come before format
+  magoTwigFormat,
 
   // Swift
   swiftFormat,

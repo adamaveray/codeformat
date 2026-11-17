@@ -1,0 +1,11 @@
+{# A Twig template to validate Mago configuration. #}
+{% macro greeting(user_name) %}
+  <p>{{ 'Hello, %s.'|format(user_name) }}</p>
+{% endmacro greeting %}
+
+{% block content %}
+  {% set page_title = 'Example' %}
+  <h1>{{ page_title|upper }}</h1>
+  {{ _self.greeting('Ada') }}
+  {{ include('example.html.twig', {page_title: page_title}, with_context: false) }}
+{% endblock content %}

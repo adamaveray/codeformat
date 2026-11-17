@@ -14,4 +14,5 @@ export default {
   yaml: ['yaml', 'yml'],
 
   php: ['php'],
+  twig: ['twig'],
 } as const satisfies Record<string, readonly string[]>;

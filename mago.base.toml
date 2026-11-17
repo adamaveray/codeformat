@@ -42,6 +42,7 @@ no-unused-static = { enabled = true }
 prefer-array-spread = { enabled = true }
 prefer-datetimeimmutable-create-from-timestamp = { enabled = true }
 prefer-explode-over-preg-split = { enabled = true }
+prefer-self = { enabled = true }
 prefer-self-return-type = { enabled = true }
 redundant-static = { enabled = true }
 require-namespace = { enabled = true }
@@ -95,14 +96,17 @@ minimum-fail-level = "note"
 plugins = ["psr-container"]
 
 # Feature flags (https://mago.carthage.software/latest/en/tools/analyzer/configuration-reference/#feature-flags)
+allow-operator-overloading = true
 analyze-dead-code = true
 check-arrow-function-missing-type-hints = true
 check-closure-missing-type-hints = true
+check-dead-catch = true # Only applies when `check-throws` is enabled
 check-experimental = true
 check-missing-override = true
 check-missing-type-hints = true
 check-name-casing = true
 check-property-initialization = true
+check-throw-type-covariance = true
 check-use-statements = true
 enforce-class-finality = true
 find-overly-wide-return-types = true

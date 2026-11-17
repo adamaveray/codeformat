@@ -257,7 +257,7 @@ paths = ["."]
 includes = ["vendor"]
 excludes = ["excluded/**"]
 `,
-    // Reads a property of a class in another project file & creates a class from an included file
+    // Reads a property of a class in another project file and of a class created from an included file
     'src/ClassOne.php': `<?php
 
 declare(strict_types=1);
@@ -269,9 +269,7 @@ final class ClassOne
 {
     public function run(ClassTwo $two): string
     {
-        new \\Lib\\VendorClass();
-
-        return $two->name;
+        return $two->name . new \\Lib\\VendorClass()->name;
     }
 }
 `,
@@ -313,7 +311,10 @@ declare(strict_types=1);
 
 namespace Lib;
 
-final class VendorClass {}
+final class VendorClass
+{
+    public string $name = 'vendor';
+}
 `,
   };
 

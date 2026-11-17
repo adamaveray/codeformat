@@ -126,13 +126,13 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3
       globals:
-        specifier: ^17.13.0
+        specifier: ^17.14.0
         version: 17.14.0
       ignore:
-        specifier: ^7.0.12
+        specifier: ^7.0.14
         version: 7.0.14
       postcss-html:
-        specifier: ^2.0.0
+        specifier: ^2.0.1
         version: 2.0.1(postcss@8.5.33)
       postcss-scss:
         specifier: ^4.0.9
@@ -153,17 +153,17 @@ importers:
         specifier: ^17.0.0
         version: 17.0.0(postcss@8.5.33)(stylelint@17.16.0(supports-color@10.2.2))
       stylelint-order:
-        specifier: ^8.1.2
+        specifier: ^8.1.3
         version: 8.1.3(stylelint@17.16.0(supports-color@10.2.2))
       stylelint-plugin-defensive-css:
-        specifier: ^2.9.7
+        specifier: ^2.10.0
         version: 2.10.0(stylelint@17.16.0(supports-color@10.2.2))
       stylelint-scss:
-        specifier: ^7.3.0
+        specifier: ^7.5.0
         version: 7.5.0(stylelint@17.16.0(supports-color@10.2.2))
     devDependencies:
       '@types/node':
-        specifier: ^26.6.5
+        specifier: ^26.6.6
         version: 26.6.6
       bumpp:
         specifier: ^12.3.0
@@ -172,7 +172,7 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       knip:
-        specifier: ^6.41.0
+        specifier: ^6.45.1
         version: 6.45.1
       stylelint:
         specifier: ^17.16.0

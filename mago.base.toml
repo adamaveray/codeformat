@@ -143,7 +143,6 @@ array-table-style-alignment = false
 attributes-order = "alphanumeric-ascending"
 indent-binary-expression-continuation = true
 remove-trailing-close-tag = true
-sort-class-methods = true
 
 # See https://mago.carthage.software/latest/en/tools/guard/configuration-reference
 [guard]

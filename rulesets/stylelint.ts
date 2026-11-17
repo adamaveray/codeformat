@@ -17,7 +17,6 @@ export const css: ConfigRules = {
 
   // Disable oxfmt conflicts
   ...{
-    'declaration-block-single-line-max-declarations': null,
     'selector-attribute-quotes': null,
   },
 

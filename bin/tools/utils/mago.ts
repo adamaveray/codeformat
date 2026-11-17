@@ -52,7 +52,6 @@ function buildScopedConfig(config: MagoConfig, paths: readonly string[], context
       ...config.source,
       paths,
       includes: contextPaths,
-      excludes: [], // Mago skips excluded files even when they are listed in `paths`. The context list already has the excludes applied.
     },
   });
 }

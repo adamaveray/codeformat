@@ -125,11 +125,11 @@ describe('scopeFile.build', () => {
     expect(source['paths']).toStrictEqual(['src/a.php', 'src/b.php']);
   });
 
-  it('clears the excludes, so a given path is never dropped', async () => {
+  it('keeps the excludes, so an excluded path is never processed', async () => {
     const { source } = await runBuild(['src/a.php'], {
       buildConfig: (workspace) => ({ source: { workspace, paths: ['.'], excludes: ['src/**'] } }),
     });
-    expect(source['excludes']).toStrictEqual([]);
+    expect(source['excludes']).toStrictEqual(['src/**']);
   });
 
   it('preserves the rest of the configuration', async () => {
@@ -150,7 +150,7 @@ describe('scopeFile.build', () => {
       buildConfig: () => ({ version: '1' }),
       projectFiles: ['src/b.php'],
     });
-    expect(source).toStrictEqual({ paths: ['src/a.php'], includes: ['src/b.php'], excludes: [] });
+    expect(source).toStrictEqual({ paths: ['src/a.php'], includes: ['src/b.php'] });
   });
 
   it('reads the project files as context', async () => {
@@ -234,19 +234,35 @@ describe('scopeFile.build', () => {
 });
 
 describe('twigScopeFile.build', () => {
-  it('restricts processing to the given paths, with no context and no excludes', async () => {
+  it('restricts processing to the given paths, with no context and all excludes kept', async () => {
     const { config, workspace } = await runBuild(['templates/a.html.twig'], {
       scope: twigScopeFile,
       buildConfig: (configWorkspace) => ({
         version: '1',
-        source: { workspace: configWorkspace, paths: ['.'], includes: ['vendor'], excludes: ['templates/**'] },
-        twig: { linter: { version: '3.30' } },
+        source: {
+          workspace: configWorkspace,
+          paths: ['.'],
+          includes: ['vendor'],
+          excludes: ['cache/**'],
+        },
+        twig: {
+          linter: { version: '3.30', excludes: ['generated/**'] },
+          formatter: { 'print-width': 120, excludes: ['generated/**'] },
+        },
       }),
     });
     expect(config).toStrictEqual({
       version: '1',
-      source: { workspace, paths: ['templates/a.html.twig'], includes: [], excludes: [] },
-      twig: { linter: { version: '3.30' } },
+      source: {
+        workspace,
+        paths: ['templates/a.html.twig'],
+        includes: [],
+        excludes: ['cache/**'],
+      },
+      twig: {
+        linter: { version: '3.30', excludes: ['generated/**'] },
+        formatter: { 'print-width': 120, excludes: ['generated/**'] },
+      },
     });
   });
 
@@ -286,6 +302,9 @@ php-version = "8.5"
 paths = ["."]
 includes = ["vendor"]
 excludes = ["excluded/**"]
+
+[twig.linter]
+excludes = ["generated/**"]
 `,
     // Reads a property of a class in another project file and of a class created from an included file
     'src/ClassOne.php': `<?php
@@ -349,6 +368,7 @@ final class VendorClass
     'templates/one.html.twig': '{{ dump(one) }}\n',
     'templates/two.html.twig': '{{ dump(two) }}\n',
     'excluded/excluded.html.twig': '{{ dump(excluded) }}\n',
+    'generated/generated.html.twig': '{{ dump(generated) }}\n',
   };
 
   /**
@@ -364,9 +384,13 @@ final class VendorClass
   }
 
   /**
-   * @returns The issues the Mago command reports when restricted to the given paths.
+   * @returns The issues the Mago command reports when restricted to the given paths, or `undefined` if the command reports no output because it found no files to check.
    */
-  async function runScoped(scope: ScopeFile, command: string, paths: readonly string[]): Promise<readonly MagoIssue[]> {
+  async function runScoped(
+    scope: ScopeFile,
+    command: string,
+    paths: readonly string[],
+  ): Promise<readonly MagoIssue[] | undefined> {
     const directory = mkdtempSync(path.join(tmpdir(), 'codeformat-mago-'));
     onTestFinished(() => {
       rmSync(directory, { recursive: true });
@@ -400,7 +424,9 @@ final class VendorClass
       '--reporting-format',
       'json',
     ]);
-    expect.assert(stdout !== '', 'Mago found no files to check.');
+    if (stdout === '') {
+      return undefined;
+    }
     const report = JSON.parse(stdout) as MagoReport;
     return report.issues.map(({ code, annotations }) => ({ code, file: annotations[0]?.span.file_id.name ?? '' }));
   }
@@ -410,28 +436,31 @@ final class VendorClass
       await expect(runScoped(scopeFile, 'analyze', ['src/ClassOne.php'])).resolves.toStrictEqual([]);
     });
 
-    it.for([
-      ['a file in the project', 'src/ClassTwo.php'],
-      ['a file in an excluded directory', 'excluded/Excluded.php'],
-    ] as const satisfies readonly (readonly [label: string, filePath: string])[])('checks %s', async ([, filePath]) => {
-      await expect(runScoped(scopeFile, 'analyze', [filePath])).resolves.toStrictEqual([
-        { code: 'invalid-return-statement', file: filePath },
+    it('checks a file in the project', async () => {
+      await expect(runScoped(scopeFile, 'analyze', ['src/ClassTwo.php'])).resolves.toStrictEqual([
+        { code: 'invalid-return-statement', file: 'src/ClassTwo.php' },
       ]);
+    });
+
+    it('skips a file in an excluded directory', async () => {
+      await expect(runScoped(scopeFile, 'analyze', ['excluded/Excluded.php'])).resolves.toBeUndefined();
     });
   });
 
   describe('for Twig', () => {
+    it('checks only a template in the project', async () => {
+      await expect(runScoped(twigScopeFile, 'twig:lint', ['templates/one.html.twig'])).resolves.toStrictEqual([
+        { code: 'twig-no-dump', file: 'templates/one.html.twig' },
+      ]);
+    });
+
+    // The Twig linter reports an empty list rather than no output when it finds no files
     it.for([
-      ['a template in the project', 'templates/one.html.twig'],
       ['a template in an excluded directory', 'excluded/excluded.html.twig'],
-    ] as const satisfies readonly (readonly [label: string, filePath: string])[])(
-      'checks only %s',
-      async ([, filePath]) => {
-        await expect(runScoped(twigScopeFile, 'twig:lint', [filePath])).resolves.toStrictEqual([
-          { code: 'twig-no-dump', file: filePath },
-        ]);
-      },
-    );
+      ['a template excluded from the Twig linter', 'generated/generated.html.twig'],
+    ] as const satisfies readonly (readonly [label: string, filePath: string])[])('skips %s', async ([, filePath]) => {
+      await expect(runScoped(twigScopeFile, 'twig:lint', [filePath])).resolves.toStrictEqual([]);
+    });
   });
 });
 

@@ -32,7 +32,7 @@ export default defineConfig({
 
 ### Vite+ Lint (via Oxlint)
 
-Create an `oxlint.config.ts` file with the following configuration:
+Create an `vite.config.ts` file with the following configuration:
 
 ```ts
 // vite.config.ts

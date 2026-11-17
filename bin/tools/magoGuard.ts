@@ -11,7 +11,7 @@ export default {
     const globalArgs = buildGlobalArgs(configPath, scopeFilePath);
     return {
       check: [...globalArgs, 'guard'],
-      fix: [...globalArgs, 'guard', '--fix'],
+      fix: [...globalArgs, 'guard', '--fix', '--format-after-fix'],
     };
   },
   args: {},

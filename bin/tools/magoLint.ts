@@ -11,7 +11,7 @@ export default {
     const globalArgs = buildGlobalArgs(configPath, scopeFilePath);
     return {
       check: [...globalArgs, 'lint'],
-      fix: [...globalArgs, 'lint', '--fix'],
+      fix: [...globalArgs, 'lint', '--fix', '--format-after-fix'],
     };
   },
   args: {},

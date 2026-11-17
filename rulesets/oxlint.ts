@@ -350,7 +350,9 @@ export const shared = {
   'unicorn/require-post-message-target-origin': 'error',
 
   'vite-plus/prefer-vite-plus-imports': 'error',
+} as const satisfies DummyRuleMap;
 
+export const tests = {
   'vitest/consistent-each-for': ['error', { describe: 'for', it: 'for', suite: 'for', test: 'for' }],
   'vitest/max-expects': 'off', // Too opinionated
   'vitest/max-nested-describe': 'off', // Too opinionated

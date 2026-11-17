@@ -3,6 +3,15 @@ import type { OxlintConfig } from 'vite-plus/lint';
 import * as rulesets from '../rulesets/oxlint.ts';
 import extensions from './extensions.ts';
 
+const testFilePatterns = [
+  '**/__tests__/**',
+  '**/test/**',
+  '**/tests/**',
+  '**/*.{test,spec}.*',
+  '**/*.{test,spec}-d.*',
+  '**/*.bench.*',
+];
+
 interface Options extends Partial<Pick<OxlintConfig, 'env' | 'settings' | 'options' | 'overrides'>> {
   /** The relative path to the project’s `tsconfig.json` file. */
   tsconfigPath?: string;
@@ -60,10 +69,17 @@ export default function makeOxlintConfig({
         rules: rulesets.typescriptModules,
       },
 
+      // Test files
+      {
+        files: testFilePatterns,
+        plugins: ['vitest'],
+        rules: rulesets.tests,
+      },
+
       ...overrides,
     ],
 
-    plugins: ['import', 'jsdoc', 'jsx-a11y', 'node', 'oxc', 'promise', 'react', 'typescript', 'unicorn', 'vitest'],
+    plugins: ['import', 'jsdoc', 'jsx-a11y', 'node', 'oxc', 'promise', 'react', 'typescript', 'unicorn'],
 
     rules: {
       // Shared rules for all JS/TS files

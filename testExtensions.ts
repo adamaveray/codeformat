@@ -1,5 +1,3 @@
-/* oxlint-disable vitest/require-hook -- Global extension file. */
-
 import type { Matcher } from 'vite-plus/test';
 
 import { expect } from 'vite-plus/test';

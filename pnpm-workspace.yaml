@@ -12,7 +12,7 @@ minimumReleaseAgeExclude:
   - vite-plus@1.7.0
 
 overrides:
-  cosmiconfig: '10.0' # v9.0 does not support TypeScript 7 (https://github.com/cosmiconfig/cosmiconfig/issues/350)
+  dclint>cosmiconfig: '10.0' # dclint uses cosmiconfig v9.0, which does not support TypeScript 7 (https://github.com/cosmiconfig/cosmiconfig/issues/350)
   vite@*: 'catalog:'
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@8.3.8000

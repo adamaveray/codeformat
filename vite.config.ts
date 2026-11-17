@@ -3,14 +3,11 @@ import { defineConfig } from 'vite-plus';
 import makeOxfmtConfig from './src/makeOxfmtConfig.ts';
 import makeOxlintConfig from './src/makeOxlintConfig.ts';
 
-const lintConfig = makeOxlintConfig({ tsconfigPath: './tsconfig.json' });
-
 export default defineConfig({
   fmt: makeOxfmtConfig(),
-  lint: {
-    ...lintConfig,
+  lint: makeOxlintConfig({
+    tsconfigPath: './tsconfig.json',
     overrides: [
-      ...(lintConfig.overrides ?? []),
       {
         files: ['rulesets/*.ts', 'src/make*Config.ts'],
         rules: {
@@ -26,7 +23,7 @@ export default defineConfig({
         },
       },
     ],
-  },
+  }),
   test: {
     setupFiles: ['testExtensions.ts'],
   },

@@ -290,7 +290,7 @@ export default class ToolRunner<TToolName extends string> {
       args.push(...(additionalArgs.debug ?? []));
     }
     const toolCacheDir = this.cli.options.cache ? path.join(this.cli.options.cacheDir, toolName) : undefined;
-    args.push(...(additionalArgs.cache?.(toolCacheDir) ?? []));
+    args.push(...(additionalArgs.cache?.(toolCacheDir, context) ?? []));
     return args;
   }
 

@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vite-plus/test';
 
-import type { Tool } from '../utils/types.ts';
+import type { Tool, ToolActionContext } from '../utils/types.ts';
 
 import knip from './knip.ts';
 import phpCsFixer from './phpCsFixer.ts';
 
 describe('cache arguments', () => {
+  const context: ToolActionContext = { rootPath: '/project', configPath: 'config', supportedExtensions: [] };
+
   it.for([
     ['knip', knip, '/cache/knip', ['--cache', '--cache-location', '/cache/knip']],
     ['knip', knip, undefined, []],
@@ -17,6 +19,6 @@ describe('cache arguments', () => {
     cacheDir: string | undefined,
     expected: readonly string[],
   ])[])('builds %s arguments for cache directory %s', ([, tool, cacheDir, expected]) => {
-    expect(tool.args.cache(cacheDir)).toStrictEqual(expected);
+    expect(tool.args.cache(cacheDir, context)).toStrictEqual(expected);
   });
 });

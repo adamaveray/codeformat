@@ -151,3 +151,31 @@ remove-trailing-close-tag = true
 # See https://mago.carthage.software/latest/en/tools/guard/configuration-reference
 [guard]
 minimum-fail-level = "note"
+
+# See https://mago.carthage.software/latest/en/tools/formatter/twig/
+[twig.formatter]
+# Match editorconfig
+end-of-line = "lf"
+print-width = 120
+tab-width = 2
+use-tabs = false
+
+# See https://mago.carthage.software/latest/en/tools/twig-linter/
+[twig.linter]
+minimum-fail-level = "note"
+version = "3.30" # The oldest supported Twig version – projects using older Twig versions must lower this
+
+[twig.linter.rules]
+constant-condition = { enabled = true }
+end-block-name = { enabled = true }
+no-autoescape-false = { enabled = true }
+no-include-ignore-missing = { enabled = true }
+no-nested-ternary = { enabled = true }
+prefer-include-function = { enabled = true }
+single-quotes = { enabled = true }
+
+# Naming conventions
+macro-argument-name = { enabled = true }
+macro-name = { enabled = true }
+named-argument-name = { enabled = true }
+variable-name = { enabled = true }

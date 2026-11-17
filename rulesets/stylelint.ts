@@ -155,7 +155,7 @@ export const scss: ConfigRules = {
     'scss/function-no-unknown': null, // Flags custom functions
     'scss/map-keys-quotes': 'always',
     'scss/media-feature-value-dollar-variable': ['always', { ignore: ['keywords'] }],
-    'scss/no-duplicate-dollar-variables': [true, { ignoreDefaults: false }],
+    'scss/no-duplicate-dollar-variables': [true, { ignoreDefaults: false, ignoreInsideAtRules: ['if', 'else', 'for'] }],
     'scss/no-duplicate-load-rules': true,
     'scss/no-unused-private-members': true,
   },

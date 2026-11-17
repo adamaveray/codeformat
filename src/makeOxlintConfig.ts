@@ -13,6 +13,8 @@ const testFilePatterns = [
 ];
 
 interface Options extends Partial<Pick<OxlintConfig, 'env' | 'settings' | 'options' | 'overrides'>> {
+  /** Additional file patterns to ignore. */
+  ignorePatterns?: readonly string[];
   /** The relative path to the project’s `tsconfig.json` file. */
   tsconfigPath?: string;
 }
@@ -24,6 +26,7 @@ interface Options extends Partial<Pick<OxlintConfig, 'env' | 'settings' | 'optio
 export default function makeOxlintConfig({
   tsconfigPath,
   env,
+  ignorePatterns = [],
   settings = {},
   options = {},
   overrides = [],
@@ -44,7 +47,7 @@ export default function makeOxlintConfig({
       ...env,
     },
 
-    ignorePatterns: ['**/.DS_Store', '.cache/**/*', '.git/**/*', 'node_modules/**/*'],
+    ignorePatterns: ['**/.DS_Store', '.cache/**/*', '.git/**/*', 'node_modules/**/*', ...ignorePatterns],
 
     jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
 

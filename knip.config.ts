@@ -3,7 +3,6 @@ import type { KnipConfig } from 'knip';
 export default {
   ignoreDependencies: [
     // Build tools
-    'bumpp',
     'vite',
   ],
   ignoreExportsUsedInFile: true,

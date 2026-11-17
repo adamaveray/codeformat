@@ -81,7 +81,7 @@ const config = makeDclintConfig(/* Optional customisations */);
 export { config as 'module.exports' }; // Must be exported with this syntax
 ```
 
-### Mago (PHP)
+### Mago (PHP & Twig)
 
 Create a `mago.toml` file with the following configuration:
 
@@ -91,6 +91,13 @@ extends = "node_modules/@averay/codeformat/mago.base.toml"
 
 [source]
 paths = ["."]
+```
+
+Twig templates are linted as a modern Twig version. Older Twig versions can be specified manually:
+
+```toml
+[twig.linter]
+version = "3.11"
 ```
 
 ### PHP-CS-Fixer (PHP)

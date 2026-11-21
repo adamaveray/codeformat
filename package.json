@@ -2,12 +2,15 @@
   "name": "@averay/codeformat",
   "version": "0.4.7",
   "description": "A very opinionated collection of configurations for a number of code formatting tools.",
-  "homepage": "https://github.com/adamaveray/codeformat",
+  "homepage": "https://codeberg.org/adamaveray/codeformat",
+  "bugs": {
+    "url": "https://codeberg.org/adamaveray/codeformat/issues"
+  },
   "license": "MIT",
   "author": "Adam Averay (https://adamaveray.com.au/)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adamaveray/codeformat.git"
+    "url": "git+https://codeberg.org/adamaveray/codeformat.git"
   },
   "bin": {
     "codeformat": "dist/bin/codeformat.js"

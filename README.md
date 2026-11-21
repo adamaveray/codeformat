@@ -1,3 +1,7 @@
+**This repository has been migrated to Codeberg: [codeberg.org/adamaveray/codeformat](https://codeberg.org/adamaveray/codeformat)**
+
+---
+
 # @averay/codeformat
 
 A very opinionated collection of configurations for a number of code formatting tools.
